@@ -82,6 +82,7 @@ class PlayState extends FlxState
 				{
 					if (FlxG.mouse.overlaps(r, FlxG.camera))
 					{
+						if(Type.getClassName(Type.getClass(r)) == "RoomHotel")
 						Mode = PlayerMode.Upgrade;
 						_upgradeMenu.open(r);
 					}
@@ -155,7 +156,7 @@ class PlayState extends FlxState
 	function SwitchToBuildMode() 
 	{
 		Mode = PlayerMode.Build;
-		_room2Place = new Room();
+		_room2Place = new RoomHotel();
 	}
 	
 	override public function draw() : Void 
