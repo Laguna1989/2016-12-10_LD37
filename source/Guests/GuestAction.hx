@@ -28,7 +28,7 @@ class GuestAction
 	
 	public function Activate()
 	{
-		
+		activated = true;
 	}
 	
 	public function update(elapsed:Float) 
@@ -36,7 +36,6 @@ class GuestAction
 		_age += elapsed;
 		if (!activated)
 		{
-			activated = true;
 			Activate();
 		}
 	}

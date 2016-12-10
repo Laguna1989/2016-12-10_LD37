@@ -58,8 +58,24 @@ class Room extends FlxSprite
 		if (TilePosX + WidthInTiles <= o.TilePosX) return false;
 		if (TilePosX  >= o.TilePosX + o.WidthInTiles) return false;
 		
-		return true;
-		
+		return true;	
 	}
 	
+	public override function update (elapsed : Float)
+	{
+		super.update(elapsed);
+	}
+	
+	
+	
+	public function lock()
+	{
+		isFree = false;
+		color = FlxColor.GRAY;
+	}
+	public function unlock()
+	{
+		isFree = true;
+		color = FlxColor.WHITE;
+	}
 }

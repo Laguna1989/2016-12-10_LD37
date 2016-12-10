@@ -198,6 +198,7 @@ class PlayState extends FlxState
 			{
 				if (r.isFree)
 				{
+					r.lock();
 					return r;
 				}
 			}

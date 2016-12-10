@@ -39,6 +39,7 @@ class GuestActionAssignRoom extends GuestAction
 	
 	public override function Activate()
 	{
+		super.Activate();
 		trace("activate Assign Room Action");
 		var rec : RoomReception = cast _guest._state.getRoomByName("reception");
 		rec.GuestsWaiting += 1;
@@ -50,7 +51,10 @@ class GuestActionAssignRoom extends GuestAction
 		trace("Assign: Finish: " + targetRoomName);
 		var wa : GuestActionWalk = new GuestActionWalk(_guest);
 		wa.targetRoom = targetRoomName;
-		_guest.AddAction(wa);
+		_guest.AddActionToBegin(wa);
+		
+		var id : GuestActionIdle = new GuestActionIdle(_guest);
+		_guest.AddAction(id);
 		
 		var rec : RoomReception = cast _guest._state.getRoomByName("reception");
 		rec.GuestsWaiting -= 1;
