@@ -33,15 +33,16 @@ class PlayState extends FlxState
 		_roomList = new FlxTypedGroup<Room>();
 		_guestList = new FlxTypedGroup<Guest>();
 		
-		var g : Guest = new Guest(this);
-		//g.setPosition(FlxG.random.float(0, 800), FlxG.random.float(0, 500));
 		
 		var reception : RoomReception = new RoomReception();
 		reception.setPosition(48*3, GP.GroundLevel - GP.RoomSizeInPixel);
 		reception.BuildMe();
 		_roomList.add(reception);
 		
+		var g : Guest = new Guest(this);
 		_guestList.add(g);
+		//g.setPosition(FlxG.random.float(0, 800), FlxG.random.float(0, 500));
+		
 	}
 
 	override public function update(elapsed:Float):Void
@@ -151,6 +152,7 @@ class PlayState extends FlxState
 	{
 		for (r in _roomList)
 		{
+			//trace(r.name);
 			if (r.name == n) return r;
 		}
 		return null;
