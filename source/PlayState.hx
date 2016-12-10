@@ -17,7 +17,7 @@ class PlayState extends FlxState
 	
 	private var Ground    : FlxSprite;
 	private var _modeText : FlxText;
-
+	private var _versionText : FlxText;
 	private var _upgradeMenu : UpgradeMenu;
 
 	private var Mode :PlayerMode = PlayerMode.Normal;
@@ -28,6 +28,8 @@ class PlayState extends FlxState
 	private var _maxLevel : Int = 2;	// currently the level at which the highest room can be build (can be increased by the elevator)
 	private var _minTilePosX : Int = 3;
 	private var _maxTilePosX : Int = 10;
+	
+	
 	override public function create():Void
 	{
 		super.create();
@@ -37,7 +39,9 @@ class PlayState extends FlxState
 		_upgradeMenu = new UpgradeMenu();
 
 		_modeText = new FlxText(0, 585, 'Current mode: ' + Mode);
-
+		_versionText = new FlxText(600, 565, 200, "Built on: " + Version.getBuildDate() + "\n" + Version.getGitCommitMessage());
+		_versionText.alignment = FlxTextAlign.RIGHT;
+		
 		_roomList = new FlxTypedGroup<Room>();
 		_guestList = new FlxTypedGroup<Guest>();
 		
@@ -171,6 +175,7 @@ class PlayState extends FlxState
 		}
 
 		_modeText.draw();
+		_versionText.draw();
 	}
 	
 	
