@@ -33,7 +33,6 @@ class PlayState extends FlxState
 		_roomList = new FlxTypedGroup<Room>();
 		_guestList = new FlxTypedGroup<Guest>();
 		
-		
 		var reception : RoomReception = new RoomReception();
 		reception.setPosition(48*3, GP.GroundLevel - GP.RoomSizeInPixel);
 		reception.BuildMe();
@@ -42,7 +41,6 @@ class PlayState extends FlxState
 		var g : Guest = new Guest(this);
 		_guestList.add(g);
 		//g.setPosition(FlxG.random.float(0, 800), FlxG.random.float(0, 500));
-		
 	}
 
 	override public function update(elapsed:Float):Void
@@ -109,8 +107,8 @@ class PlayState extends FlxState
 	{
 		// Check if room can be built on this level
 		if (Std.int((GP.GroundLevel  - _room2Place.y) / GP.RoomSizeInPixel) > _maxLevel) return false;
-		if (Std.int(_room2Place.x / GP.RoomSizeInPixel) < _minTilePosX) return false;
-		if (Std.int(_room2Place.x + _room2Place.WidthInTiles / GP.RoomSizeInPixel) > _maxTilePosX) return false;
+		//if (Std.int(_room2Place.x / GP.RoomSizeInPixel) < _minTilePosX) return false;
+		//if (Std.int(_room2Place.x + _room2Place.WidthInTiles / GP.RoomSizeInPixel) > _maxTilePosX) return false;
 		// Check if room can be built on this position (no overlap with other rooms)
 		for (r in _roomList)
 		{
@@ -148,6 +146,7 @@ class PlayState extends FlxState
 		}
 	}
 	
+	
 	public function getRoomByName (n : String ) : Room
 	{
 		for (r in _roomList)
@@ -155,6 +154,22 @@ class PlayState extends FlxState
 			//trace(r.name);
 			if (r.name == n) return r;
 		}
+		return null;
+	}
+	
+	public function getFreeMatchingRoom ( g : Guest) : Room
+	{
+		for (r in _roomList)
+		{
+			if (StringTools.startsWith(r.name, "room"))
+			{
+				if (r.isFree)
+				{
+					return r;
+				}
+			}
+		}
+		
 		return null;
 	}
 }

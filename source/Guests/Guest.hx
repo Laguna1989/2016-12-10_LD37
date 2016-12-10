@@ -26,6 +26,8 @@ class Guest extends FlxSprite
 		var w1 : GuestActionWalk = new GuestActionWalk(this);
 		w1.targetRoom = "reception";
 		_actions.push(w1);
+		var w2 : GuestActionAssignRoom = new GuestActionAssignRoom(this);
+		_actions.push(w2);
 		
 	}
 	
@@ -51,7 +53,11 @@ class Guest extends FlxSprite
 		if (_actions.length > 0)
 			_actions[0].Activate();
 	}
-	
+
+	public function AddAction(a:GuestAction) : Void
+	{
+		_actions.push(a);
+	}
 	
 	
 }

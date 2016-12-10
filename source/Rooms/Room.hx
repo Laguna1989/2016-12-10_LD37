@@ -18,6 +18,8 @@ class Room extends FlxSprite
 	public var WidthInTiles : Int = 3;
 	public var name : String = "";
 	
+	public var isFree : Bool = true;
+	
 	public function new() 
 	{
 		super();
