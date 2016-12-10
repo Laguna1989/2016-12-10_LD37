@@ -70,7 +70,7 @@ class PlayState extends FlxState
 		//g.setPosition(FlxG.random.float(0, 800), FlxG.random.float(0, 500));
 		
 		_GuestSpawnTimer = new FlxTimer();
-		_GuestSpawnTimer.start(FlxG.random.floatNormal(15, 3), function (t) { var g :Guest = new Guest(this); _guestList.add(g); }, 0);
+		_GuestSpawnTimer.start(FlxG.random.floatNormal(17, 3), function (t) { var g :Guest = new Guest(this); _guestList.add(g); }, 0);
 		
 		_MoneyText  = new FlxText(0, 50, 100, "", 16);
 		_MoneyText.screenCenter(FlxAxes.X);

@@ -19,7 +19,7 @@ class GuestActionWalk extends GuestAction
 	
 	public override function DoFinish() : Void 
 	{
-		trace("DoFinish Walk Action");
+		trace("DoFinish Walk Action: " + targetRoom + " " + _walkingTime);
 		_guest.velocity.x = 0;
 	}
 	
@@ -45,8 +45,7 @@ class GuestActionWalk extends GuestAction
 			}
 			else
 			{
-				trace(tr.Level);
-				trace(_guest.Level);
+				trace("on different levels: " + tr.Level + " " + _guest.Level);
 				
 				var nw1 : GuestActionElevator = new GuestActionElevator(_guest);
 				nw1.TargetLevel = tr.Level;
@@ -55,6 +54,9 @@ class GuestActionWalk extends GuestAction
 				
 				var nw2 : GuestActionWalk = new GuestActionWalk(_guest);
 				nw2.targetRoom = "elevator_" + Std.string(_guest.Level);
+				nw2._age = 0;
+				nw2.Activate();
+				trace("ele target: " + nw2.targetRoom);
 				_guest.AddActionToBegin(nw2);
 			}
 		}

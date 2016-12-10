@@ -82,6 +82,8 @@ class Guest extends FlxSprite
 		{
 			_actions[0].activated = false;
 		}
+		
+		//a.Activate();
 		var _newActions : Array<GuestAction> = new Array<GuestAction>();
 		_newActions.push(a);
 		//trace("AddBegin newactions " + _newActions.length );
