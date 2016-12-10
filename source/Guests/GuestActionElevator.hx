@@ -13,6 +13,7 @@ class GuestActionElevator extends GuestAction
 	public function new(g:Guest) 
 	{
 		super(g);
+		name = "elevator";
 	}
 	
 	public override function IsFinished () : Bool

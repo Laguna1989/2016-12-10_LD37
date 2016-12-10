@@ -12,7 +12,7 @@ class GuestActionIdle extends GuestAction
 	public function new(g:Guest) 
 	{
 		super(g);
-		
+		name = "idle";
 	}
 	
 	public override function IsFinished () : Bool

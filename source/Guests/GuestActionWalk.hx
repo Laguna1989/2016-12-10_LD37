@@ -26,6 +26,7 @@ class GuestActionWalk extends GuestAction
 	public function new(g:Guest) 
 	{
 		super(g);
+		name = "walk";
 	}
 	
 	public override function Activate()

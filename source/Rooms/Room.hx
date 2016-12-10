@@ -19,11 +19,13 @@ class Room extends FlxSprite
 	public var name : String = "";
 	
 	public var isFree : Bool = true;
+	public var Cost : Int;
 	
 	public function new() 
 	{
 		super();
 		WidthInTiles = 3;
+		Cost = 1600;
 		this.makeGraphic(GP.RoomSizeInPixel * WidthInTiles -1, GP.RoomSizeInPixel * 1 - 1, FlxColor.WHITE);
 		Props = new RoomProperties();
 		this.alpha = 0.5;

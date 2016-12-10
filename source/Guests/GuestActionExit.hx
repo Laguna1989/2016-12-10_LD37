@@ -11,6 +11,7 @@ class GuestActionExit extends GuestAction
 	public function new(g:Guest) 
 	{
 		super(g);
+		name = "exit";
 	}
 	
 	public override function IsFinished () : Bool

@@ -1,7 +1,9 @@
 package;
 
+import flash.net.FileFilter;
 import flixel.FlxSprite;
 import flixel.system.FlxAssets.FlxGraphicAsset;
+import flixel.text.FlxText;
 import flixel.util.FlxColor;
 
 /**
@@ -19,6 +21,10 @@ class Guest extends FlxSprite
 	
 	public var _roomName : String = "";
 	
+	public var _satisfactionFactor : Float = 1.0;
+	private var _infoBG : FlxSprite;
+	private var _infoText : FlxText;
+	
 	public function new(state:PlayState) 
 	{
 		super( -10, GP.GroundLevel);
@@ -35,6 +41,9 @@ class Guest extends FlxSprite
 		var a1 : GuestActionAssignRoom = new GuestActionAssignRoom(this);
 		_actions.push(a1);
 		
+		_infoText = new FlxText(0, 0, 100, "");
+		_infoBG = new FlxSprite(0, 0);
+		_infoBG.makeGraphic(100, 32, FlxColor.GRAY);
 	}
 	
 	public override function update(elapsed:Float) : Void 
@@ -50,7 +59,9 @@ class Guest extends FlxSprite
 				NextAction();
 			}
 		}
-		
+		_infoBG.setPosition(this.x + GP.GuestSizeInPixel, this.y - GP.GuestSizeInPixel);
+		_infoText.setPosition(this.x + GP.GuestSizeInPixel, this.y - GP.GuestSizeInPixel);
+		_infoText.text = "Level: " + Std.string(Level) + "\nActions[" + _actions.length + "] = " + ((_actions.length != 0)?  _actions[0].name : "--" );
 	}
 	
 	function NextAction():Void 
@@ -84,5 +95,12 @@ class Guest extends FlxSprite
 		_actions.push(a);
 	}
 	
+	public override function draw()
+	{
+		super.draw();
+		_infoBG.draw();
+		
+		_infoText.draw();
+	}
 	
 }

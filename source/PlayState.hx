@@ -7,6 +7,7 @@ import flixel.group.FlxGroup;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.math.FlxMath;
+import flixel.util.FlxAxes;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import haxe.rtti.CType.TypeRoot;
@@ -33,7 +34,7 @@ class PlayState extends FlxState
 	private var _GuestSpawnTimer : FlxTimer;
 	
 	private var _Money : Int = 5000;
-	
+	private var _MoneyText : FlxText;
 	
 	override public function create():Void
 	{
@@ -70,6 +71,10 @@ class PlayState extends FlxState
 		
 		_GuestSpawnTimer = new FlxTimer();
 		_GuestSpawnTimer.start(FlxG.random.floatNormal(15, 3), function (t) { var g :Guest = new Guest(this); _guestList.add(g); }, 0);
+		
+		_MoneyText  = new FlxText(0, 50, 100, "", 16);
+		_MoneyText.screenCenter(FlxAxes.X);
+		_MoneyText.alignment = FlxTextAlign.CENTER;
 	}
 
 	override public function update(elapsed:Float):Void
@@ -77,6 +82,7 @@ class PlayState extends FlxState
 		super.update(elapsed);
 		_roomList.update(elapsed);
 		_guestList.update(elapsed);
+		_MoneyText.text = Std.string(_Money);
 		
 		if (Mode == PlayerMode.Normal)
 		{
@@ -147,6 +153,7 @@ class PlayState extends FlxState
 		{
 			_room2Place.BuildMe();
 			_roomList.add(_room2Place);
+			_Money -= _room2Place.Cost;
 			Mode = PlayerMode.Normal;
 		}
 	}
@@ -167,7 +174,10 @@ class PlayState extends FlxState
 		}
 		
 		//TODO Check if there is enough money
-		if(
+		if (_Money < _room2Place.Cost)
+		{
+			return false;
+		}
 		
 		return true;
 	}
@@ -184,7 +194,7 @@ class PlayState extends FlxState
 		Ground.draw();
 		_roomList.draw();
 		_guestList.draw();
-		
+		_MoneyText.draw();		
 		if (Mode == PlayerMode.Build)
 		{
 			_room2Place.draw();
@@ -224,5 +234,10 @@ class PlayState extends FlxState
 		}
 		
 		return null;
+	}
+	
+	public function ChangeMoney (amount : Int )
+	{
+		_Money += amount;
 	}
 }

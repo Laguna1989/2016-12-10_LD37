@@ -9,6 +9,7 @@ class GuestAction
 	var _guest : Guest;
 	var _age : Float = 0;
 	public var activated: Bool = false;
+	public var name : String  = "";
 	
 	public function IsFinished () : Bool
 	{

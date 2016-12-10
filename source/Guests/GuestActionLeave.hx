@@ -13,6 +13,7 @@ class GuestActionLeave extends GuestAction
 	public function new(g:Guest) 
 	{
 		super(g);
+		name = "leave";
 	}
 	
 	public override function IsFinished () : Bool
@@ -25,6 +26,8 @@ class GuestActionLeave extends GuestAction
 		trace("Finish Leave Action");
 		
 		// TODO Pay Tip
+		
+		_guest._state.ChangeMoney(Std.int(GP.MoneyTipAmount * _guest._satisfactionFactor));
 		
 		var rec : RoomReception = cast _guest._state.getRoomByName("reception");
 		rec.GuestsWaiting -= 1;

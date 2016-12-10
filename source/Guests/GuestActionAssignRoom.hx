@@ -13,7 +13,7 @@ class GuestActionAssignRoom extends GuestAction
 	public function new(g:Guest) 
 	{
 		super(g);
-		
+		name = "assign";
 	}
 	
 	public override function IsFinished() : Bool
@@ -59,5 +59,7 @@ class GuestActionAssignRoom extends GuestAction
 		
 		var rec : RoomReception = cast _guest._state.getRoomByName("reception");
 		rec.GuestsWaiting -= 1;
+		
+		_guest._state.ChangeMoney(GP.MoneyRoomCost);
 	}
 }
