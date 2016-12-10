@@ -40,12 +40,13 @@ class Room extends FlxSprite
 		if (Level < 100) lstring += "0";
 		if (Level < 10) lstring += "0";
 		lstring += Std.string(Level);
+		
 		var xstring : String = "";
 		if (TilePosX < 100) xstring += "0";
 		if (TilePosX < 10) xstring += "0";
 		xstring += Std.string(TilePosX);
 		
-		name = "room_" + lstring + "_" +xstring;
+		name = "room_" + lstring + "_" + xstring;
 	}
 	
 	public function overlapsOtherRoom(o : Room) : Bool
