@@ -31,6 +31,7 @@ class GuestActionElevator extends GuestAction
 	
 	public override function Activate()
 	{
+		super.Activate();
 		trace("Activate Elevator Action");
 		var d : Float = TargetLevel - _guest.Level ;
 		goingUp = (d > 0);

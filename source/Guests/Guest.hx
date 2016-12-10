@@ -15,6 +15,8 @@ class Guest extends FlxSprite
 	public var _state :PlayState;
 	public var Level : Int = 0;
 	
+	public var CanLeave : Bool = false;
+	
 	public function new(state:PlayState) 
 	{
 		super( -10, GP.GroundLevel);
@@ -23,11 +25,13 @@ class Guest extends FlxSprite
 		this.makeGraphic(GP.GuestSizeInPixel, GP.GuestSizeInPixel, FlxColor.BLUE);
 		//this.velocity.set(32);
 		_actions = new Array<GuestAction>();
+		
 		var w1 : GuestActionWalk = new GuestActionWalk(this);
 		w1.targetRoom = "reception";
 		_actions.push(w1);
-		var w2 : GuestActionAssignRoom = new GuestActionAssignRoom(this);
-		_actions.push(w2);
+		
+		var a1 : GuestActionAssignRoom = new GuestActionAssignRoom(this);
+		_actions.push(a1);
 		
 	}
 	
@@ -49,8 +53,9 @@ class Guest extends FlxSprite
 	
 	function NextAction():Void 
 	{
-		_actions[0].DoFinish();
-		_actions.remove(_actions[0]);
+		var a : GuestAction = _actions[0];
+		_actions.remove(a);
+		a.DoFinish();
 		if (_actions.length > 0)
 			_actions[0].Activate();
 	}

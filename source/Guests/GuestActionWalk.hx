@@ -30,6 +30,7 @@ class GuestActionWalk extends GuestAction
 	
 	public override function Activate()
 	{
+		super.Activate();
 		trace("activate Walk Action: " + targetRoom);
 		tr = _guest._state.getRoomByName(targetRoom);
 		if (tr != null)
