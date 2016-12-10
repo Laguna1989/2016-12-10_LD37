@@ -27,13 +27,13 @@ class PlayState extends FlxState
 	override public function create():Void
 	{
 		super.create();
-		Ground = new FlxSprite(0, GroundLevel);
+		Ground = new FlxSprite(0, GP.GroundLevel);
 		Ground.makeGraphic(Std.int(GP.WorldSizeXInPixel), 600, FlxColor.BROWN);
 		_roomList = new FlxTypedGroup<Room>();
 		_guestList = new FlxTypedGroup<Guest>();
 		
 		var g : Guest = new Guest();
-		g.setPosition(FlxG.random.float(0, 800), FlxG.random.float(0, 500));
+		//g.setPosition(FlxG.random.float(0, 800), FlxG.random.float(0, 500));
 		_guestList.add(g);
 	}
 
