@@ -25,11 +25,12 @@ class PlayState extends FlxState
 	private var _room2Place : Room;
 	
 	private var _guestList : FlxTypedGroup<Guest>;
+	private var _maxLevel : Int = 2;	// currently the level at which the highest room can be build (can be increased by the elevator)
 	
 	override public function create():Void
 	{
 		super.create();
-		Ground = new FlxSprite(0, 500);
+		Ground = new FlxSprite(0, GP.GroundLevel);
 		Ground.makeGraphic(Std.int(GP.WorldSizeXInPixel), 600, FlxColor.BROWN);
 
 		_upgradeMenu = new UpgradeMenu();
@@ -39,11 +40,12 @@ class PlayState extends FlxState
 		_roomList = new FlxTypedGroup<Room>();
 		_guestList = new FlxTypedGroup<Guest>();
 		
-		var r : Room = new Room();
-		_roomList.add(r);
+		var g : Guest = new Guest(this);
+		//g.setPosition(FlxG.random.float(0, 800), FlxG.random.float(0, 500));
 		
-		var g : Guest = new Guest();
-		g.setPosition(FlxG.random.float(0, 800), FlxG.random.float(0, 500));
+		var reception : RoomReception = new RoomReception();
+		_roomList.add(reception);
+		
 		_guestList.add(g);
 	}
 
@@ -74,12 +76,15 @@ class PlayState extends FlxState
 		
 		else if (Mode == PlayerMode.Build)
 		{
-			_room2Place.setPosition(FlxG.mouse.x, FlxG.mouse.y);
+			var rx : Int = Std.int(FlxG.mouse.x / GP.RoomSizeInPixel);
+			var ry : Int = Std.int(FlxG.mouse.y / GP.RoomSizeInPixel);
+			
 			
 			if (FlxG.mouse.justPressed)
 			{
 				BuildRoom();
 			}
+			_room2Place.setPosition(rx*GP.RoomSizeInPixel, ry*GP.RoomSizeInPixel);
 			if (FlxG.keys.pressed.ESCAPE)
 			{
 				Mode = PlayerMode.Normal;
@@ -100,9 +105,35 @@ class PlayState extends FlxState
 	
 	function BuildRoom() 
 	{
-		_roomList.add(_room2Place);
-		//_room2Place = new Room();
-		Mode = PlayerMode.Normal;
+		if (CanBuildRoom())
+		{
+			_room2Place.BuildMe();
+			_roomList.add(_room2Place);
+			Mode = PlayerMode.Normal;
+		}
+	}
+	
+	function CanBuildRoom() : Bool
+	{
+		// Check if room can be built on this level
+		if (Std.int((GP.GroundLevel  - _room2Place.y) / 48) > _maxLevel) return false;
+		
+		// Check if room can be built on this position (no overlap with other rooms)
+		for (r in _roomList)
+		{
+			if (_room2Place.overlapsOtherRoom(r))
+			{
+				return false;
+			}
+		}
+		
+		//if (FlxG.overlap(_room2Place, _roomList))
+		//{
+			//return false;
+		//}
+		// TODO Check if there is enough money
+		
+		return true;
 	}
 	
 	function SwitchToBuildMode() 
@@ -128,5 +159,14 @@ class PlayState extends FlxState
 		}
 
 		_modeText.draw();
+	}
+	
+	public function getRoomByName (n : String ) : Room
+	{
+		for (r in _roomList)
+		{
+			if (r.name == n) return r;
+		}
+		return null;
 	}
 }
