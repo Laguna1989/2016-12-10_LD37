@@ -32,8 +32,12 @@ class PlayState extends FlxState
 		_roomList = new FlxTypedGroup<Room>();
 		_guestList = new FlxTypedGroup<Guest>();
 		
-		var g : Guest = new Guest();
+		var g : Guest = new Guest(this);
 		//g.setPosition(FlxG.random.float(0, 800), FlxG.random.float(0, 500));
+		
+		var reception : RoomReception = new RoomReception();
+		_roomList.add(reception);
+		
 		_guestList.add(g);
 	}
 
@@ -137,5 +141,14 @@ class PlayState extends FlxState
 		{
 			_room2Place.draw();
 		}
+	}
+	
+	public function getRoomByName (n : String ) : Room
+	{
+		for (r in _roomList)
+		{
+			if (r.name == n) return r;
+		}
+		return null;
 	}
 }
