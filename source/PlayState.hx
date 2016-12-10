@@ -31,9 +31,6 @@ class PlayState extends FlxState
 		_roomList = new FlxTypedGroup<Room>();
 		_guestList = new FlxTypedGroup<Guest>();
 		
-		var r : Room = new Room();
-		_roomList.add(r);
-		
 		var g : Guest = new Guest();
 		g.setPosition(FlxG.random.float(0, 800), FlxG.random.float(0, 500));
 		_guestList.add(g);
@@ -66,12 +63,15 @@ class PlayState extends FlxState
 		
 		else if (Mode == PlayerMode.Build)
 		{
-			_room2Place.setPosition(FlxG.mouse.x, FlxG.mouse.y);
+			var rx : Int = Std.int(FlxG.mouse.x / GP.RoomSizeInPixel);
+			var ry : Int = Std.int(FlxG.mouse.y / GP.RoomSizeInPixel);
+			
 			
 			if (FlxG.mouse.justPressed)
 			{
 				BuildRoom();
 			}
+			_room2Place.setPosition(rx*GP.RoomSizeInPixel, ry*GP.RoomSizeInPixel);
 			if (FlxG.keys.pressed.ESCAPE)
 			{
 				Mode = PlayerMode.Normal;
@@ -88,9 +88,33 @@ class PlayState extends FlxState
 	
 	function BuildRoom() 
 	{
-		_roomList.add(_room2Place);
-		//_room2Place = new Room();
-		Mode = PlayerMode.Normal;
+		if (CanBuildRoom())
+		{
+			_room2Place.BuildMe();
+			_roomList.add(_room2Place);
+			Mode = PlayerMode.Normal;
+		}
+	}
+	
+	function CanBuildRoom() : Bool
+	{
+		// TODO Check if room can be built on this level
+		// Check if room can be built on this position (no overlap with other rooms)
+		for (r in _roomList)
+		{
+			if (_room2Place.overlapsOtherRoom(r))
+			{
+				return false;
+			}
+		}
+		
+		//if (FlxG.overlap(_room2Place, _roomList))
+		//{
+			//return false;
+		//}
+		// TODO Check if there is enough money
+		
+		return true;
 	}
 	
 	function SwitchToBuildMode() 
