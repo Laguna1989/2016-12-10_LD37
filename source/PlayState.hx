@@ -22,11 +22,12 @@ class PlayState extends FlxState
 	private var _room2Place : Room;
 	
 	private var _guestList : FlxTypedGroup<Guest>;
+	private var _maxLevel : Int = 2;	// currently the level at which the highest room can be build (can be increased by the elevator)
 	
 	override public function create():Void
 	{
 		super.create();
-		Ground = new FlxSprite(0, 500);
+		Ground = new FlxSprite(0, GroundLevel);
 		Ground.makeGraphic(Std.int(GP.WorldSizeXInPixel), 600, FlxColor.BROWN);
 		_roomList = new FlxTypedGroup<Room>();
 		_guestList = new FlxTypedGroup<Guest>();
@@ -98,7 +99,9 @@ class PlayState extends FlxState
 	
 	function CanBuildRoom() : Bool
 	{
-		// TODO Check if room can be built on this level
+		// Check if room can be built on this level
+		if (Std.int((GP.GroundLevel  - _room2Place.y) / 48) > _maxLevel) return false;
+		
 		// Check if room can be built on this position (no overlap with other rooms)
 		for (r in _roomList)
 		{
