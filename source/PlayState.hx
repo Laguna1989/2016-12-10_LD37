@@ -8,6 +8,7 @@ import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.math.FlxMath;
 import flixel.util.FlxColor;
+import flixel.util.FlxTimer;
 import haxe.rtti.CType.TypeRoot;
 
 class PlayState extends FlxState
@@ -28,6 +29,10 @@ class PlayState extends FlxState
 	private var _maxLevel : Int = 2;	// currently the level at which the highest room can be build (can be increased by the elevator)
 	private var _minTilePosX : Int = 3;
 	private var _maxTilePosX : Int = 10;
+	
+	private var _GuestSpawnTimer : FlxTimer;
+	
+	private var _Money : Int = 5000;
 	
 	
 	override public function create():Void
@@ -62,6 +67,9 @@ class PlayState extends FlxState
 		var g : Guest = new Guest(this);
 		_guestList.add(g);
 		//g.setPosition(FlxG.random.float(0, 800), FlxG.random.float(0, 500));
+		
+		_GuestSpawnTimer = new FlxTimer();
+		_GuestSpawnTimer.start(FlxG.random.floatNormal(15, 3), function (t) { var g :Guest = new Guest(this); _guestList.add(g); }, 0);
 	}
 
 	override public function update(elapsed:Float):Void
@@ -72,6 +80,7 @@ class PlayState extends FlxState
 		
 		if (Mode == PlayerMode.Normal)
 		{
+			CheckGuests();
 			if (FlxG.keys.pressed.B)
 			{
 				SwitchToBuildMode();
@@ -118,6 +127,19 @@ class PlayState extends FlxState
 		_modeText.text = 'Current mode: ' + Mode;
 	}
 	
+	function CheckGuests() 
+	{
+		var newlist : FlxTypedGroup<Guest> = new FlxTypedGroup<Guest> ();
+		for (g in _guestList) 
+		{
+			if (!g.CanLeave)
+			{
+				newlist.add(g);
+			}
+		}
+		_guestList = newlist;
+	}
+	
 	function BuildRoom() 
 	{
 		if (CanBuildRoom())
@@ -143,11 +165,8 @@ class PlayState extends FlxState
 			}
 		}
 		
-		//if (FlxG.overlap(_room2Place, _roomList))
-		//{
-			//return false;
-		//}
-		// TODO Check if there is enough money
+		//TODO Check if there is enough money
+		if(
 		
 		return true;
 	}

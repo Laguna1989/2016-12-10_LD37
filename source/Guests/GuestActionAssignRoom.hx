@@ -49,6 +49,7 @@ class GuestActionAssignRoom extends GuestAction
 	public override function DoFinish() : Void 
 	{
 		trace("Assign: Finish: " + targetRoomName);
+		_guest._roomName = targetRoomName;
 		var wa : GuestActionWalk = new GuestActionWalk(_guest);
 		wa.targetRoom = targetRoomName;
 		_guest.AddActionToBegin(wa);

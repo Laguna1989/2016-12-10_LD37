@@ -17,6 +17,8 @@ class Guest extends FlxSprite
 	
 	public var CanLeave : Bool = false;
 	
+	public var _roomName : String = "";
+	
 	public function new(state:PlayState) 
 	{
 		super( -10, GP.GroundLevel);
