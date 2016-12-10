@@ -15,8 +15,11 @@ class PlayState extends FlxState
 	
 	private var _roomList: FlxTypedGroup<Room>;
 	
-	private var Ground : FlxSprite;
-	
+	private var Ground    : FlxSprite;
+	private var _modeText : FlxText;
+
+	private var _upgradeMenu : UpgradeMenu;
+
 	private var Mode :PlayerMode = PlayerMode.Normal;
 	
 	private var _room2Place : Room;
@@ -30,6 +33,11 @@ class PlayState extends FlxState
 		super.create();
 		Ground = new FlxSprite(0, GP.GroundLevel);
 		Ground.makeGraphic(Std.int(GP.WorldSizeXInPixel), 600, FlxColor.BROWN);
+
+		_upgradeMenu = new UpgradeMenu();
+
+		_modeText = new FlxText(0, 585, 'Current mode: ' + Mode);
+
 		_roomList = new FlxTypedGroup<Room>();
 		_guestList = new FlxTypedGroup<Guest>();
 		
@@ -68,10 +76,10 @@ class PlayState extends FlxState
 			{
 				for (r in _roomList)
 				{
-					
 					if (FlxG.mouse.overlaps(r, FlxG.camera))
 					{
 						Mode = PlayerMode.Upgrade;
+						_upgradeMenu.open(r);
 					}
 				}
 			}
@@ -93,13 +101,17 @@ class PlayState extends FlxState
 				Mode = PlayerMode.Normal;
 			}
 		}
-		if (Mode == PlayerMode.Upgrade)
+
+		else if (Mode == PlayerMode.Upgrade)
 		{
 			if (FlxG.keys.pressed.ESCAPE)
 			{
+				_upgradeMenu.close();
 				Mode = PlayerMode.Normal;
 			}
 		}
+
+		_modeText.text = 'Current mode: ' + Mode;
 	}
 	
 	function BuildRoom() 
@@ -153,6 +165,12 @@ class PlayState extends FlxState
 		{
 			_room2Place.draw();
 		}
+		else if(Mode == PlayerMode.Upgrade)
+		{
+			_upgradeMenu.draw();
+		}
+
+		_modeText.draw();
 	}
 	
 	
