@@ -19,6 +19,7 @@ class GuestActionWalk extends GuestAction
 	
 	public override function DoFinish() : Void 
 	{
+		trace("DoFinish Walk Action");
 		_guest.velocity.x = 0;
 	}
 	
@@ -29,11 +30,11 @@ class GuestActionWalk extends GuestAction
 	
 	public override function Activate()
 	{
-		trace("activate Walk Action");
+		trace("activate Walk Action: " + targetRoom);
 		tr = _guest._state.getRoomByName(targetRoom);
 		if (tr != null)
 		{
-			if (tr.Level == _guest.Level -1)
+			if (tr.Level == _guest.Level )
 			{
 				trace("on same level");
 				tx = tr.x;
@@ -44,7 +45,15 @@ class GuestActionWalk extends GuestAction
 			{
 				trace(tr.Level);
 				trace(_guest.Level);
-				// TODO WalkToElevator first
+				
+				var nw1 : GuestActionElevator = new GuestActionElevator(_guest);
+				nw1.TargetLevel = tr.Level;
+				_guest.AddActionToBegin(nw1);
+				
+				
+				var nw2 : GuestActionWalk = new GuestActionWalk(_guest);
+				nw2.targetRoom = "elevator_" + Std.string(_guest.Level);
+				_guest.AddActionToBegin(nw2);
 			}
 		}
 		else

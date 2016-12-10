@@ -34,9 +34,18 @@ class PlayState extends FlxState
 		_guestList = new FlxTypedGroup<Guest>();
 		
 		var reception : RoomReception = new RoomReception();
-		reception.setPosition(48*3, GP.GroundLevel - GP.RoomSizeInPixel);
+		reception.setPosition(GP.RoomSizeInPixel*3, GP.GroundLevel - GP.RoomSizeInPixel);
 		reception.BuildMe();
 		_roomList.add(reception);
+		
+		var elevator : RoomElevator = new RoomElevator();
+		elevator.setPosition(GP.RoomSizeInPixel * 5, GP.GroundLevel - GP.RoomSizeInPixel);
+		elevator.BuildMe();
+		_roomList.add(elevator);
+		elevator  = new RoomElevator();
+		elevator.setPosition(GP.RoomSizeInPixel * 5, GP.GroundLevel - GP.RoomSizeInPixel - GP.RoomSizeInPixel);
+		elevator.BuildMe();
+		_roomList.add(elevator);
 		
 		var g : Guest = new Guest(this);
 		_guestList.add(g);

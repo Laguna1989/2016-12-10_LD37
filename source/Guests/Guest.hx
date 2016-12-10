@@ -34,7 +34,8 @@ class Guest extends FlxSprite
 	public override function update(elapsed:Float) : Void 
 	{
 		super.update(elapsed);
-		Level = Std.int(this.y / GP.RoomSizeInPixel) ;
+		Level = Std.int((this.y-GP.GuestSizeInPixel) / GP.RoomSizeInPixel) ;
+		//trace(_actions.length);
 		if (_actions.length > 0)
 		{
 			_actions[0].update(elapsed);
@@ -54,6 +55,23 @@ class Guest extends FlxSprite
 			_actions[0].Activate();
 	}
 
+	public function AddActionToBegin(a:GuestAction) 
+	{
+		//trace("AddBegin " + _actions.length );
+		if (a == null) return;
+		
+		if (_actions.length > 0)
+		{
+			_actions[0].activated = false;
+		}
+		var _newActions : Array<GuestAction> = new Array<GuestAction>();
+		_newActions.push(a);
+		//trace("AddBegin newactions " + _newActions.length );
+		_actions = _newActions.concat(_actions);
+		//_actions = _newActions;
+		//trace("AddBegin End " + _actions.length );
+	}
+	
 	public function AddAction(a:GuestAction) : Void
 	{
 		_actions.push(a);
