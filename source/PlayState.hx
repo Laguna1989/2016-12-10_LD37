@@ -26,7 +26,8 @@ class PlayState extends FlxState
 	
 	private var _guestList : FlxTypedGroup<Guest>;
 	private var _maxLevel : Int = 2;	// currently the level at which the highest room can be build (can be increased by the elevator)
-	
+	private var _minTilePosX : Int = 3;
+	private var _maxTilePosX : Int = 10;
 	override public function create():Void
 	{
 		super.create();
@@ -40,13 +41,16 @@ class PlayState extends FlxState
 		_roomList = new FlxTypedGroup<Room>();
 		_guestList = new FlxTypedGroup<Guest>();
 		
-		var g : Guest = new Guest(this);
-		//g.setPosition(FlxG.random.float(0, 800), FlxG.random.float(0, 500));
 		
 		var reception : RoomReception = new RoomReception();
+		reception.setPosition(48*3, GP.GroundLevel - GP.RoomSizeInPixel);
+		reception.BuildMe();
 		_roomList.add(reception);
 		
+		var g : Guest = new Guest(this);
 		_guestList.add(g);
+		//g.setPosition(FlxG.random.float(0, 800), FlxG.random.float(0, 500));
+		
 	}
 
 	override public function update(elapsed:Float):Void
@@ -116,8 +120,9 @@ class PlayState extends FlxState
 	function CanBuildRoom() : Bool
 	{
 		// Check if room can be built on this level
-		if (Std.int((GP.GroundLevel  - _room2Place.y) / 48) > _maxLevel) return false;
-		
+		if (Std.int((GP.GroundLevel  - _room2Place.y) / GP.RoomSizeInPixel) > _maxLevel) return false;
+		if (Std.int(_room2Place.x / GP.RoomSizeInPixel) < _minTilePosX) return false;
+		if (Std.int(_room2Place.x + _room2Place.WidthInTiles / GP.RoomSizeInPixel) > _maxTilePosX) return false;
 		// Check if room can be built on this position (no overlap with other rooms)
 		for (r in _roomList)
 		{
@@ -165,6 +170,7 @@ class PlayState extends FlxState
 	{
 		for (r in _roomList)
 		{
+			//trace(r.name);
 			if (r.name == n) return r;
 		}
 		return null;
