@@ -1,8 +1,12 @@
 package;
 
 import flash.net.FileFilter;
+import flixel.FlxBasic;
 import flixel.FlxG;
+import flixel.FlxObject;
 import flixel.FlxSprite;
+import flixel.input.FlxPointer;
+import flixel.math.FlxVector;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
@@ -41,7 +45,20 @@ class Guest extends FlxSprite
 		super( -10, GP.GroundLevel);
 		_state = state;
 		this.offset.set(0, GP.GuestSizeInPixel);
-		this.makeGraphic(GP.GuestSizeInPixel, GP.GuestSizeInPixel, FlxColor.BLUE);
+		//this.makeGraphic(GP.GuestSizeInPixel, GP.GuestSizeInPixel, FlxColor.BLUE);
+		this.loadGraphic(AssetPaths.people__png, true, 16, 32, false);
+		this.animation.add("janitor", [0]);
+		this.animation.add("mechanic", [1]);
+		this.animation.add("guest1", [2]);
+		this.animation.add("guest2", [3]);
+		this.animation.add("guest3", [4]);
+		this.animation.add("guest4", [5]);
+		this.animation.add("guest5", [6]);
+		
+		var i : Int = FlxG.random.int(1, 5);
+		
+		
+		this.animation.play("guest"+Std.string(i));
 		//this.velocity.set(32);
 		_actions = new Array<GuestAction>();
 		
@@ -138,9 +155,13 @@ class Guest extends FlxSprite
 	public override function draw()
 	{
 		super.draw();
-		_infoBG.draw();
 		
-		_infoText.draw();
+		var obj : FlxObject = new FlxObject(FlxG.mouse.getWorldPosition(FlxG.camera).x, FlxG.mouse.getWorldPosition(FlxG.camera).y+32, 10, 10);
+		if (this.overlaps(obj))
+		{
+			_infoBG.draw();
+			_infoText.draw();
+		}
 	}
 	
 }

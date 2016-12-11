@@ -23,6 +23,15 @@ class GuestActionExit extends GuestAction
 	{
 		trace("Finish Exit Action");
 		_guest.CanLeave = true;
+		var r : Room = _guest._state.getRoomByName(_guest._roomName);
+		if (r != null)
+		{
+			r.unlock();
+		}
+		else
+		{
+			trace("cannot unlock room");
+		}
 	}
 	
 	public override function Activate()

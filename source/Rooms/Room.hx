@@ -26,7 +26,6 @@ class Room extends FlxSprite
 	
 	public var DirtLevel : Float = 0;	// this is a value between 0 and 1, 
 									// where 0 means totally clean and 1 means totally messed up
-	
 	public function new() 
 	{
 		super();

@@ -31,6 +31,7 @@ class GP
 	static public var JobListTimerMax (default, null) : Float = 2.5;
 	static public var WorkerSalaryTimerMax (default, null) : Float = 25;
 	static public var WorkerBaseSalary (default, null) : Int = 60;
+	static public var JanitorMoveFactor (default, null) : Float = 1.5;
 	
 	static public function CalcSatisfactionInRoom (g : Guest, r: Room) : Float
 	{
@@ -47,5 +48,7 @@ class GP
 	
 		return ret;
 	}
+	
+	
 	
 }
