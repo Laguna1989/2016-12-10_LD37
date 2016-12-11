@@ -28,6 +28,10 @@ class GP
 	static public var GeneratorNoiseReach (default, null) : Float = 6;
 	static public var MoneyServiceRoomCost (default, null) : Int = 500;
 	
+	static public var JobListTimerMax (default, null) : Float = 2.5;
+	static public var WorkerSalaryTimerMax (default, null) : Float = 25;
+	static public var WorkerBaseSalary (default, null) : Int = 60;
+	
 	static public function CalcSatisfactionInRoom (g : Guest, r: Room) : Float
 	{
 		var baseLevel : Float = 0.25;

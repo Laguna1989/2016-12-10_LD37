@@ -19,6 +19,7 @@ class PlayState extends FlxState
 	private var _guestList : FlxTypedGroup<Guest>;
 	private var _workerList: FlxTypedGroup<Worker>;
 	
+	private var buildingArea : FlxSprite;
 	private var Ground    : FlxSprite;
 	private var _modeText : FlxText;
 	private var _versionText : FlxText;
@@ -31,7 +32,7 @@ class PlayState extends FlxState
 	
 	private var _maxLevel : Int = 2;	// currently the level at which the highest room can be build (can be increased by the elevator)
 	private var _minTilePosX : Int = 3;
-	private var _maxTilePosX : Int = 10;
+	private var _maxTilePosX : Int = 14;
 	
 	private var _GuestSpawnTimer : FlxTimer;
 	
@@ -44,7 +45,8 @@ class PlayState extends FlxState
 	private var _camTarget : FlxSprite;
 
 	public var JobList : JobPool;
-	
+	private var JobListTimer : Float = GP.JobListTimerMax;
+	private var WorkersSalaryTimer : Float = GP.WorkerSalaryTimerMax;
 	
 	override public function create():Void
 	{
@@ -99,7 +101,10 @@ class PlayState extends FlxState
 		
 		BuildingCostText = new FlxText(100, 100, 200, "", 14);
 		JobList = new JobPool();
-		
+	
+		buildingArea = new FlxSprite (_minTilePosX * GP.RoomSizeInPixel, GP.GroundLevel - _maxLevel * GP.RoomSizeInPixel);
+		buildingArea.makeGraphic((_maxTilePosX -_minTilePosX) * GP.RoomSizeInPixel, _maxLevel * GP.RoomSizeInPixel, FlxColor.LIME);
+		buildingArea.alpha = 0.2;
 	}
 
 	override public function update(elapsed:Float):Void
@@ -109,7 +114,20 @@ class PlayState extends FlxState
 		_guestList.update(elapsed);
 		_workerList.update(elapsed);
 		_MoneyText.text = Std.string(_Money);
-		checkRoomsForCleaning();
+		
+		
+		WorkersSalaryTimer -= elapsed;
+		if (WorkersSalaryTimer <= 0)
+		{
+			WorkersSalaryTimer = GP.WorkerSalaryTimerMax;
+			PayWorkers();
+		}
+		JobListTimer -= elapsed;
+		if (JobListTimer <= 0)
+		{
+			JobListTimer = GP.JobListTimerMax;
+			RecheckJobjs();
+		}
 	
 		
 		CameraMovement(elapsed);
@@ -200,6 +218,18 @@ class PlayState extends FlxState
 		_modeText.text = 'Current mode: ' + Mode;
 	}
 	
+	function RecheckJobjs() 
+	{
+		checkRoomsForCleaning();
+	}
+	
+	function PayWorkers() 
+	{
+		trace("pay workers");
+		var a : Int = _workerList.length * GP.WorkerBaseSalary;
+		ChangeMoney(-a);
+	}
+	
 	
 	
 	
@@ -238,6 +268,9 @@ class PlayState extends FlxState
 			_maxLevel += 1;
 			Mode = PlayerMode.Normal;
 			CheckPowerConnectivity();
+			buildingArea = new FlxSprite (_minTilePosX * GP.RoomSizeInPixel, GP.GroundLevel - _maxLevel * GP.RoomSizeInPixel);
+			buildingArea.makeGraphic((_maxTilePosX -_minTilePosX) * GP.RoomSizeInPixel, _maxLevel * GP.RoomSizeInPixel, FlxColor.LIME);
+			buildingArea.alpha = 0.2;
 		}
 	}
 	
@@ -256,8 +289,8 @@ class PlayState extends FlxState
 			if (Std.int((GP.GroundLevel  - _room2Place.y) / GP.RoomSizeInPixel) != _maxLevel +1) return false;
 			if (Std.int((_room2Place.x) / GP.RoomSizeInPixel) != _elevatorPosX) return false;
 		}
-		//if (Std.int(_room2Place.x / GP.RoomSizeInPixel) < _minTilePosX) return false;
-		//if (Std.int(_room2Place.x + _room2Place.WidthInTiles / GP.RoomSizeInPixel) > _maxTilePosX) return false;
+		if (Std.int(_room2Place.x / GP.RoomSizeInPixel) < _minTilePosX) return false;
+		if (Std.int(_room2Place.x / GP.RoomSizeInPixel  + _room2Place.WidthInTiles) > _maxTilePosX) return false;
 		
 		// Check if room can be built on this position (no overlap with other rooms)
 		for (r in _roomList)
@@ -320,6 +353,7 @@ class PlayState extends FlxState
 	{
 		super.draw();
 		Ground.draw();
+		buildingArea.draw();
 		_roomList.draw();
 		_guestList.draw();
 		_workerList.draw();
@@ -414,7 +448,6 @@ class PlayState extends FlxState
 		{
 			_camTarget.y -= CamMovementSpeed * elapsed;
 		}
-		
 		if (_camTarget.x < FlxG.worldBounds.x) _camTarget.x = FlxG.worldBounds.x;
 	}
 }
