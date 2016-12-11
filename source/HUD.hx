@@ -131,7 +131,7 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		handleButton(_btnElevator, _state.SwitchToElevatorMode);
 		handleButton(_btnServiceRoom, _state.SwitchToServiceRoom);
 
-		handleButton(_btnMaid, null);
+		handleButton(_btnMaid, _state.SpawnJanitor);
 		handleButton(_btnJanitor, null);
 
 		_moneyText.text = '$$${_state.getMoney()}';

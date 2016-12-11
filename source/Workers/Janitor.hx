@@ -18,6 +18,7 @@ class Janitor extends Worker
 		//this.makeGraphic(GP.GuestSizeInPixel, GP.GuestSizeInPixel, FlxColor.GREEN);
 		this.movefactor = GP.JanitorMoveFactor;
 		this.animation.play("janitor", true);
+		minRoomSize = -1;
 	}
 	
 	

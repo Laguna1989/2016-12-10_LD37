@@ -27,6 +27,8 @@ class Room extends FlxSprite
 	public var Powered : Bool = false;
 	private var _poweredSprite : FlxSprite;
 	
+	public var Luxus : Int = 0;
+	
 	public var DirtLevel : Float = 0;	// this is a value between 0 and 1, 
 									// where 0 means totally clean and 1 means totally messed up
 
@@ -50,7 +52,7 @@ class Room extends FlxSprite
 		
 		_infoText = new FlxText(0, 0, 144, "");
 		_infoBG = new FlxSprite(0, 0);
-		_infoBG.makeGraphic(144, 32, FlxColor.GRAY);
+		_infoBG.makeGraphic(144, 48, FlxColor.GRAY);
 		_infoBG.alpha = 0.5;
 	}
 	

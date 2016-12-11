@@ -37,6 +37,7 @@ class PlayState extends FlxState
 	private var _room2Place : Room;
 	
 	private var _maxLevel : Int = 2;	// currently the level at which the highest room can be build (can be increased by the elevator)
+	private var _minLevel : Int = 0;
 	private var _minTilePosX : Int = 3;
 	private var _maxTilePosX : Int = 14;
 	
@@ -70,7 +71,7 @@ class PlayState extends FlxState
 		Ground = new FlxSprite(-500, GP.GroundLevel);
 		Ground.makeGraphic(Std.int(GP.WorldSizeXInPixel), 600, FlxColor.BROWN);
 
-		_upgradeMenu = new UpgradeMenu();
+		_upgradeMenu = new UpgradeMenu(this);
 		_hud = new HUD(this);
 
 		_versionText = new FlxText(FlxG.width-200, FlxG.height- 25, 200, "Built on: " + Version.getBuildDate() + "\n" + Version.getGitCommitMessage());
@@ -187,9 +188,7 @@ class PlayState extends FlxState
 			}
 			else if (FlxG.keys.justPressed.J)
 			{
-				var j : Janitor = new Janitor(this);
-				j.setPosition(GP.RoomSizeInPixel * 3, GP.GroundLevel );
-				_workerList.add(j);
+				SpawnJanitor();
 			}
 			else if (FlxG.keys.pressed.Q)
 			{
@@ -201,9 +200,11 @@ class PlayState extends FlxState
 				{
 					if (FlxG.mouse.overlaps(r, FlxG.camera))
 					{
-						if(Type.getClassName(Type.getClass(r)) == "RoomHotel")
-						Mode = PlayerMode.Upgrade;
-						_upgradeMenu.open(r);
+						if (StringTools.startsWith(r.name, "room"))
+						{
+							Mode = PlayerMode.Upgrade;
+							_upgradeMenu.open(r);
+						}
 					}
 				}
 			}
@@ -245,6 +246,7 @@ class PlayState extends FlxState
 		}
 		else if (Mode == PlayerMode.Upgrade)
 		{
+			_upgradeMenu.update(elapsed);
 			if (FlxG.keys.pressed.ESCAPE)
 			{
 				_upgradeMenu.close();
@@ -362,11 +364,12 @@ class PlayState extends FlxState
 		{
 			// Check if room can be built on this level
 			if (Std.int((GP.GroundLevel  - _room2Place.y) / GP.RoomSizeInPixel) > _maxLevel) return false;
+			if (Std.int((GP.GroundLevel  - _room2Place.y) / GP.RoomSizeInPixel) <= 0) return false;
 		}
 		else if (Mode == PlayerMode.BuildElevator)
 		{
-			trace(Std.int((GP.GroundLevel  - _room2Place.y) / GP.RoomSizeInPixel) + " " + (_maxLevel +1));
-			trace(Std.int((_room2Place.x) / GP.RoomSizeInPixel) + " " + _elevatorPosX);
+			//trace(Std.int((GP.GroundLevel  - _room2Place.y) / GP.RoomSizeInPixel) + " " + (_maxLevel +1));
+			//trace(Std.int((_room2Place.x) / GP.RoomSizeInPixel) + " " + _elevatorPosX);
 			if (Std.int((GP.GroundLevel  - _room2Place.y) / GP.RoomSizeInPixel) != _maxLevel +1) return false;
 			if (Std.int((_room2Place.x) / GP.RoomSizeInPixel) != _elevatorPosX) return false;
 		}
@@ -490,7 +493,26 @@ class PlayState extends FlxState
 			{
 				if (r.isFree)
 				{
-					freeRooms.push(r);
+					if (r.Luxus >= g.minLuxus)
+					{
+						
+						// check Size
+						if ( g.minRoomSize == 0)
+						{
+							freeRooms.push(r);
+						}
+						else if (g.minRoomSize == 1)
+						{
+							if (r.WidthInTiles >= 3)
+								freeRooms.push(r);
+						}
+						else if (g.minRoomSize == 2)
+						{
+							if (r.WidthInTiles >= 5)
+								freeRooms.push(r);
+						}
+					}
+					
 				}
 			}
 		}
@@ -503,6 +525,7 @@ class PlayState extends FlxState
 		r.lock();
 		return r;
 	}
+	
 	
 	public function ChangeMoney (amount : Int )
 	{
@@ -564,5 +587,12 @@ class PlayState extends FlxState
 		if (_camTarget.x < FlxG.worldBounds.x) _camTarget.x = FlxG.worldBounds.x;
 		if (_camTarget.x > FlxG.worldBounds.right - FlxG.camera.width - 16) _camTarget.x = FlxG.worldBounds.right - FlxG.camera.width - 16; 
 		if (_camTarget.y > FlxG.worldBounds.bottom) _camTarget.y = FlxG.worldBounds.bottom;
+	}
+	
+	public function SpawnJanitor():Void 
+	{
+		var j : Janitor = new Janitor(this);
+		j.setPosition(GP.RoomSizeInPixel * 3, GP.GroundLevel );
+		_workerList.add(j);
 	}
 }
