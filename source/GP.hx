@@ -24,7 +24,7 @@ class GP
 	static public var MoneyTipAmount (default, null) : Int = 550;
 	static public var MoneyOverLuxusTip (default, null) : Float = 0.25;
 	
-	static public var MoneyElevatorBaseCost (default, null) : Int = 250;
+	static public var MoneyElevatorBaseCost (default, null) : Int = 350;
 	
 	static public var MoneyGeneratorRunningCost (default, null) : Int = 100;
 	static public var MoneyGeneratorCost (default, null) : Int = 500;
