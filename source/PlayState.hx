@@ -102,6 +102,8 @@ class PlayState extends FlxState
 		
 		
 		BuildingCostText = new FlxText(100, 100, 200, "", 14);
+		BuildingCostText.borderColor = FlxColor.BLACK;
+		BuildingCostText.borderStyle = FlxTextBorderStyle.SHADOW;
 		JobList = new JobPool();
 	
 		buildingArea = new FlxSprite (_minTilePosX * GP.RoomSizeInPixel, GP.GroundLevel - _maxLevel * GP.RoomSizeInPixel);
