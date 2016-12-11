@@ -15,7 +15,9 @@ class Janitor extends Worker
 	public function new(s : PlayState) 
 	{
 		super(s);
-		this.makeGraphic(GP.GuestSizeInPixel, GP.GuestSizeInPixel, FlxColor.GREEN);
+		//this.makeGraphic(GP.GuestSizeInPixel, GP.GuestSizeInPixel, FlxColor.GREEN);
+		this.movefactor = GP.JanitorMoveFactor;
+		this.animation.play("janitor", true);
 	}
 	
 	

@@ -12,6 +12,8 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import haxe.rtti.CType.TypeRoot;
 
+using StringTools;
+
 class PlayState extends FlxState
 {
 	
@@ -19,6 +21,7 @@ class PlayState extends FlxState
 	private var _guestList : FlxTypedGroup<Guest>;
 	private var _workerList: FlxTypedGroup<Worker>;
 	
+	private var buildingArea : FlxSprite;
 	private var Ground    : FlxSprite;
 	private var _versionText : FlxText;
 	private var _upgradeMenu : UpgradeMenu;
@@ -31,9 +34,9 @@ class PlayState extends FlxState
 	
 	private var _maxLevel : Int = 2;	// currently the level at which the highest room can be build (can be increased by the elevator)
 	private var _minTilePosX : Int = 3;
-	private var _maxTilePosX : Int = 10;
+	private var _maxTilePosX : Int = 14;
 	
-	private var _GuestSpawnTimer : FlxTimer;
+	private var _GuestSpawnTimer : Float;
 	
 	private var _Money : Int = 5000;
 	
@@ -43,11 +46,13 @@ class PlayState extends FlxState
 	private var _camTarget : FlxSprite;
 
 	public var JobList : JobPool;
-	
+	private var JobListTimer : Float = GP.JobListTimerMax;
+	private var WorkersSalaryTimer : Float = GP.WorkerSalaryTimerMax;
 	
 	override public function create():Void
 	{
 		super.create();
+		FlxG.camera.bgColor = FlxColor.fromRGB(191, 191, 250);
 		FlxG.camera.pixelPerfectRender = true;
 		//FlxG.camera.zoom = 1.5;
 		FlxG.camera.setScrollBounds(-500, 1500-FlxG.camera.width, -50000, 50000);
@@ -86,12 +91,14 @@ class PlayState extends FlxState
 		_guestList.add(g);
 		//g.setPosition(FlxG.random.float(0, 800), FlxG.random.float(0, 500));
 		
-		_GuestSpawnTimer = new FlxTimer();
-		_GuestSpawnTimer.start(FlxG.random.floatNormal(17, 3), function (t) { var g :Guest = new Guest(this); _guestList.add(g); }, 0);
+		_GuestSpawnTimer = 0;
 		
 		BuildingCostText = new FlxText(100, 100, 200, "", 14);
 		JobList = new JobPool();
-		
+	
+		buildingArea = new FlxSprite (_minTilePosX * GP.RoomSizeInPixel, GP.GroundLevel - _maxLevel * GP.RoomSizeInPixel);
+		buildingArea.makeGraphic((_maxTilePosX -_minTilePosX) * GP.RoomSizeInPixel, _maxLevel * GP.RoomSizeInPixel, FlxColor.LIME);
+		buildingArea.alpha = 0.2;
 	}
 
 	override public function update(elapsed:Float):Void
@@ -101,6 +108,29 @@ class PlayState extends FlxState
 		_guestList.update(elapsed);
 		_workerList.update(elapsed);
 		checkRoomsForCleaning();
+		
+	
+		_GuestSpawnTimer += elapsed;
+		var max : Float = GP.GetSpawnTime(_guestList.length, GetHotelRoomNumber());
+		//trace(max);
+		if (_GuestSpawnTimer >= max)
+		{
+			spawnGuest();
+			_GuestSpawnTimer = 0;
+		}
+		
+		WorkersSalaryTimer -= elapsed;
+		if (WorkersSalaryTimer <= 0)
+		{
+			WorkersSalaryTimer = GP.WorkerSalaryTimerMax;
+			PayWorkers();
+		}
+		JobListTimer -= elapsed;
+		if (JobListTimer <= 0)
+		{
+			JobListTimer = GP.JobListTimerMax;
+			RecheckJobjs();
+		}
 	
 		CameraMovement(elapsed);
 			
@@ -123,10 +153,10 @@ class PlayState extends FlxState
 			else if (FlxG.keys.justPressed.J)
 			{
 				var j : Janitor = new Janitor(this);
-				j.setPosition(GP.RoomSizeInPixel * 3, GP.GroundLevel - GP.RoomSizeInPixel);
+				j.setPosition(GP.RoomSizeInPixel * 3, GP.GroundLevel );
 				_workerList.add(j);
 			}
-			else if (FlxG.keys.pressed.S)
+			else if (FlxG.keys.pressed.Q)
 			{
 				SwitchToServiceRoom();
 			}
@@ -199,6 +229,51 @@ class PlayState extends FlxState
 	{
 		return Mode;
 	}
+
+	function GetHotelRoomNumber() : Int
+	{
+		var ret : Int = 0;
+		for (i in 0..._roomList.length)
+		{
+			if (_roomList.members[i].name.startsWith("room"))
+			{
+				ret += 1;
+			}
+		}
+		return ret;	
+	}
+	
+	
+	function GetGeneratorRoomNumber() 
+	{
+		var ret : Int = 0;
+		for (i in 0..._roomList.length)
+		{
+			if (_roomList.members[i].name.startsWith("generator"))
+			{
+				ret += 1;
+			}
+		}
+		return ret;	
+	}
+	
+	
+	function RecheckJobjs() 
+	{
+		checkRoomsForCleaning();
+	}
+	
+	function PayWorkers() 
+	{
+		trace("pay workers");
+		var a : Int = _workerList.length * GP.WorkerBaseSalary;
+		ChangeMoney( -a);
+		
+		trace("Pay generators");
+		var gens : Int = GetGeneratorRoomNumber();
+		a = Std.int(GP.MoneyGeneratorRunningCost * Math.pow(1.5, gens));
+		ChangeMoney( -a);
+	}
 	
 	function CheckGuests() 
 	{
@@ -234,6 +309,9 @@ class PlayState extends FlxState
 			_maxLevel += 1;
 			Mode = PlayerMode.Normal;
 			CheckPowerConnectivity();
+			buildingArea = new FlxSprite (_minTilePosX * GP.RoomSizeInPixel, GP.GroundLevel - _maxLevel * GP.RoomSizeInPixel);
+			buildingArea.makeGraphic((_maxTilePosX -_minTilePosX) * GP.RoomSizeInPixel, _maxLevel * GP.RoomSizeInPixel, FlxColor.LIME);
+			buildingArea.alpha = 0.2;
 		}
 	}
 	
@@ -252,8 +330,8 @@ class PlayState extends FlxState
 			if (Std.int((GP.GroundLevel  - _room2Place.y) / GP.RoomSizeInPixel) != _maxLevel +1) return false;
 			if (Std.int((_room2Place.x) / GP.RoomSizeInPixel) != _elevatorPosX) return false;
 		}
-		//if (Std.int(_room2Place.x / GP.RoomSizeInPixel) < _minTilePosX) return false;
-		//if (Std.int(_room2Place.x + _room2Place.WidthInTiles / GP.RoomSizeInPixel) > _maxTilePosX) return false;
+		if (Std.int(_room2Place.x / GP.RoomSizeInPixel) < _minTilePosX) return false;
+		if (Std.int(_room2Place.x / GP.RoomSizeInPixel  + _room2Place.WidthInTiles) > _maxTilePosX) return false;
 		
 		// Check if room can be built on this position (no overlap with other rooms)
 		for (r in _roomList)
@@ -316,6 +394,7 @@ class PlayState extends FlxState
 	{
 		super.draw();
 		Ground.draw();
+		buildingArea.draw();
 		_roomList.draw();
 		_guestList.draw();
 		_workerList.draw();
@@ -390,26 +469,32 @@ class PlayState extends FlxState
 		}
 	}
 	
+	
+	private function spawnGuest () 
+	{ 
+		var g :Guest = new Guest(this); 
+		_guestList.add(g); 
+	}
+
 	function CameraMovement(elapsed:Float):Void 
 	{
 		var CamMovementSpeed : Float = -100;
-		if (FlxG.keys.pressed.LEFT)
+		if (FlxG.keys.pressed.LEFT ||FlxG.keys.pressed.A)
 		{
 			_camTarget.x += CamMovementSpeed * elapsed;
 		}
-		else if (FlxG.keys.pressed.RIGHT)
+		else if (FlxG.keys.pressed.RIGHT||FlxG.keys.pressed.D)
 		{
 			_camTarget.x -= CamMovementSpeed * elapsed;
 		}
-		if (FlxG.keys.pressed.UP)
+		if (FlxG.keys.pressed.UP ||FlxG.keys.pressed.W)
 		{
 			_camTarget.y += CamMovementSpeed * elapsed;
 		}
-		else if (FlxG.keys.pressed.DOWN)
+		else if (FlxG.keys.pressed.DOWN||FlxG.keys.pressed.S)
 		{
 			_camTarget.y -= CamMovementSpeed * elapsed;
 		}
-		
 		if (_camTarget.x < FlxG.worldBounds.x) _camTarget.x = FlxG.worldBounds.x;
 	}
 }

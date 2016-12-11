@@ -39,7 +39,7 @@ class GuestActionWalk extends GuestAction
 			if (tr.Level == _guest.Level )
 			{
 				trace("on same level");
-				tx = tr.x;
+				tx = tr.getXPos();
 				walkRight =  (tx - _guest.x > 0);
 				_walkingTime = Math.abs(tx - _guest.x) / getMovementSpeed();
 			}

@@ -31,15 +31,15 @@ class GuestActionLeave extends GuestAction
 		
 		var rec : RoomReception = cast _guest._state.getRoomByName("reception");
 		rec.GuestsWaiting -= 1;
-		var r : Room = _guest._state.getRoomByName(_guest._roomName);
-		if (r != null)
-		{
-			r.unlock();
-		}
-		else
-		{
-			trace("cannot unlock room");
-		}
+		//var r : Room = _guest._state.getRoomByName(_guest._roomName);
+		//if (r != null)
+		//{
+			//r.unlock();
+		//}
+		//else
+		//{
+			//trace("cannot unlock room");
+		//}
 		
 		var e1 : GuestActionExit = new GuestActionExit(_guest);
 		_guest.AddAction(e1);

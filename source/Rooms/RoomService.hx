@@ -27,5 +27,8 @@ class RoomService extends Room
 		super.BuildMe();
 		name = "service_" + Std.string(Level);
 	}
-	
+	public override function getXPos() 
+	{
+		return this.x + 16;
+	}
 }

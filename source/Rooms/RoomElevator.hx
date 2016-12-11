@@ -29,4 +29,8 @@ class RoomElevator extends Room
 		//trace("elevator Name: " + name);
 		NumberOfElevatorsBuilt++;
 	}
+	public override function getXPos() 
+	{
+		return this.x + 16;
+	}
 }

@@ -8,14 +8,21 @@ class JobPool
 {
 
 	private var _jobsCleaning: Array<JobCleaning>;
+	private var _jobsInProgress : Array<String>;
 	public function new() 
 	{
 		_jobsCleaning = new Array<JobCleaning>();
-		
+		_jobsInProgress = new Array<String>();
 	}
 	
 	public function addCleaningJob(n : String, d : Float)
 	{
+		// check if there is a job in progress
+		for (r in _jobsInProgress)
+		{
+			if ( r == n) return ;
+		}
+		
 		if (d == 0) return;
 		for (i in 0..._jobsCleaning.length)
 		{
@@ -34,6 +41,20 @@ class JobPool
 		_jobsCleaning.push(j);
 	}
 	
+	public function finishJob(n:String)
+	{
+		for (r in _jobsInProgress)
+		{
+			if (r == n)
+			{
+				_jobsInProgress.remove(r);
+				return;
+			}
+		}
+		trace("No Job found: " + n);
+		return;
+	}
+	
 	public function getMostUrgentCleaningJob () : JobCleaning
 	{
 		var ret : JobCleaning = null;
@@ -46,8 +67,11 @@ class JobPool
 				ret = j;
 			}
 		}
-		
-		_jobsCleaning.remove(ret);
+		if (ret != null)
+		{
+			_jobsCleaning.remove(ret);
+			_jobsInProgress.push(ret.roomName);
+		}
 		return ret;
 	}
 	

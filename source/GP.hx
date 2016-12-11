@@ -7,6 +7,7 @@ using MathExtender;
  */
 class GP
 {
+	
 
 	public static var RoomSizeInPixel   (default, null) : Int = 48;
 	static public var WorldSizeXInPixel (default, null) : Float = 1500;
@@ -18,15 +19,25 @@ class GP
 	static public var ReceptionWaitingTime (default, null) : Float  = 5;
 	
 	
-	static public var MoneyGuestRecipeRoomCost (default, null) : Int = 300;
-	static public var MoneyTipAmount (default, null) : Int = 600;
+	static public var MoneyGuestRecipeRoomCost (default, null) : Int = 320;
+	static public var MoneyTipAmount (default, null) : Int = 550;
 	
-	static public var MoneyElevatorBaseCost (default, null) : Int = 300;
+	static public var MoneyElevatorBaseCost (default, null) : Int = 350;
+	
+	static public var MoneyGeneratorRunningCost (default, null) : Int = 120;
 	static public var MoneyGeneratorCost (default, null) : Int = 800;
+	
 	static public var MoneyHotelRoomCost (default, null) : Int = 1100;
+	static public var MoneyServiceRoomCost (default, null) : Int = 300;
 	
 	static public var GeneratorNoiseReach (default, null) : Float = 6;
-	static public var MoneyServiceRoomCost (default, null) : Int = 500;
+	
+	
+	static public var JobListTimerMax (default, null) : Float = 2.5;
+	static public var WorkerSalaryTimerMax (default, null) : Float = 28;
+	static public var WorkerBaseSalary (default, null) : Int = 55;
+	static public var JanitorMoveFactor (default, null) : Float = 1.5;
+	
 	
 	static public function CalcSatisfactionInRoom (g : Guest, r: Room) : Float
 	{
@@ -41,6 +52,15 @@ class GP
 		ret += noiseLevel * (1.0 - r.Props.NoiseFactor);
 		ret += powerLevel * (r.Powered? 1.0 : 0.0);
 	
+		return ret;
+	}
+	
+	public static function GetSpawnTime(g : Int, r : Int) : Float
+	{
+		var max : Float = 20;
+		var exp : Float = 2.5;
+		
+		var ret : Float = (Math.pow(g / (r+1), exp)) * max;
 		return ret;
 	}
 	

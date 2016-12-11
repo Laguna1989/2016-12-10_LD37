@@ -20,6 +20,7 @@ class RoomReception extends Room
 	public override function update(elapsed : Float )
 	{
 		super.update(elapsed);
+		_infoText.text += "In Line: " + Std.string(GuestsWaiting) + "\n";
 	}
 	
 	public override function BuildMe()
@@ -33,5 +34,12 @@ class RoomReception extends Room
 	public function getWaitingTime() : Float
 	{
 		return 5;
+	}
+	
+	public override function getXPos() 
+	{
+		var ofs : Float = GuestsWaiting * 12;
+		ofs = MathExtender.Clamp(ofs, 0, 60);
+		return this.x + 60 - ofs;
 	}
 }
