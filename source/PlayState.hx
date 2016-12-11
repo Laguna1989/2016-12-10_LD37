@@ -136,7 +136,7 @@ class PlayState extends FlxState
 				j.setPosition(GP.RoomSizeInPixel * 3, GP.GroundLevel - GP.RoomSizeInPixel);
 				_workerList.add(j);
 			}
-			else if (FlxG.keys.pressed.S)
+			else if (FlxG.keys.pressed.Q)
 			{
 				SwitchToServiceRoom();
 			}
@@ -398,19 +398,19 @@ class PlayState extends FlxState
 	function CameraMovement(elapsed:Float):Void 
 	{
 		var CamMovementSpeed : Float = -100;
-		if (FlxG.keys.pressed.LEFT)
+		if (FlxG.keys.pressed.LEFT ||FlxG.keys.pressed.A)
 		{
 			_camTarget.x += CamMovementSpeed * elapsed;
 		}
-		else if (FlxG.keys.pressed.RIGHT)
+		else if (FlxG.keys.pressed.RIGHT||FlxG.keys.pressed.D)
 		{
 			_camTarget.x -= CamMovementSpeed * elapsed;
 		}
-		if (FlxG.keys.pressed.UP)
+		if (FlxG.keys.pressed.UP ||FlxG.keys.pressed.W)
 		{
 			_camTarget.y += CamMovementSpeed * elapsed;
 		}
-		else if (FlxG.keys.pressed.DOWN)
+		else if (FlxG.keys.pressed.DOWN||FlxG.keys.pressed.S)
 		{
 			_camTarget.y -= CamMovementSpeed * elapsed;
 		}
