@@ -30,21 +30,20 @@ class HUD extends FlxTypedGroup<FlxSprite>
 
 		_state = state;
 
-		var backgroundColor = FlxColor.fromRGB(200, 200, 200, 200);
-		var borderColor     = FlxColor.fromRGB(255, 255, 255, 200);
+		var backgroundColor = FlxColor.fromRGB(200, 200, 200, 220);
 
-		_sprBG = new FlxSprite().makeGraphic(FlxG.width, 32, backgroundColor);
+		_sprBG = new FlxSprite().makeGraphic(FlxG.width, 20, backgroundColor);
 		_sprBG.scrollFactor.set();
 		add(_sprBG);
 
-		_moneyText  = new FlxText(5, 5, 100, '$', 15);
+		_moneyText  = new FlxText(2, 0, 100, '$', 15);
 		_moneyText.color = FlxColor.BLACK;
 		_moneyText.addFormat(new FlxTextFormat(FlxColor.GREEN), 0, 1);
 		_moneyText.scrollFactor.set();
 		add(_moneyText);
 
 		// Small room
-		_btnSRoom = new FlxSprite(FlxG.width - 88, 0);
+		_btnSRoom = new FlxSprite(FlxG.width - 137, 2);
 		_btnSRoom.loadGraphic(AssetPaths.Buttons__png, true, 16, 16);
 		_btnSRoom.animation.add('default', [0], 1, false);
 		_btnSRoom.animation.add('down', [8], 1, false);
@@ -53,7 +52,7 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		add(_btnSRoom);
 
 		// Medium room
-		_btnMRoom = new FlxSprite(FlxG.width - 88, 16);
+		_btnMRoom = new FlxSprite(FlxG.width - 121, 2);
 		_btnMRoom.loadGraphic(AssetPaths.Buttons__png, true, 16, 16);
 		_btnMRoom.animation.add('default', [1], 1, false);
 		_btnMRoom.animation.add('down', [9], 1, false);
@@ -62,7 +61,7 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		add(_btnMRoom);
 
 		// Large room
-		_btnLRoom = new FlxSprite(FlxG.width - 72, 0);
+		_btnLRoom = new FlxSprite(FlxG.width - 105, 2);
 		_btnLRoom.loadGraphic(AssetPaths.Buttons__png, true, 16, 16);
 		_btnLRoom.animation.add('default', [2], 1, false);
 		_btnLRoom.animation.add('down', [10], 1, false);
@@ -73,7 +72,7 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		// ##################
 
 		// Generator
-		_btnGenerator = new FlxSprite(FlxG.width - 52, 0);
+		_btnGenerator = new FlxSprite(FlxG.width - 85, 2);
 		_btnGenerator.loadGraphic(AssetPaths.Buttons__png, true, 16, 16);
 		_btnGenerator.animation.add('default', [3], 1, false);
 		_btnGenerator.animation.add('down', [11], 1, false);
@@ -82,7 +81,7 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		add(_btnGenerator);
 
 		// Elevator
-		_btnElevator = new FlxSprite(FlxG.width - 52, 16);
+		_btnElevator = new FlxSprite(FlxG.width - 69, 2);
 		_btnElevator.loadGraphic(AssetPaths.Buttons__png, true, 16, 16);
 		_btnElevator.animation.add('default', [4], 1, false);
 		_btnElevator.animation.add('down', [12], 1, false);
@@ -91,7 +90,7 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		add(_btnElevator);
 
 		// Service room
-		_btnServiceRoom = new FlxSprite(FlxG.width - 36, 0);
+		_btnServiceRoom = new FlxSprite(FlxG.width - 53, 2);
 		_btnServiceRoom.loadGraphic(AssetPaths.Buttons__png, true, 16, 16);
 		_btnServiceRoom.animation.add('default', [5], 1, false);
 		_btnServiceRoom.animation.add('down', [13], 1, false);
@@ -102,7 +101,7 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		// ##################
 
 		// Maid
-		_btnMaid = new FlxSprite(FlxG.width - 16, 16);
+		_btnMaid = new FlxSprite(FlxG.width - 33, 2);
 		_btnMaid.loadGraphic(AssetPaths.Buttons__png, true, 16, 16);
 		_btnMaid.animation.add('default', [6], 1, false);
 		_btnMaid.animation.add('down', [14], 1, false);
@@ -111,7 +110,7 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		add(_btnMaid);
 
 		// Janitor
-		_btnJanitor = new FlxSprite(FlxG.width - 16, 0);
+		_btnJanitor = new FlxSprite(FlxG.width - 17, 2);
 		_btnJanitor.loadGraphic(AssetPaths.Buttons__png, true, 16, 16);
 		_btnJanitor.animation.add('default', [7], 1, false);
 		_btnJanitor.animation.add('down', [15], 1, false);
