@@ -32,6 +32,7 @@
 	<classpath name="source/RunvsTools" />
 	<classpath name="source/Rooms" />
 	<classpath name="source/Guests" />
+	<classpath name="source/Workers" />
 	<assets path="assets" />
 
 	<!-- _______________________________ Libraries ______________________________ -->

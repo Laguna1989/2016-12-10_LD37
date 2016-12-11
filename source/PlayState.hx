@@ -16,6 +16,8 @@ class PlayState extends FlxState
 {
 	
 	private var _roomList: FlxTypedGroup<Room>;
+	private var _guestList : FlxTypedGroup<Guest>;
+	private var _workerList: FlxTypedGroup<Worker>;
 	
 	private var Ground    : FlxSprite;
 	private var _modeText : FlxText;
@@ -26,7 +28,7 @@ class PlayState extends FlxState
 	
 	private var _room2Place : Room;
 	
-	private var _guestList : FlxTypedGroup<Guest>;
+	
 	private var _maxLevel : Int = 2;	// currently the level at which the highest room can be build (can be increased by the elevator)
 	private var _minTilePosX : Int = 3;
 	private var _maxTilePosX : Int = 10;
@@ -40,6 +42,9 @@ class PlayState extends FlxState
 	private var BuildingCostText : FlxText;
 	
 	private var _camTarget : FlxSprite;
+
+	public var JobList : JobPool;
+	
 	
 	override public function create():Void
 	{
@@ -64,6 +69,7 @@ class PlayState extends FlxState
 		
 		_roomList = new FlxTypedGroup<Room>();
 		_guestList = new FlxTypedGroup<Guest>();
+		_workerList = new FlxTypedGroup<Worker>();
 		
 		var reception : RoomReception = new RoomReception();
 		reception.setPosition(GP.RoomSizeInPixel*3, GP.GroundLevel - GP.RoomSizeInPixel);
@@ -92,7 +98,7 @@ class PlayState extends FlxState
 		_MoneyText.scrollFactor.set();
 		
 		BuildingCostText = new FlxText(100, 100, 200, "", 14);
-		
+		JobList = new JobPool();
 		
 	}
 
@@ -101,12 +107,13 @@ class PlayState extends FlxState
 		super.update(elapsed);
 		_roomList.update(elapsed);
 		_guestList.update(elapsed);
+		_workerList.update(elapsed);
 		_MoneyText.text = Std.string(_Money);
-		
+		checkRoomsForCleaning();
 	
 		
 		CameraMovement(elapsed);
-		
+			
 		
 		if (Mode == PlayerMode.Normal)
 		{
@@ -122,6 +129,16 @@ class PlayState extends FlxState
 			else if (FlxG.keys.pressed.G)
 			{
 				SwitchToGeneratorMode();
+			}
+			else if (FlxG.keys.justPressed.J)
+			{
+				var j : Janitor = new Janitor(this);
+				j.setPosition(GP.RoomSizeInPixel * 3, GP.GroundLevel - GP.RoomSizeInPixel);
+				_workerList.add(j);
+			}
+			else if (FlxG.keys.pressed.S)
+			{
+				SwitchToServiceRoom();
 			}
 			if (FlxG.mouse.justPressed)
 			{
@@ -260,6 +277,19 @@ class PlayState extends FlxState
 		return true;
 	}
 	
+	function checkRoomsForCleaning()
+	{
+		for (i in 0..._roomList.length)
+		{
+			var r : Room = _roomList.members[i];
+			var h : RoomHotel = Std.instance(r, RoomHotel);
+			if (h != null)
+			{
+				JobList.addCleaningJob(h.name, h.DirtLevel);
+			}
+		}
+	}
+	
 	
 	function SwitchToBuildMode() 
 	{
@@ -280,12 +310,19 @@ class PlayState extends FlxState
 		_room2Place = new RoomGenerator();
 	}
 	
+	function SwitchToServiceRoom() 
+	{
+		Mode = PlayerMode.Build;
+		_room2Place = new RoomService();
+	}
+	
 	override public function draw() : Void 
 	{
 		super.draw();
 		Ground.draw();
 		_roomList.draw();
 		_guestList.draw();
+		_workerList.draw();
 		_MoneyText.draw();		
 		if (Mode == PlayerMode.Build || Mode == PlayerMode.BuildElevator )
 		{

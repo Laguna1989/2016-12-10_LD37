@@ -26,6 +26,7 @@ class GP
 	static public var MoneyHotelRoomCost (default, null) : Int = 1100;
 	
 	static public var GeneratorNoiseReach (default, null) : Float = 6;
+	static public var MoneyServiceRoomCost (default, null) : Int = 500;
 	
 	static public function CalcSatisfactionInRoom (g : Guest, r: Room) : Float
 	{

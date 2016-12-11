@@ -22,6 +22,7 @@
     <class path="source\RunvsTools" />
     <class path="source\Rooms" />
     <class path="source\Guests" />
+    <class path="source\Workers" />
     <class path="C:\HaxeToolkit\haxe\lib\openfl\3,6,1\extern" />
     <class path="export\windows\neko\haxe" />
   </classpaths>
