@@ -62,12 +62,11 @@ class PlayState extends FlxState
 		super.create();
 		FlxG.camera.bgColor = FlxColor.fromRGB(255,255,255);
 		FlxG.camera.pixelPerfectRender = true;
-		//FlxG.camera.zoom = 1.5;
-		FlxG.camera.setScrollBounds(0, FlxG.camera.width * 2, -200, 50000);
-		FlxG.camera.targetOffset.set(FlxG.width / 2, 0);
-		_camTarget = new FlxSprite(0, GP.GroundLevel - GP.RoomSizeInPixel);
+		FlxG.camera.setScrollBounds(0, FlxG.camera.width * 2, -200, GP.GroundLevel + GP.RoomSizeInPixel);
+		FlxG.camera.targetOffset.set(FlxG.camera.width / 2, -FlxG.camera.height / 2);
+		_camTarget = new FlxSprite(0, GP.GroundLevel + GP.RoomSizeInPixel - 48);
 		FlxG.camera.follow(_camTarget);
-		FlxG.worldBounds.set(0, -200, FlxG.camera.width * 2, 50000);
+		FlxG.worldBounds.set(0, -200, FlxG.camera.width * 2, GP.GroundLevel + GP.RoomSizeInPixel + 200 - 16);
 		Ground = new FlxSprite(-500, GP.GroundLevel);
 		Ground.makeGraphic(Std.int(GP.WorldSizeXInPixel), 600, FlxColor.BROWN);
 
@@ -558,8 +557,12 @@ class PlayState extends FlxState
 		}
 		else if (FlxG.keys.pressed.DOWN||FlxG.keys.pressed.S)
 		{
+			trace(FlxG.worldBounds.bottom);
 			_camTarget.y -= CamMovementSpeed * elapsed;
 		}
+
 		if (_camTarget.x < FlxG.worldBounds.x) _camTarget.x = FlxG.worldBounds.x;
+		if (_camTarget.x > FlxG.worldBounds.right - FlxG.camera.width - 16) _camTarget.x = FlxG.worldBounds.right - FlxG.camera.width - 16; 
+		if (_camTarget.y > FlxG.worldBounds.bottom) _camTarget.y = FlxG.worldBounds.bottom;
 	}
 }
