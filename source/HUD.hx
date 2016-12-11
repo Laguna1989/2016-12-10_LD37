@@ -5,8 +5,6 @@ import flixel.util.FlxColor;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.addons.display.FlxExtendedSprite;
-import openfl.Assets;
 
 class HUD extends FlxTypedGroup<FlxSprite>
 {
@@ -14,18 +12,17 @@ class HUD extends FlxTypedGroup<FlxSprite>
 
 	private var _sprBG     : FlxSprite;
 	private var _moneyText : FlxText;
-	//private var _modeText  : FlxText;
 
-	private var _btnSRoom : FlxExtendedSprite;
-	private var _btnMRoom : FlxExtendedSprite;
-	private var _btnLRoom : FlxExtendedSprite;
+	private var _btnSRoom : FlxSprite;
+	private var _btnMRoom : FlxSprite;
+	private var _btnLRoom : FlxSprite;
 
-	private var _btnGenerator   : FlxExtendedSprite;
-	private var _btnElevator    : FlxExtendedSprite;
-	private var _btnServiceRoom : FlxExtendedSprite;
+	private var _btnGenerator   : FlxSprite;
+	private var _btnElevator    : FlxSprite;
+	private var _btnServiceRoom : FlxSprite;
 
-	private var _btnJanitor : FlxExtendedSprite;
-	private var _btnMaid    : FlxExtendedSprite;
+	private var _btnJanitor : FlxSprite;
+	private var _btnMaid    : FlxSprite;
 
 	public function new(state : PlayState)
 	{
@@ -47,7 +44,7 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		add(_moneyText);
 
 		// Small room
-		_btnSRoom = new FlxExtendedSprite(FlxG.width - 88, 0);
+		_btnSRoom = new FlxSprite(FlxG.width - 88, 0);
 		_btnSRoom.loadGraphic(AssetPaths.Buttons__png, true, 16, 16);
 		_btnSRoom.animation.add('default', [0], 1, false);
 		_btnSRoom.animation.add('down', [8], 1, false);
@@ -56,7 +53,7 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		add(_btnSRoom);
 
 		// Medium room
-		_btnMRoom = new FlxExtendedSprite(FlxG.width - 88, 16);
+		_btnMRoom = new FlxSprite(FlxG.width - 88, 16);
 		_btnMRoom.loadGraphic(AssetPaths.Buttons__png, true, 16, 16);
 		_btnMRoom.animation.add('default', [1], 1, false);
 		_btnMRoom.animation.add('down', [9], 1, false);
@@ -65,7 +62,7 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		add(_btnMRoom);
 
 		// Large room
-		_btnLRoom = new FlxExtendedSprite(FlxG.width - 72, 0);
+		_btnLRoom = new FlxSprite(FlxG.width - 72, 0);
 		_btnLRoom.loadGraphic(AssetPaths.Buttons__png, true, 16, 16);
 		_btnLRoom.animation.add('default', [2], 1, false);
 		_btnLRoom.animation.add('down', [10], 1, false);
@@ -76,7 +73,7 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		// ##################
 
 		// Generator
-		_btnGenerator = new FlxExtendedSprite(FlxG.width - 52, 0);
+		_btnGenerator = new FlxSprite(FlxG.width - 52, 0);
 		_btnGenerator.loadGraphic(AssetPaths.Buttons__png, true, 16, 16);
 		_btnGenerator.animation.add('default', [3], 1, false);
 		_btnGenerator.animation.add('down', [11], 1, false);
@@ -85,7 +82,7 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		add(_btnGenerator);
 
 		// Elevator
-		_btnElevator = new FlxExtendedSprite(FlxG.width - 52, 16);
+		_btnElevator = new FlxSprite(FlxG.width - 52, 16);
 		_btnElevator.loadGraphic(AssetPaths.Buttons__png, true, 16, 16);
 		_btnElevator.animation.add('default', [4], 1, false);
 		_btnElevator.animation.add('down', [12], 1, false);
@@ -94,7 +91,7 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		add(_btnElevator);
 
 		// Service room
-		_btnServiceRoom = new FlxExtendedSprite(FlxG.width - 36, 0);
+		_btnServiceRoom = new FlxSprite(FlxG.width - 36, 0);
 		_btnServiceRoom.loadGraphic(AssetPaths.Buttons__png, true, 16, 16);
 		_btnServiceRoom.animation.add('default', [5], 1, false);
 		_btnServiceRoom.animation.add('down', [13], 1, false);
@@ -105,7 +102,7 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		// ##################
 
 		// Maid
-		_btnMaid = new FlxExtendedSprite(FlxG.width - 16, 16);
+		_btnMaid = new FlxSprite(FlxG.width - 16, 16);
 		_btnMaid.loadGraphic(AssetPaths.Buttons__png, true, 16, 16);
 		_btnMaid.animation.add('default', [6], 1, false);
 		_btnMaid.animation.add('down', [14], 1, false);
@@ -114,7 +111,7 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		add(_btnMaid);
 
 		// Janitor
-		_btnJanitor = new FlxExtendedSprite(FlxG.width - 16, 0);
+		_btnJanitor = new FlxSprite(FlxG.width - 16, 0);
 		_btnJanitor.loadGraphic(AssetPaths.Buttons__png, true, 16, 16);
 		_btnJanitor.animation.add('default', [7], 1, false);
 		_btnJanitor.animation.add('down', [15], 1, false);
@@ -127,22 +124,45 @@ class HUD extends FlxTypedGroup<FlxSprite>
 	{
 		super.update(elapsed);
 
-		forEach(function(btn : FlxSprite)
-		{
-			if(Type.getClassName(Type.getClass(btn)) == "flixel.addons.display.FlxExtendedSprite")
-			{
-				handleButton(cast(btn, FlxExtendedSprite));
-			}
-		});
+		handleButton(_btnSRoom, null);
+		handleButton(_btnMRoom, _state.SwitchToBuildMode);
+		handleButton(_btnLRoom, null);
+
+		handleButton(_btnGenerator, _state.SwitchToGeneratorMode);
+		handleButton(_btnElevator, _state.SwitchToElevatorMode);
+		handleButton(_btnServiceRoom, _state.SwitchToServiceRoom);
+
+		handleButton(_btnMaid, null);
+		handleButton(_btnJanitor, null);
 
 		_moneyText.text = '$$${_state.getMoney()}';
 	}
 
-	private function handleButton(btn : FlxExtendedSprite)
+	private function handleButton(btn : FlxSprite, callback : Void -> Void)
 	{
-		if(btn.mouseOver)
+		var mouseOver = false;
+		var justPressed = false;
+
+		if(FlxG.mouse.screenX >= btn.x && FlxG.mouse.screenX < btn.x + btn.width)
+		{
+			if(FlxG.mouse.screenY >= btn.y && FlxG.mouse.screenY < btn.y + btn.height)
+			{
+				mouseOver = true;
+				justPressed = FlxG.mouse.justPressed;
+			}
+		}
+
+		if(mouseOver)
 		{
 			btn.animation.play('down');
+			if(justPressed)
+			{
+				if(callback != null)
+				{
+					trace('Click on button x:${btn.x}, y:${btn.y}');
+					callback();
+				}
+			}
 		}
 		else
 		{
