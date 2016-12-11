@@ -109,7 +109,7 @@ class Guest extends FlxSprite
 		
 		else if (i == 8)
 		{
-			minRoomSize = 2;
+			minRoomSize = 1;
 			minLuxus = 0;
 		}
 		else if (i == 9)
@@ -188,9 +188,15 @@ class Guest extends FlxSprite
 				_forceLeave = true;
 				SatisfactionFactor = 0.01;
 				
+				_actions = new Array<GuestAction>();
 				var e1 : GuestActionExit = new GuestActionExit(this);
 				AddActionToBegin(e1);
 				e1.Activate();
+				var r : RoomReception = Std.instance(_state.getRoomByName("reception"), RoomReception);
+				if (r != null)
+				{
+					r.WaitingDecrease();
+				}
 			}
 		}
 		_infoBG.setPosition(this.x + GP.GuestSizeInPixel, this.y - GP.GuestSizeInPixel);

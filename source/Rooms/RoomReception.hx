@@ -8,7 +8,17 @@ import flixel.util.FlxColor;
 class RoomReception extends Room
 {
 	
-	public var GuestsWaiting : Int = 0;
+	private var GuestsWaiting : Int = 0;
+	
+	public function WaitingIncrease()
+	{
+		GuestsWaiting += 1;
+	}
+	
+	public function WaitingDecrease()
+	{
+		GuestsWaiting -= 1;
+	}
 	public function new() 
 	{
 		super();

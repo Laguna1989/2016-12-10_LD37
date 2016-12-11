@@ -30,7 +30,7 @@ class GuestActionLeave extends GuestAction
 		_guest._state.ChangeMoney(Std.int(GP.MoneyTipAmount * _guest.SatisfactionFactor));
 		
 		var rec : RoomReception = cast _guest._state.getRoomByName("reception");
-		rec.GuestsWaiting -= 1;
+		rec.WaitingDecrease();
 		
 		var e1 : GuestActionExit = new GuestActionExit(_guest);
 		_guest.AddAction(e1);
@@ -53,7 +53,7 @@ class GuestActionLeave extends GuestAction
 		else
 		{
 			var rec : RoomReception = cast _guest._state.getRoomByName("reception");
-			rec.GuestsWaiting += 1;
+			rec.WaitingIncrease();
 			waitingTime = rec.getWaitingTime();
 		}
 	}

@@ -7,6 +7,7 @@ using MathExtender;
  */
 class GP
 {
+
 	
 
 	public static var RoomSizeInPixel   (default, null) : Int = 48;
@@ -21,6 +22,7 @@ class GP
 	
 	static public var MoneyGuestRecipeRoomCost (default, null) : Int = 375;
 	static public var MoneyTipAmount (default, null) : Int = 550;
+	static public var MoneyOverLuxusTip (default, null) : Float = 0.25;
 	
 	static public var MoneyElevatorBaseCost (default, null) : Int = 250;
 	
@@ -56,6 +58,7 @@ class GP
 		ret += dirtLevel * (1.0 - r.DirtLevel);
 		ret += noiseLevel * (1.0 - r.Props.NoiseFactor);
 		ret += powerLevel * (r.Powered? 1.0 : 0.0);
+		ret +=  (g.minLuxus < r.Luxus) ? GP.MoneyOverLuxusTip : 0;
 	
 		return ret;
 	}
