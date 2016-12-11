@@ -5,12 +5,7 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
 import flixel.text.FlxText;
-import flixel.ui.FlxButton;
-import flixel.math.FlxMath;
-import flixel.util.FlxAxes;
 import flixel.util.FlxColor;
-import flixel.util.FlxTimer;
-import haxe.rtti.CType.TypeRoot;
 
 using StringTools;
 
@@ -21,6 +16,16 @@ class PlayState extends FlxState
 	private var _guestList : FlxTypedGroup<Guest>;
 	private var _workerList: FlxTypedGroup<Worker>;
 	
+	private var _clouds : ScreenWrappingSpriteGroup;
+	private var _cloud1 : FlxSprite;
+	private var _cloud1Speed : Float;
+	private var _cloud2 : FlxSprite;
+	private var _cloud2Speed : Float;
+	private var _cloud3 : FlxSprite;
+	private var _cloud3Speed : Float;
+	private var _cloud4 : FlxSprite;
+	private var _cloud4Speed : Float;
+	
 	private var buildingArea : FlxSprite;
 	private var Ground    : FlxSprite;
 	private var _versionText : FlxText;
@@ -30,7 +35,6 @@ class PlayState extends FlxState
 	private var Mode :PlayerMode = PlayerMode.Normal;
 	
 	private var _room2Place : Room;
-	
 	
 	private var _maxLevel : Int = 2;	// currently the level at which the highest room can be build (can be increased by the elevator)
 	private var _minTilePosX : Int = 3;
@@ -59,10 +63,11 @@ class PlayState extends FlxState
 		FlxG.camera.bgColor = FlxColor.fromRGB(255,255,255);
 		FlxG.camera.pixelPerfectRender = true;
 		//FlxG.camera.zoom = 1.5;
-		FlxG.camera.setScrollBounds(-500, 1500-FlxG.camera.width, -200, 50000);
-		_camTarget = new FlxSprite(GP.RoomSizeInPixel * 3, GP.GroundLevel - GP.RoomSizeInPixel);
+		FlxG.camera.setScrollBounds(0, FlxG.camera.width * 2, -200, 50000);
+		FlxG.camera.targetOffset.set(FlxG.width / 2, 0);
+		_camTarget = new FlxSprite(0, GP.GroundLevel - GP.RoomSizeInPixel);
 		FlxG.camera.follow(_camTarget);
-		FlxG.worldBounds.set( -5000, -5000, 50000, 500000);
+		FlxG.worldBounds.set(0, -200, FlxG.camera.width * 2, 50000);
 		Ground = new FlxSprite(-500, GP.GroundLevel);
 		Ground.makeGraphic(Std.int(GP.WorldSizeXInPixel), 600, FlxColor.BROWN);
 
@@ -115,6 +120,22 @@ class PlayState extends FlxState
 		_backgroundSpriteR = new FlxSprite(400, bgypos);
 		_backgroundSpriteR.loadGraphic(AssetPaths.background__png, false, 400, 300);
 		_backgroundSpriteR.scrollFactor.set(1,1);
+
+		_cloud1 = new FlxSprite(FlxG.random.int(0, FlxG.width), 0).loadGraphic(AssetPaths.cloud_1__png);
+		_cloud1Speed = FlxG.random.float(-0.5, 0.5);
+		_cloud2 = new FlxSprite(FlxG.random.int(0, FlxG.width), -60).loadGraphic(AssetPaths.cloud_2__png);
+		_cloud2Speed = FlxG.random.float(-0.5, 0.5);
+		_cloud3 = new FlxSprite(FlxG.random.int(0, FlxG.width), -100).loadGraphic(AssetPaths.cloud_3__png);
+		_cloud3Speed = FlxG.random.float(-0.5, 0.5);
+		_cloud4 = new FlxSprite(FlxG.random.int(0, FlxG.width), -120).loadGraphic(AssetPaths.cloud_4__png);
+		_cloud4Speed = FlxG.random.float(-0.5, 0.5);
+
+		_clouds = new ScreenWrappingSpriteGroup(FlxG.camera, 0.0);
+		_clouds.add(_cloud1);
+		_clouds.add(_cloud2);
+		_clouds.add(_cloud3);
+		_clouds.add(_cloud4);
+		_clouds.scrollFactor.set(0.7, 0.95);
 	}
 
 	override public function update(elapsed:Float):Void
@@ -124,7 +145,6 @@ class PlayState extends FlxState
 		_guestList.update(elapsed);
 		_workerList.update(elapsed);
 		checkRoomsForCleaning();
-		
 	
 		_GuestSpawnTimer += elapsed;
 		var max : Float = GP.GetSpawnTime(_guestList.length, GetHotelRoomNumber());
@@ -234,6 +254,11 @@ class PlayState extends FlxState
 			}
 		}
 
+		_cloud1.x += _cloud1Speed;
+		_cloud2.x += _cloud2Speed;
+		_cloud3.x += _cloud3Speed;
+		_cloud4.x += _cloud4Speed;
+		_clouds.update(elapsed);
 		_hud.update(elapsed);
 	}
 	
@@ -423,6 +448,7 @@ class PlayState extends FlxState
 		_backgroundSpriteL.draw();
 		_backgroundSpriteM.draw();
 		_backgroundSpriteR.draw();
+		_clouds.draw();
 		Ground.draw();
 		buildingArea.draw();
 		_roomList.draw();
