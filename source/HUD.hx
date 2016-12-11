@@ -44,11 +44,6 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		_moneyText.scrollFactor.set();
 		add(_moneyText);
 
-		/*_modeText = new FlxText(0, 0, '${_state.getMode()}');
-		_modeText.setPosition(FlxG.width - _modeText.width, 0);
-		_modeText.scrollFactor.set();
-		add(_modeText);*/
-
 		// Small room
 		_btnSRoom = new FlxExtendedSprite(FlxG.width - 88, 0);
 		_btnSRoom.makeGraphic(16, 16, FlxColor.fromRGB(100, 255, 100, 255));
@@ -106,8 +101,6 @@ class HUD extends FlxTypedGroup<FlxSprite>
 	{
 		super.update(elapsed);
 
-		/*_moneyText.text = '$$${_state.getMoney()}';
-		_modeText.text  = '${_state.getMode()}';
-		_modeText.setPosition(FlxG.width - _modeText.width, 0);*/
+		_moneyText.text = '$$${_state.getMoney()}';
 	}
 }
