@@ -64,7 +64,7 @@ class GuestActionClean extends GuestAction
 				gotStuff = false;
 			}			
 		}
-		cleaningTime = 5.0;
+		cleaningTime = GP.WorkerCleaningTime;
 		
 	}
 	

@@ -98,6 +98,7 @@ class Room extends FlxSprite
 		
 		_infoBG.setPosition(this.x , this.y );
 		_infoText.setPosition(this.x , this.y);
+		
 	}
 	
 	public override function draw()
@@ -107,12 +108,7 @@ class Room extends FlxSprite
 		{
 			_poweredSprite.draw();
 		}
-		var obj : FlxObject = new FlxObject(FlxG.mouse.getWorldPosition(FlxG.camera).x, FlxG.mouse.getWorldPosition(FlxG.camera).y, 10, 10);
-		if (this.overlaps(obj))
-		{
-			_infoBG.draw();
-			_infoText.draw();
-		}
+		DrawOverlay();
 	}
 	
 	
@@ -130,5 +126,15 @@ class Room extends FlxSprite
 	public function getXPos() 
 	{
 		return this.x;
+	}
+	
+	public function DrawOverlay():Void 
+	{
+		var obj : FlxObject = new FlxObject(FlxG.mouse.getWorldPosition(FlxG.camera).x, FlxG.mouse.getWorldPosition(FlxG.camera).y, 2, 2);
+		if (this.overlaps(obj))
+		{
+			_infoBG.draw();
+			_infoText.draw();
+		}
 	}
 }

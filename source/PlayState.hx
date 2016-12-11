@@ -36,7 +36,7 @@ class PlayState extends FlxState
 	private var _minTilePosX : Int = 3;
 	private var _maxTilePosX : Int = 14;
 	
-	private var _GuestSpawnTimer : Float;
+	private var _GuestSpawnTimer : Float = - 7;
 	
 	private var _Money : Int = 5000;
 	private var _MoneyText : FlxText;
@@ -94,7 +94,6 @@ class PlayState extends FlxState
 		_guestList.add(g);
 		//g.setPosition(FlxG.random.float(0, 800), FlxG.random.float(0, 500));
 		
-		_GuestSpawnTimer = 0;
 		
 		_MoneyText  = new FlxText(10, 10, 100, "", 20);
 		//_MoneyText.screenCenter(FlxAxes.X);
@@ -399,6 +398,8 @@ class PlayState extends FlxState
 		Ground.draw();
 		buildingArea.draw();
 		_roomList.draw();
+		for (r in _roomList)
+			r.DrawOverlay();
 		_guestList.draw();
 		_workerList.draw();
 		_MoneyText.draw();		
