@@ -14,7 +14,7 @@ class RoomElevator extends Room
 		WidthInTiles = 1;
 		//this.makeGraphic(WidthInTiles * GP.RoomSizeInPixel - 1, 1 * GP.RoomSizeInPixel -1, FlxColor.ORANGE);
 		this.loadGraphic(AssetPaths.room_elevator__png, false, 48, 48);
-		Cost = GP.MoneyElevatorBaseCost * (NumberOfElevatorsBuilt-1);
+		Cost = GP.MoneyElevatorBaseCost * Std.int( Math.pow((NumberOfElevatorsBuilt-1), 1.75));
 	}
 	
 	public override function update(elapsed : Float )
