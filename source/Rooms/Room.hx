@@ -20,6 +20,7 @@ class Room extends FlxSprite
 	
 	public var isFree : Bool = true;
 	public var Cost : Int;
+	public var Powered : Bool = false;
 	
 	public var DirtLevel : Float = 0;	// this is a value between 0 and 1, 
 									// where 0 means totally clean and 1 means totally messed up

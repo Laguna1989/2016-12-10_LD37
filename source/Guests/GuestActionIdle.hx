@@ -31,7 +31,7 @@ class GuestActionIdle extends GuestAction
 		if (r != null)
 		{
 			// change guests happyness depending on room dirtiness	
-			_guest.SatisfactionFactor *= 0.5 * (1.0 - r.DirtLevel);
+			_guest.SatisfactionFactor *= GP.CalcSatisfactionInRoom(_guest, r);
 		
 			// dirty room
 			r.DirtLevel += _guest._dirtlevel;

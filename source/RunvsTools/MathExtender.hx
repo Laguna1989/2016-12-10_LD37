@@ -29,4 +29,10 @@ class MathExtender
 		else return 0;
 	}
 	
+	public static function Clamp(v:Float, min : Float = 0, max : Float = 1) : Float
+	{
+		if (v < min) v = min;
+		if (v > max ) v = max;
+		return v;
+	}
 }

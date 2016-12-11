@@ -55,9 +55,10 @@ class Guest extends FlxSprite
 		_infoText = new FlxText(0, 0, 100, "");
 		_infoBG = new FlxSprite(0, 0);
 		_infoBG.makeGraphic(100, 32, FlxColor.GRAY);
+		_infoBG.alpha = 0.5;
 		
 		movefactor = FlxG.random.floatNormal(1, 0.5);
-		movefactor = (movefactor < 0) ? 0.1 : movefactor;
+		movefactor = (movefactor < 0.5) ? 0.5 : movefactor;
 		
 		_dirtlevel = FlxG.random.floatNormal(0.5, 0.5);
 		_dirtlevel = (_dirtlevel < 0) ? 0.1:  _dirtlevel;
@@ -95,7 +96,9 @@ class Guest extends FlxSprite
 		}
 		_infoBG.setPosition(this.x + GP.GuestSizeInPixel, this.y - GP.GuestSizeInPixel);
 		_infoText.setPosition(this.x + GP.GuestSizeInPixel, this.y - GP.GuestSizeInPixel);
-		_infoText.text = "L: " + Std.string(Level) + "\nAct[" + _actions.length + "] = " + ((_actions.length != 0)?  _actions[0].name : "--" );
+		_infoText.text = "L: " + Std.string(Level) + " ";
+		_infoText.text += "Sat: " + Std.string(Std.int(SatisfactionFactor * 100));
+		_infoText.text += "\nAct[" + _actions.length + "] = " + ((_actions.length != 0)?  _actions[0].name : "--" );
 		_infoText.text += "\nWait: " + Std.int(AccumulatedWaitingTime) + " / " + Std.int(AcceptedWaitingTime);
 	}
 	

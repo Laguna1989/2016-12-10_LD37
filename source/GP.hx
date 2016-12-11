@@ -1,5 +1,6 @@
 package;
 
+using MathExtender;
 /**
  * ...
  * @author 
@@ -20,5 +21,16 @@ class GP
 	static public var MoneyRoomCost (default, null) : Int = 300;
 	static public var MoneyTipAmount (default, null) : Int = 600;
 	static public var MoneyElevatorBaseCost (default, null) : Int = 300;
+	
+	static public function CalcSatisfactionInRoom (g : Guest, r: Room) : Float
+	{
+		var baseLevel : Float = 0.25;
+		var dirtLevel : Float = 0.5;
+		var noiseLevel : Float = 0.25;
+		var noiseInRoom : Float = r.Props.NoiseFactor;
+		noiseInRoom.Clamp();
+		var ret : Float = baseLevel + dirtLevel * (1.0 - r.DirtLevel) + noiseLevel * (1.0 - r.Props.NoiseFactor);
+		return ret;
+	}
 	
 }
