@@ -102,4 +102,9 @@ class Room extends FlxSprite
 		isFree = true;
 		color = FlxColor.WHITE;
 	}
+	
+	public function getXPos() 
+	{
+		return this.x;
+	}
 }

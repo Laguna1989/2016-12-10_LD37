@@ -31,7 +31,7 @@ class GuestActionAssignRoom extends GuestAction
 			}
 			else
 			{
-				_guest.AccumulatedWaitingTime += waitingTime;
+				//_guest.AccumulatedWaitingTime += waitingTime;
 				targetRoomName = tr.name;
 				return true;
 			}

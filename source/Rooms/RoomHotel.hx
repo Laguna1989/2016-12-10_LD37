@@ -14,4 +14,9 @@ class RoomHotel extends Room
 	{
 		super.update(elapsed);
 	}
+	
+	public override function getXPos() 
+	{
+		return this.x + 64;
+	}
 }

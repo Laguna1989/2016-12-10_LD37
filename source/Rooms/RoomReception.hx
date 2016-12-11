@@ -34,4 +34,11 @@ class RoomReception extends Room
 	{
 		return 5;
 	}
+	
+	public override function getXPos() 
+	{
+		var ofs : Float = GuestsWaiting * 12;
+		ofs = MathExtender.Clamp(ofs, 0, 60);
+		return this.x + 60 - ofs;
+	}
 }

@@ -12,6 +12,8 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import haxe.rtti.CType.TypeRoot;
 
+using StringTools;
+
 class PlayState extends FlxState
 {
 	
@@ -34,7 +36,7 @@ class PlayState extends FlxState
 	private var _minTilePosX : Int = 3;
 	private var _maxTilePosX : Int = 14;
 	
-	private var _GuestSpawnTimer : FlxTimer;
+	private var _GuestSpawnTimer : Float;
 	
 	private var _Money : Int = 5000;
 	private var _MoneyText : FlxText;
@@ -51,6 +53,7 @@ class PlayState extends FlxState
 	override public function create():Void
 	{
 		super.create();
+		FlxG.camera.bgColor = FlxColor.fromRGB(191, 191, 250);
 		FlxG.camera.pixelPerfectRender = true;
 		//FlxG.camera.zoom = 1.5;
 		FlxG.camera.setScrollBounds(-500, 1500-FlxG.camera.width, -50000, 50000);
@@ -91,8 +94,7 @@ class PlayState extends FlxState
 		_guestList.add(g);
 		//g.setPosition(FlxG.random.float(0, 800), FlxG.random.float(0, 500));
 		
-		_GuestSpawnTimer = new FlxTimer();
-		_GuestSpawnTimer.start(FlxG.random.floatNormal(17, 3), function (t) { var g :Guest = new Guest(this); _guestList.add(g); }, 0);
+		_GuestSpawnTimer = 0;
 		
 		_MoneyText  = new FlxText(10, 10, 100, "", 20);
 		//_MoneyText.screenCenter(FlxAxes.X);
@@ -115,6 +117,15 @@ class PlayState extends FlxState
 		_workerList.update(elapsed);
 		_MoneyText.text = Std.string(_Money);
 		
+	
+		_GuestSpawnTimer += elapsed;
+		var max : Float = GP.GetSpawnTime(_guestList.length, GetHotelRoomNumber());
+		//trace(max);
+		if (_GuestSpawnTimer >= max)
+		{
+			spawnGuest();
+			_GuestSpawnTimer = 0;
+		}
 		
 		WorkersSalaryTimer -= elapsed;
 		if (WorkersSalaryTimer <= 0)
@@ -218,6 +229,34 @@ class PlayState extends FlxState
 		_modeText.text = 'Current mode: ' + Mode;
 	}
 	
+	function GetHotelRoomNumber() : Int
+	{
+		var ret : Int = 0;
+		for (i in 0..._roomList.length)
+		{
+			if (_roomList.members[i].name.startsWith("room"))
+			{
+				ret += 1;
+			}
+		}
+		return ret;	
+	}
+	
+	
+	function GetGeneratorRoomNumber() 
+	{
+		var ret : Int = 0;
+		for (i in 0..._roomList.length)
+		{
+			if (_roomList.members[i].name.startsWith("generator"))
+			{
+				ret += 1;
+			}
+		}
+		return ret;	
+	}
+	
+	
 	function RecheckJobjs() 
 	{
 		checkRoomsForCleaning();
@@ -227,7 +266,12 @@ class PlayState extends FlxState
 	{
 		trace("pay workers");
 		var a : Int = _workerList.length * GP.WorkerBaseSalary;
-		ChangeMoney(-a);
+		ChangeMoney( -a);
+		
+		trace("Pay generators");
+		var gens : Int = GetGeneratorRoomNumber();
+		a = Std.int(GP.MoneyGeneratorRunningCost * Math.pow(1.5, gens));
+		ChangeMoney( -a);
 	}
 	
 	
@@ -429,6 +473,13 @@ class PlayState extends FlxState
 		}
 	}
 	
+	
+	private function spawnGuest () 
+	{ 
+		var g :Guest = new Guest(this); 
+		_guestList.add(g); 
+	}
+
 	function CameraMovement(elapsed:Float):Void 
 	{
 		var CamMovementSpeed : Float = -100;

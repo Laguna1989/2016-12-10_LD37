@@ -25,7 +25,7 @@ class GuestActionClean extends GuestAction
 	
 	public override function DoFinish() : Void 
 	{
-		trace("Finish Clean Action");
+		//trace("Finish Clean Action");
 		var r : Room = _guest._state.getRoomByName(_guest._roomName);
 		if (r != null)
 		{
@@ -38,7 +38,7 @@ class GuestActionClean extends GuestAction
 	public override function Activate()
 	{
 		super.Activate();
-		trace("Activate Clean Action");
+		//trace("Activate Clean Action");
 		
 		if (!gotStuff)
 		{
