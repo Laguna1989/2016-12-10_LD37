@@ -106,15 +106,15 @@ class PlayState extends FlxState
 		var bgypos:Float = GP.GroundLevel - 300;
 		_backgroundSpriteL = new FlxSprite(-400, bgypos);
 		_backgroundSpriteL.loadGraphic(AssetPaths.background__png, false, 400, 300);
-		_backgroundSpriteL.scrollFactor.set(0.125, 1);
+		_backgroundSpriteL.scrollFactor.set(1, 1);
 		
 		_backgroundSpriteM = new FlxSprite(0, bgypos);
 		_backgroundSpriteM.loadGraphic(AssetPaths.background__png, false, 400, 300);
-		_backgroundSpriteM.scrollFactor.set(0.125, 1);
+		_backgroundSpriteM.scrollFactor.set(1, 1);
 		
 		_backgroundSpriteR = new FlxSprite(400, bgypos);
 		_backgroundSpriteR.loadGraphic(AssetPaths.background__png, false, 400, 300);
-		_backgroundSpriteR.scrollFactor.set(0.125,1);
+		_backgroundSpriteR.scrollFactor.set(1,1);
 	}
 
 	override public function update(elapsed:Float):Void
