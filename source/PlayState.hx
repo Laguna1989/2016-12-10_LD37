@@ -102,6 +102,10 @@ class PlayState extends FlxState
 			{
 				SwitchToElevatorMode();
 			}
+			else if (FlxG.keys.pressed.G)
+			{
+				SwitchToGeneratorMode();
+			}
 			if (FlxG.mouse.justPressed)
 			{
 				for (r in _roomList)
@@ -165,6 +169,7 @@ class PlayState extends FlxState
 	
 	
 	
+	
 	function CheckGuests() 
 	{
 		var newlist : FlxTypedGroup<Guest> = new FlxTypedGroup<Guest> ();
@@ -186,6 +191,7 @@ class PlayState extends FlxState
 			_roomList.add(_room2Place);
 			_Money -= _room2Place.Cost;
 			Mode = PlayerMode.Normal;
+			CheckPowerConnectivity();
 		}
 	}
 	function BuildElevator() 
@@ -197,6 +203,7 @@ class PlayState extends FlxState
 			_Money -= _room2Place.Cost;
 			_maxLevel += 1;
 			Mode = PlayerMode.Normal;
+			CheckPowerConnectivity();
 		}
 	}
 	
@@ -248,6 +255,12 @@ class PlayState extends FlxState
 	{
 		Mode = PlayerMode.BuildElevator;
 		_room2Place = new RoomElevator();
+	}
+	
+	function SwitchToGeneratorMode() 
+	{
+		Mode = PlayerMode.Build;
+		_room2Place = new RoomGenerator();
 	}
 	
 	override public function draw() : Void 
@@ -302,5 +315,29 @@ class PlayState extends FlxState
 	public function ChangeMoney (amount : Int )
 	{
 		_Money += amount;
+	}
+	
+	private function CheckPowerConnectivity() 
+	{
+		for (r1 in _roomList)
+		{
+			var g : RoomGenerator =  Std.instance(r1, RoomGenerator);
+			
+			if (g != null)
+			{
+				for (r2 in _roomList)
+				{
+					var ld : Int = Std.int(Math.abs(g.Level - r2.Level));
+					if (ld <= 2) r2.Powered = true;
+					
+					var xd : Int = Std.int(Math.abs(g.TilePosX - r2.TilePosX));
+					var dist : Float = Math.sqrt(xd * xd + ld * ld );
+					if (dist < 4)
+					{
+						r2.Props.NoiseFactor = (4 - dist)/4;
+					}
+				}
+			}
+		}
 	}
 }

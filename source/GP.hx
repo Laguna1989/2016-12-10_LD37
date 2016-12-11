@@ -18,18 +18,26 @@ class GP
 	static public var ReceptionWaitingTime (default, null) : Float  = 5;
 	
 	
-	static public var MoneyRoomCost (default, null) : Int = 300;
+	static public var MoneyGuestRecipeRoomCost (default, null) : Int = 300;
 	static public var MoneyTipAmount (default, null) : Int = 600;
+	
 	static public var MoneyElevatorBaseCost (default, null) : Int = 300;
+	static public var MoneyGeneratorCost (default, null) : Int = 800;
+	static public var MoneyHotelRoomCost (default, null) : Int = 1100;
 	
 	static public function CalcSatisfactionInRoom (g : Guest, r: Room) : Float
 	{
 		var baseLevel : Float = 0.25;
-		var dirtLevel : Float = 0.5;
+		var dirtLevel : Float = 0.35;
 		var noiseLevel : Float = 0.25;
+		var powerLevel : Float = 0.15;
 		var noiseInRoom : Float = r.Props.NoiseFactor;
 		noiseInRoom.Clamp();
-		var ret : Float = baseLevel + dirtLevel * (1.0 - r.DirtLevel) + noiseLevel * (1.0 - r.Props.NoiseFactor);
+		var ret : Float = baseLevel;
+		ret += dirtLevel * (1.0 - r.DirtLevel);
+		ret += noiseLevel * (1.0 - r.Props.NoiseFactor);
+		ret += powerLevel * (r.Powered? 1.0 : 0.0);
+	
 		return ret;
 	}
 	

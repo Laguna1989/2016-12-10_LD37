@@ -67,6 +67,6 @@ class GuestActionAssignRoom extends GuestAction
 		var rec : RoomReception = cast _guest._state.getRoomByName("reception");
 		rec.GuestsWaiting -= 1;
 		
-		_guest._state.ChangeMoney(GP.MoneyRoomCost);
+		_guest._state.ChangeMoney(GP.MoneyGuestRecipeRoomCost);
 	}
 }

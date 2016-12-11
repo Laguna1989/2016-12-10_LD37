@@ -25,7 +25,7 @@ class RoomElevator extends Room
 	{
 		super.BuildMe();
 		name = "elevator_" + Std.string(Level);
-		trace("elevator Name: " + name);
+		//trace("elevator Name: " + name);
 		NumberOfElevatorsBuilt++;
 	}
 }
