@@ -162,7 +162,7 @@ class PlayState extends FlxState
 			else if (FlxG.keys.justPressed.J)
 			{
 				var j : Janitor = new Janitor(this);
-				j.setPosition(GP.RoomSizeInPixel * 3, GP.GroundLevel - GP.RoomSizeInPixel);
+				j.setPosition(GP.RoomSizeInPixel * 3, GP.GroundLevel );
 				_workerList.add(j);
 			}
 			else if (FlxG.keys.pressed.Q)

@@ -14,6 +14,7 @@ class GuestActionClean extends GuestAction
 	public function new(g:Guest) 
 	{
 		super(g);
+		this.name = "clean";
 	}
 	
 	

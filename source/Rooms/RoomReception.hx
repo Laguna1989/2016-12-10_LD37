@@ -20,6 +20,7 @@ class RoomReception extends Room
 	public override function update(elapsed : Float )
 	{
 		super.update(elapsed);
+		_infoText.text += "In Line: " + Std.string(GuestsWaiting) + "\n";
 	}
 	
 	public override function BuildMe()

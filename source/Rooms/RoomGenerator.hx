@@ -21,6 +21,7 @@ class RoomGenerator extends Room
 	public override function update(elapsed : Float )
 	{
 		super.update(elapsed);
+		_infoText.text += "running costs: " + Std.string(GP.MoneyGeneratorRunningCost) + "\n";
 	}
 	
 	public override function BuildMe()

@@ -13,6 +13,8 @@ class RoomHotel extends Room
 	public override function update(elapsed : Float )
 	{
 		super.update(elapsed);
+		_infoText.text += "dirt: " + Std.string(Std.int(DirtLevel*100)) + "\n";
+		_infoText.text += "noise: " + Std.string(Std.int(Props.NoiseFactor * 100)) + "\n";
 	}
 	
 	public override function getXPos() 

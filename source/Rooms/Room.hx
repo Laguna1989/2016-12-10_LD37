@@ -1,7 +1,10 @@
 package;
 
+import flixel.FlxG;
+import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.system.FlxAssets.FlxGraphicAsset;
+import flixel.text.FlxText;
 import flixel.util.FlxColor;
 
 /**
@@ -26,6 +29,12 @@ class Room extends FlxSprite
 	
 	public var DirtLevel : Float = 0;	// this is a value between 0 and 1, 
 									// where 0 means totally clean and 1 means totally messed up
+
+
+	private var _infoBG : FlxSprite;
+	private var _infoText : FlxText;
+
+	
 	public function new() 
 	{
 		super();
@@ -38,6 +47,11 @@ class Room extends FlxSprite
 		_poweredSprite = new FlxSprite(0, 0);
 		_poweredSprite.makeGraphic(16, 16, FlxColor.YELLOW);
 		_poweredSprite.alpha = 0.5;
+		
+		_infoText = new FlxText(0, 0, 144, "");
+		_infoBG = new FlxSprite(0, 0);
+		_infoBG.makeGraphic(144, 32, FlxColor.GRAY);
+		_infoBG.alpha = 0.5;
 	}
 	
 	public function BuildMe()
@@ -80,6 +94,10 @@ class Room extends FlxSprite
 		// cap dirtlevel
 		if (DirtLevel >= 1) DirtLevel = 1;
 		
+		_infoText.text = "name: " + name + "\n";
+		
+		_infoBG.setPosition(this.x , this.y );
+		_infoText.setPosition(this.x , this.y);
 	}
 	
 	public override function draw()
@@ -88,6 +106,12 @@ class Room extends FlxSprite
 		if (Powered)
 		{
 			_poweredSprite.draw();
+		}
+		var obj : FlxObject = new FlxObject(FlxG.mouse.getWorldPosition(FlxG.camera).x, FlxG.mouse.getWorldPosition(FlxG.camera).y, 10, 10);
+		if (this.overlaps(obj))
+		{
+			_infoBG.draw();
+			_infoText.draw();
 		}
 	}
 	
