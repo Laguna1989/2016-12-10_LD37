@@ -48,19 +48,28 @@ class HUD extends FlxTypedGroup<FlxSprite>
 
 		// Small room
 		_btnSRoom = new FlxExtendedSprite(FlxG.width - 88, 0);
-		_btnSRoom.makeGraphic(16, 16, FlxColor.fromRGB(100, 255, 100, 255));
+		_btnSRoom.loadGraphic(AssetPaths.Buttons__png, true, 16, 16);
+		_btnSRoom.animation.add('default', [0], 1, false);
+		_btnSRoom.animation.add('clicked', [8], 1, false);
+		_btnSRoom.animation.play('default');
 		_btnSRoom.scrollFactor.set();
 		add(_btnSRoom);
 
 		// Medium room
 		_btnMRoom = new FlxExtendedSprite(FlxG.width - 88, 16);
-		_btnMRoom.makeGraphic(16, 16, FlxColor.fromRGB(100, 255, 100, 255));
+		_btnMRoom.loadGraphic(AssetPaths.Buttons__png, true, 16, 16);
+		_btnMRoom.animation.add('default', [1], 1, false);
+		_btnMRoom.animation.add('clicked', [9], 1, false);
+		_btnMRoom.animation.play('default');
 		_btnMRoom.scrollFactor.set();
 		add(_btnMRoom);
 
 		// Large room
 		_btnLRoom = new FlxExtendedSprite(FlxG.width - 72, 0);
-		_btnLRoom.makeGraphic(16, 16, FlxColor.fromRGB(100, 255, 100, 255));
+		_btnLRoom.loadGraphic(AssetPaths.Buttons__png, true, 16, 16);
+		_btnLRoom.animation.add('default', [2], 1, false);
+		_btnLRoom.animation.add('clicked', [10], 1, false);
+		_btnLRoom.animation.play('default');
 		_btnLRoom.scrollFactor.set();
 		add(_btnLRoom);
 
@@ -68,41 +77,76 @@ class HUD extends FlxTypedGroup<FlxSprite>
 
 		// Generator
 		_btnGenerator = new FlxExtendedSprite(FlxG.width - 52, 0);
-		_btnGenerator.makeGraphic(16, 16, FlxColor.fromRGB(128, 0, 255, 255));
+		_btnGenerator.loadGraphic(AssetPaths.Buttons__png, true, 16, 16);
+		_btnGenerator.animation.add('default', [3], 1, false);
+		_btnGenerator.animation.add('clicked', [11], 1, false);
+		_btnGenerator.animation.play('default');
 		_btnGenerator.scrollFactor.set();
 		add(_btnGenerator);
 
 		// Elevator
 		_btnElevator = new FlxExtendedSprite(FlxG.width - 52, 16);
-		_btnElevator.makeGraphic(16, 16, FlxColor.fromRGB(128, 0, 255, 255));
+		_btnElevator.loadGraphic(AssetPaths.Buttons__png, true, 16, 16);
+		_btnElevator.animation.add('default', [4], 1, false);
+		_btnElevator.animation.add('clicked', [12], 1, false);
+		_btnElevator.animation.play('default');
 		_btnElevator.scrollFactor.set();
 		add(_btnElevator);
 
 		// Service room
 		_btnServiceRoom = new FlxExtendedSprite(FlxG.width - 36, 0);
-		_btnServiceRoom.makeGraphic(16, 16, FlxColor.fromRGB(128, 0, 255, 255));
+		_btnServiceRoom.loadGraphic(AssetPaths.Buttons__png, true, 16, 16);
+		_btnServiceRoom.animation.add('default', [5], 1, false);
+		_btnServiceRoom.animation.add('clicked', [13], 1, false);
+		_btnServiceRoom.animation.play('default');
 		_btnServiceRoom.scrollFactor.set();
 		add(_btnServiceRoom);
 
 		// ##################
 
-		// Janitor
-		_btnJanitor = new FlxExtendedSprite(FlxG.width - 16, 0);
-		_btnJanitor.makeGraphic(16, 16, FlxColor.fromRGB(255, 0, 128, 255));
-		_btnJanitor.scrollFactor.set();
-		add(_btnJanitor);
-
 		// Maid
 		_btnMaid = new FlxExtendedSprite(FlxG.width - 16, 16);
-		_btnMaid.makeGraphic(16, 16, FlxColor.fromRGB(255, 0, 128, 255));
+		_btnMaid.loadGraphic(AssetPaths.Buttons__png, true, 16, 16);
+		_btnMaid.animation.add('default', [6], 1, false);
+		_btnMaid.animation.add('clicked', [14], 1, false);
+		_btnMaid.animation.play('default');
 		_btnMaid.scrollFactor.set();
 		add(_btnMaid);
+
+		// Janitor
+		_btnJanitor = new FlxExtendedSprite(FlxG.width - 16, 0);
+		_btnJanitor.loadGraphic(AssetPaths.Buttons__png, true, 16, 16);
+		_btnJanitor.animation.add('default', [7], 1, false);
+		_btnJanitor.animation.add('clicked', [15], 1, false);
+		_btnJanitor.animation.play('default');
+		_btnJanitor.scrollFactor.set();
+		add(_btnJanitor);
 	}
 
 	public override function update(elapsed : Float)
 	{
 		super.update(elapsed);
 
+		forEach(function(btn : FlxSprite)
+		{
+			if(Type.getClassName(Type.getClass(btn)) == "flixel.addons.display.FlxExtendedSprite")
+			{
+				handleButton(cast(btn, FlxExtendedSprite));
+			}
+		});
+
 		_moneyText.text = '$$${_state.getMoney()}';
+	}
+
+	private function handleButton(btn : FlxExtendedSprite)
+	{
+		if(btn.mouseOver)
+		{
+			btn.animation.play('clicked');
+		}
+		else
+		{
+			btn.animation.play('default');
+		}
 	}
 }
