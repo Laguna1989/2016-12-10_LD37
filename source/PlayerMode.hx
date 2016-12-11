@@ -7,6 +7,7 @@ enum PlayerMode
 {
 	Normal;
 	Build;
+	BuildElevator;
 	Upgrade;
 	
 }

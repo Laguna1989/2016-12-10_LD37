@@ -36,7 +36,7 @@ class GuestActionElevator extends GuestAction
 		trace("Activate Elevator Action");
 		var d : Float = TargetLevel - _guest.Level ;
 		goingUp = (d > 0);
-		elevatorTime = Math.abs(d) * 5;
+		elevatorTime = Math.abs(d) * GP.GuestElevatorTimePerLevel;
 		
 	}
 	
@@ -44,6 +44,6 @@ class GuestActionElevator extends GuestAction
 	{
 		super.update(elapsed);
 		_guest.alpha = 0.5;
-		_guest.velocity.y = 48 / 5 * ((goingUp)? 1 : -1);
+		_guest.velocity.y = 48 / GP.GuestElevatorTimePerLevel * ((goingUp)? 1 : -1);
 	}
 }

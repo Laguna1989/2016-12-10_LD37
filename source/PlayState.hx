@@ -36,6 +36,8 @@ class PlayState extends FlxState
 	private var _Money : Int = 5000;
 	private var _MoneyText : FlxText;
 	
+	private var _elevatorPosX : Int = 5;
+	
 	override public function create():Void
 	{
 		super.create();
@@ -61,7 +63,7 @@ class PlayState extends FlxState
 		elevator.BuildMe();
 		_roomList.add(elevator);
 		elevator  = new RoomElevator();
-		elevator.setPosition(GP.RoomSizeInPixel * 5, GP.GroundLevel - GP.RoomSizeInPixel - GP.RoomSizeInPixel);
+		elevator.setPosition(GP.RoomSizeInPixel * _elevatorPosX, GP.GroundLevel - GP.RoomSizeInPixel - GP.RoomSizeInPixel);
 		elevator.BuildMe();
 		_roomList.add(elevator);
 		
@@ -90,6 +92,10 @@ class PlayState extends FlxState
 			if (FlxG.keys.pressed.B)
 			{
 				SwitchToBuildMode();
+			}
+			else if (FlxG.keys.pressed.E)
+			{
+				SwitchToElevatorMode();
 			}
 			if (FlxG.mouse.justPressed)
 			{
@@ -121,7 +127,20 @@ class PlayState extends FlxState
 				Mode = PlayerMode.Normal;
 			}
 		}
-
+		else if (Mode == PlayerMode.BuildElevator)
+		{
+			var rx : Int = Std.int(FlxG.mouse.x / GP.RoomSizeInPixel);
+			var ry : Int = Std.int(FlxG.mouse.y / GP.RoomSizeInPixel);
+			if (FlxG.mouse.justPressed)
+			{
+				BuildElevator();
+			}
+			_room2Place.setPosition(rx*GP.RoomSizeInPixel, ry*GP.RoomSizeInPixel);
+			if (FlxG.keys.pressed.ESCAPE)
+			{
+				Mode = PlayerMode.Normal;
+			}
+		}
 		else if (Mode == PlayerMode.Upgrade)
 		{
 			if (FlxG.keys.pressed.ESCAPE)
@@ -133,6 +152,9 @@ class PlayState extends FlxState
 
 		_modeText.text = 'Current mode: ' + Mode;
 	}
+	
+	
+	
 	
 	function CheckGuests() 
 	{
@@ -157,13 +179,36 @@ class PlayState extends FlxState
 			Mode = PlayerMode.Normal;
 		}
 	}
+	function BuildElevator() 
+	{
+		if (CanBuildRoom())
+		{
+			_room2Place.BuildMe();
+			_roomList.add(_room2Place);
+			_Money -= _room2Place.Cost;
+			_maxLevel += 1;
+			Mode = PlayerMode.Normal;
+		}
+	}
+	
 	
 	function CanBuildRoom() : Bool
 	{
-		// Check if room can be built on this level
-		if (Std.int((GP.GroundLevel  - _room2Place.y) / GP.RoomSizeInPixel) > _maxLevel) return false;
+		if (Mode == PlayerMode.Build)
+		{
+			// Check if room can be built on this level
+			if (Std.int((GP.GroundLevel  - _room2Place.y) / GP.RoomSizeInPixel) > _maxLevel) return false;
+		}
+		else if (Mode == PlayerMode.BuildElevator)
+		{
+			trace(Std.int((GP.GroundLevel  - _room2Place.y) / GP.RoomSizeInPixel) + " " + (_maxLevel +1));
+			trace(Std.int((_room2Place.x) / GP.RoomSizeInPixel) + " " + _elevatorPosX);
+			if (Std.int((GP.GroundLevel  - _room2Place.y) / GP.RoomSizeInPixel) != _maxLevel +1) return false;
+			if (Std.int((_room2Place.x) / GP.RoomSizeInPixel) != _elevatorPosX) return false;
+		}
 		//if (Std.int(_room2Place.x / GP.RoomSizeInPixel) < _minTilePosX) return false;
 		//if (Std.int(_room2Place.x + _room2Place.WidthInTiles / GP.RoomSizeInPixel) > _maxTilePosX) return false;
+		
 		// Check if room can be built on this position (no overlap with other rooms)
 		for (r in _roomList)
 		{
@@ -182,10 +227,18 @@ class PlayState extends FlxState
 		return true;
 	}
 	
+	
 	function SwitchToBuildMode() 
 	{
 		Mode = PlayerMode.Build;
 		_room2Place = new RoomHotel();
+	}
+	
+	
+	function SwitchToElevatorMode() 
+	{
+		Mode = PlayerMode.BuildElevator;
+		_room2Place = new RoomElevator();
 	}
 	
 	override public function draw() : Void 
@@ -195,7 +248,7 @@ class PlayState extends FlxState
 		_roomList.draw();
 		_guestList.draw();
 		_MoneyText.draw();		
-		if (Mode == PlayerMode.Build)
+		if (Mode == PlayerMode.Build || Mode == PlayerMode.BuildElevator )
 		{
 			_room2Place.draw();
 		}

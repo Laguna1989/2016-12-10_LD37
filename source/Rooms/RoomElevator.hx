@@ -7,11 +7,13 @@ import flixel.util.FlxColor;
  */
 class RoomElevator extends Room
 {
+	public static var NumberOfElevatorsBuilt : Int = 0;
 	public function new() 
 	{
 		super();
 		WidthInTiles = 1;
 		this.makeGraphic(WidthInTiles * GP.RoomSizeInPixel - 1, 1 * GP.RoomSizeInPixel -1, FlxColor.ORANGE);
+		Cost = GP.MoneyElevatorBaseCost * NumberOfElevatorsBuilt;
 	}
 	
 	public override function update(elapsed : Float )
@@ -24,5 +26,6 @@ class RoomElevator extends Room
 		super.BuildMe();
 		name = "elevator_" + Std.string(Level);
 		trace("elevator Name: " + name);
+		NumberOfElevatorsBuilt++;
 	}
 }

@@ -41,7 +41,7 @@ class GuestActionWalk extends GuestAction
 				trace("on same level");
 				tx = tr.x;
 				walkRight =  (tx - _guest.x > 0);
-				_walkingTime = Math.abs(tx - _guest.x) / 20;
+				_walkingTime = Math.abs(tx - _guest.x) / getMovementSpeed();
 			}
 			else
 			{
@@ -71,9 +71,14 @@ class GuestActionWalk extends GuestAction
 		super.update(elapsed);
 		
 		if (walkRight)
-			_guest.velocity.x = 20;
+			_guest.velocity.x = getMovementSpeed();
 		else
-			_guest.velocity.x = -20;
+			_guest.velocity.x = -getMovementSpeed();
+	}
+	
+	private function getMovementSpeed () : Float
+	{
+		return GP.GuestMovementSpeed * _guest.movefactor;
 	}
 	
 }

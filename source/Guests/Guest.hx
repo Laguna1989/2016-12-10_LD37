@@ -1,6 +1,7 @@
 package;
 
 import flash.net.FileFilter;
+import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.text.FlxText;
@@ -22,6 +23,7 @@ class Guest extends FlxSprite
 	public var _roomName : String = "";
 	
 	public var _satisfactionFactor : Float = 1.0;
+	public var movefactor : Float = 1.0;
 	private var _infoBG : FlxSprite;
 	private var _infoText : FlxText;
 	
@@ -44,6 +46,7 @@ class Guest extends FlxSprite
 		_infoText = new FlxText(0, 0, 100, "");
 		_infoBG = new FlxSprite(0, 0);
 		_infoBG.makeGraphic(100, 32, FlxColor.GRAY);
+		movefactor = FlxG.random.floatNormal(1, 0.5);
 	}
 	
 	public override function update(elapsed:Float) : Void 
