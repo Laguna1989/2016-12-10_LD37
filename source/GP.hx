@@ -25,9 +25,11 @@ class GP
 	static public var MoneyElevatorBaseCost (default, null) : Int = 350;
 	
 	static public var MoneyGeneratorRunningCost (default, null) : Int = 120;
-	static public var MoneyGeneratorCost (default, null) : Int = 800;
+	static public var MoneyGeneratorCost (default, null) : Int = 600;
 	
-	static public var MoneyHotelRoomCost (default, null) : Int = 1100;
+	static public var MoneyHotelRoomCostS (default, null) : Int = 800;
+	static public var MoneyHotelRoomCostM (default, null) : Int = 1100;
+	static public var MoneyHotelRoomCostL (default, null) : Int = 2050;
 	static public var MoneyServiceRoomCost (default, null) : Int = 300;
 	
 	static public var GeneratorNoiseReach (default, null) : Float = 6;

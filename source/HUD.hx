@@ -124,9 +124,9 @@ class HUD extends FlxTypedGroup<FlxSprite>
 	{
 		super.update(elapsed);
 
-		handleButton(_btnSRoom, null);
-		handleButton(_btnMRoom, _state.SwitchToBuildMode);
-		handleButton(_btnLRoom, null);
+		handleButton(_btnSRoom, _state.SwitchToBuildModeS);
+		handleButton(_btnMRoom, _state.SwitchToBuildModeM);
+		handleButton(_btnLRoom, _state.SwitchToBuildModeL);
 
 		handleButton(_btnGenerator, _state.SwitchToGeneratorMode);
 		handleButton(_btnElevator, _state.SwitchToElevatorMode);

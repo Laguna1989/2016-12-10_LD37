@@ -156,7 +156,7 @@ class PlayState extends FlxState
 			CheckGuests();
 			if (FlxG.keys.pressed.B)
 			{
-				SwitchToBuildMode();
+				SwitchToBuildModeM();
 			}
 			else if (FlxG.keys.pressed.E)
 			{
@@ -372,7 +372,7 @@ class PlayState extends FlxState
 		for (i in 0..._roomList.length)
 		{
 			var r : Room = _roomList.members[i];
-			var h : RoomHotel = Std.instance(r, RoomHotel);
+			var h : RoomHotelM = Std.instance(r, RoomHotelM);
 			if (h != null)
 			{
 				JobList.addCleaningJob(h.name, h.DirtLevel);
@@ -381,10 +381,20 @@ class PlayState extends FlxState
 	}
 	
 	
-	public function SwitchToBuildMode() 
+	public function SwitchToBuildModeS() 
 	{
 		Mode = PlayerMode.Build;
-		_room2Place = new RoomHotel();
+		_room2Place = new RoomHotelS();
+	}
+	public function SwitchToBuildModeM() 
+	{
+		Mode = PlayerMode.Build;
+		_room2Place = new RoomHotelM();
+	}
+	public function SwitchToBuildModeL() 
+	{
+		Mode = PlayerMode.Build;
+		_room2Place = new RoomHotelL();
 	}
 	
 	
@@ -485,7 +495,7 @@ class PlayState extends FlxState
 				for (r2 in _roomList)
 				{
 					var ld : Int = Std.int(Math.abs(g.Level - r2.Level));
-					if (ld <= 2) r2.Powered = true;
+					if (ld <= 1) r2.Powered = true;
 					
 					var xd : Int = Std.int(Math.abs(g.TilePosX - r2.TilePosX));
 					var dist : Float = Math.sqrt(xd * xd + ld * ld );

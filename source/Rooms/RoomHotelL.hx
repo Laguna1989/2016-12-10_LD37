@@ -1,13 +1,13 @@
 package;
 
-class RoomHotel extends Room
+class RoomHotelL extends Room
 {
     public function new()
     {
         super();
-		Cost = GP.MoneyHotelRoomCost;
-		WidthInTiles = 3;
-		this.loadGraphic(AssetPaths.room_hotel_med__png, false, 144, 48);
+		Cost = GP.MoneyHotelRoomCostL;
+		WidthInTiles = 5;
+		this.loadGraphic(AssetPaths.room_hotel_large__png, false, 240, 48);
     }
 	
 	public override function update(elapsed : Float )
