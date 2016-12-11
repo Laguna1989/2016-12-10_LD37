@@ -17,11 +17,15 @@ class UpgradeMenu extends FlxTypedGroup<FlxSprite>
 	private var _txtQuality : FlxText;
 	private var _sprQuality : FlxSprite;
 	private var _btnQuality : FlxButton;
-
-	public function new()
+	
+	private var _room : Room = null; 
+	private var _state : PlayState = null;
+	
+	public function new(s : PlayState)
 	{
 		super();
 
+		_state = s;
 		var dialogWidth = 300;
 		var dialogHeight = 100;
 		var posX = Std.int((FlxG.width  - dialogWidth)  / 2);
@@ -49,18 +53,35 @@ class UpgradeMenu extends FlxTypedGroup<FlxSprite>
 		_txtQuality.scrollFactor.set();
 		add(_txtQuality);
 
-		_btnQuality = new FlxButton(0, 0, 'Upgrade');
+		_btnQuality = new FlxButton(0, 0, 'Upgrade', upgradeRoom);
 		_btnQuality.setPosition(
 			posX + dialogWidth / 2 - _btnQuality.width / 2,
 			posY + dialogHeight - _btnQuality.height - padding
 		);
 		add(_btnQuality);
+		_btnQuality.active = true;
 	}
 
+	public function upgradeRoom()
+	{
+		trace("button clicked");
+		if (_room != null)
+		{
+			if (_state.getMoney() >= (_room.Luxus +1) * GP.MoneyLuxusUpgrade)
+			{
+				if (_room.Luxus <= 1)
+				{
+					_room.Luxus += 1;
+					_state.ChangeMoney(-_room.Luxus * GP.MoneyLuxusUpgrade);
+				}
+			}
+		}
+	}
+	
 	public function open(r : Room) : Void
 	{
 		if(IsOpen) return;
-
+		_room = r;
 		IsOpen = true;
 		trace('Upgrading room at x=${r.x}, y=${r.y}');
 	}
@@ -68,5 +89,6 @@ class UpgradeMenu extends FlxTypedGroup<FlxSprite>
 	public function close() : Void
 	{
 		IsOpen = false;
+		_room = null;
 	}
 }

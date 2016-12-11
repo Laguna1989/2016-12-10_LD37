@@ -40,6 +40,7 @@ class GP
 	static public var WorkerBaseSalary (default, null) : Int = 55;
 	static public var JanitorMoveFactor (default, null) : Float = 1.75;
 	static public var WorkerCleaningTime (default, null) : Float = 10;
+	static public var MoneyLuxusUpgrade (default, null) : Int = 100;
 	
 	
 	static public function CalcSatisfactionInRoom (g : Guest, r: Room) : Float

@@ -13,6 +13,13 @@ class RoomHotelM extends Room
 	public override function update(elapsed : Float )
 	{
 		super.update(elapsed);
+		
+		_infoText.text += "size: M\n";
+		var ls: String = "";
+		if (Luxus == 0) ls = "low";
+		else if (Luxus == 1) ls = "med";
+		else if (Luxus == 2) ls = "high";
+		_infoText.text += "luxus: " + ls + "\n";
 		_infoText.text += "dirt: " + Std.string(Std.int(DirtLevel*100)) + "\n";
 		_infoText.text += "noise: " + Std.string(Std.int(Props.NoiseFactor * 100)) + "\n";
 	}

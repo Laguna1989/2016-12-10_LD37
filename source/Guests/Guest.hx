@@ -40,6 +40,9 @@ class Guest extends FlxSprite
 	
 	private var _forceLeave : Bool = false;
 	
+	public var minRoomSize : Int;
+	public var minLuxus : Int;
+	
 	public function new(state:PlayState) 
 	{
 		super( -10, GP.GroundLevel);
@@ -54,10 +57,84 @@ class Guest extends FlxSprite
 		this.animation.add("guest3", [4]);
 		this.animation.add("guest4", [5]);
 		this.animation.add("guest5", [6]);
+		this.animation.add("guest6", [7]);
+		this.animation.add("guest7", [8]);
+		this.animation.add("guest8", [9]);
+		this.animation.add("guest9", [10]);
+		this.animation.add("guest10", [11]);
+		this.animation.add("guest11", [12]);
+		this.animation.add("guest12", [13]);
+		this.animation.add("guest13", [14]);
 		
-		var i : Int = FlxG.random.int(1, 5);
+		var i : Int = FlxG.random.int(1, 13);
+		if (i == 1)
+		{
+			minRoomSize = 0;
+			minLuxus = 0;
+		}
+		else if (i == 2)
+		{
+			minRoomSize = 1;
+			minLuxus = 0;
+		}
+		else if (i == 3)
+		{
+			minRoomSize = 1;
+			minLuxus = 1;
+		}
+		else if (i == 4)
+		{
+			minRoomSize = 0;
+			minLuxus = 0;
+		}
+		else if (i == 5)
+		{
+			minRoomSize = 1;
+			minLuxus = 2;
+		}
+		else if (i == 6)
+		{
+			minRoomSize = 1;
+			minLuxus = 1;
+		}
+		else if (i == 7)
+		{
+			minRoomSize = 1;
+			minLuxus = 0;
+		} 
 		
 		
+		else if (i == 8)
+		{
+			minRoomSize = 2;
+			minLuxus = 0;
+		}
+		else if (i == 9)
+		{
+			minRoomSize = 1;
+			minLuxus = 0;
+		}
+		else if (i == 10)
+		{
+			minRoomSize = 0;
+			minLuxus = 1;
+		}
+		else if (i == 11)
+		{
+			minRoomSize = 2;
+			minLuxus = 0;
+		} 
+		
+		else if (i == 12)
+		{
+			minRoomSize = 2;
+			minLuxus = 1;
+		}
+		else if (i == 13)
+		{
+			minRoomSize = 2;
+			minLuxus = 2;
+		}
 		this.animation.play("guest"+Std.string(i));
 		//this.velocity.set(32);
 		_actions = new Array<GuestAction>();
@@ -71,7 +148,7 @@ class Guest extends FlxSprite
 		
 		_infoText = new FlxText(0, 0, 100, "");
 		_infoBG = new FlxSprite(0, 0);
-		_infoBG.makeGraphic(100, 32, FlxColor.GRAY);
+		_infoBG.makeGraphic(100, 48, FlxColor.GRAY);
 		_infoBG.alpha = 0.5;
 		
 		movefactor = FlxG.random.floatNormal(1, 0.5);
@@ -115,8 +192,31 @@ class Guest extends FlxSprite
 		_infoText.setPosition(this.x + GP.GuestSizeInPixel, this.y - GP.GuestSizeInPixel);
 		_infoText.text = "L: " + Std.string(Level) + " ";
 		_infoText.text += "Sat: " + Std.string(Std.int(SatisfactionFactor * 100));
-		_infoText.text += "\nAct[" + _actions.length + "] = " + ((_actions.length != 0)?  _actions[0].name : "--" );
-		_infoText.text += "\nWait: " + Std.int(AccumulatedWaitingTime) + " / " + Std.int(AcceptedWaitingTime);
+		//_infoText.text += "\nAct[" + _actions.length + "] = " + ((_actions.length != 0)?  _actions[0].name : "--" );
+		_infoText.text += "\nAnnoyed: " + Std.int(AccumulatedWaitingTime/AcceptedWaitingTime*100.0) ;
+		
+		
+		if (minRoomSize != -1)
+		{
+			var SML : String = "";
+			if (minRoomSize == 0)
+				SML = "S, M, L";
+			else if (minRoomSize == 1)
+				SML = "M, L";
+			else if (minRoomSize == 2)
+				SML = "L";
+				
+			_infoText.text += "\nroomSize: " +  SML ;
+			var Lux : String = "";
+			if (minLuxus == 0)
+				Lux = "low";
+			else if (minLuxus == 1)
+				Lux = "med";
+			else if (minLuxus == 2)
+				Lux = "high";
+				
+			_infoText.text += "\nLuxus: "  + Lux;
+		}
 	}
 	
 	function NextAction():Void 
