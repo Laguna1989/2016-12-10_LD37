@@ -23,9 +23,9 @@ class PlayState extends FlxState
 	
 	private var buildingArea : FlxSprite;
 	private var Ground    : FlxSprite;
-	private var _modeText : FlxText;
 	private var _versionText : FlxText;
 	private var _upgradeMenu : UpgradeMenu;
+	private var _hud : HUD;
 
 	private var Mode :PlayerMode = PlayerMode.Normal;
 	
@@ -39,7 +39,6 @@ class PlayState extends FlxState
 	private var _GuestSpawnTimer : Float = - 7;
 	
 	private var _Money : Int = 5000;
-	private var _MoneyText : FlxText;
 	
 	private var _elevatorPosX : Int = 6;
 	private var BuildingCostText : FlxText;
@@ -64,9 +63,7 @@ class PlayState extends FlxState
 		Ground.makeGraphic(Std.int(GP.WorldSizeXInPixel), 600, FlxColor.BROWN);
 
 		_upgradeMenu = new UpgradeMenu();
-
-		_modeText = new FlxText(0, FlxG.height-15, 'Current mode: ' + Mode);
-		_modeText.scrollFactor.set();
+		_hud = new HUD(this);
 
 		_versionText = new FlxText(FlxG.width-200, FlxG.height- 25, 200, "Built on: " + Version.getBuildDate() + "\n" + Version.getGitCommitMessage());
 		_versionText.alignment = FlxTextAlign.RIGHT;
@@ -95,11 +92,6 @@ class PlayState extends FlxState
 		//g.setPosition(FlxG.random.float(0, 800), FlxG.random.float(0, 500));
 		
 		
-		_MoneyText  = new FlxText(10, 10, 100, "", 20);
-		//_MoneyText.screenCenter(FlxAxes.X);
-		//_MoneyText.alignment = FlxTextAlign.CENTER;
-		_MoneyText.scrollFactor.set();
-		
 		BuildingCostText = new FlxText(100, 100, 200, "", 14);
 		JobList = new JobPool();
 	
@@ -114,7 +106,7 @@ class PlayState extends FlxState
 		_roomList.update(elapsed);
 		_guestList.update(elapsed);
 		_workerList.update(elapsed);
-		_MoneyText.text = Std.string(_Money);
+		checkRoomsForCleaning();
 		
 	
 		_GuestSpawnTimer += elapsed;
@@ -139,7 +131,6 @@ class PlayState extends FlxState
 			RecheckJobjs();
 		}
 	
-		
 		CameraMovement(elapsed);
 			
 		
@@ -225,9 +216,19 @@ class PlayState extends FlxState
 			}
 		}
 
-		_modeText.text = 'Current mode: ' + Mode;
+		_hud.update(elapsed);
 	}
 	
+	public function getMoney() : Int
+	{
+		return _Money;
+	}
+
+	public function getMode() : PlayerMode
+	{
+		return Mode;
+	}
+
 	function GetHotelRoomNumber() : Int
 	{
 		var ret : Int = 0;
@@ -272,10 +273,6 @@ class PlayState extends FlxState
 		a = Std.int(GP.MoneyGeneratorRunningCost * Math.pow(1.5, gens));
 		ChangeMoney( -a);
 	}
-	
-	
-	
-	
 	
 	function CheckGuests() 
 	{
@@ -402,7 +399,6 @@ class PlayState extends FlxState
 			r.DrawOverlay();
 		_guestList.draw();
 		_workerList.draw();
-		_MoneyText.draw();		
 		if (Mode == PlayerMode.Build || Mode == PlayerMode.BuildElevator )
 		{
 			_room2Place.draw();
@@ -413,8 +409,8 @@ class PlayState extends FlxState
 			_upgradeMenu.draw();
 		}
 
-		_modeText.draw();
 		_versionText.draw();
+		_hud.draw();
 	}
 	
 	
