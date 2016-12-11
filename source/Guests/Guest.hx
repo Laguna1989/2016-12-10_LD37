@@ -66,6 +66,9 @@ class Guest extends FlxSprite
 		this.animation.add("guest12", [13]);
 		this.animation.add("guest13", [14]);
 		
+		this.setFacingFlip(FlxObject.LEFT, false, false);
+		this.setFacingFlip(FlxObject.RIGHT, true, false);
+		
 		var i : Int = FlxG.random.int(1, 13);
 		if (i == 1)
 		{
@@ -164,6 +167,8 @@ class Guest extends FlxSprite
 	public override function update(elapsed:Float) : Void 
 	{
 		super.update(elapsed);
+		if (velocity.x < 0) this.facing = FlxObject.LEFT;
+		else this.facing = FlxObject.RIGHT;
 		if (SatisfactionFactor <= 0.1) SatisfactionFactor = 0.1;
 		
 		Level = Std.int((this.y-GP.GuestSizeInPixel) / GP.RoomSizeInPixel) ;

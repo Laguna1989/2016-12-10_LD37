@@ -19,18 +19,19 @@ class GP
 	static public var ReceptionWaitingTime (default, null) : Float  = 5;
 	
 	
-	static public var MoneyGuestRecipeRoomCost (default, null) : Int = 320;
+	static public var MoneyGuestRecipeRoomCost (default, null) : Int = 375;
 	static public var MoneyTipAmount (default, null) : Int = 550;
 	
-	static public var MoneyElevatorBaseCost (default, null) : Int = 350;
+	static public var MoneyElevatorBaseCost (default, null) : Int = 250;
 	
-	static public var MoneyGeneratorRunningCost (default, null) : Int = 120;
-	static public var MoneyGeneratorCost (default, null) : Int = 600;
+	static public var MoneyGeneratorRunningCost (default, null) : Int = 100;
+	static public var MoneyGeneratorCost (default, null) : Int = 500;
 	
-	static public var MoneyHotelRoomCostS (default, null) : Int = 800;
-	static public var MoneyHotelRoomCostM (default, null) : Int = 1100;
-	static public var MoneyHotelRoomCostL (default, null) : Int = 2050;
-	static public var MoneyServiceRoomCost (default, null) : Int = 300;
+	static public var MoneyHotelRoomCostS (default, null) : Int = 400;
+	static public var MoneyHotelRoomCostM (default, null) : Int = 1000;
+	static public var MoneyHotelRoomCostL (default, null) : Int = 2500;
+	
+	static public var MoneyServiceRoomCost (default, null) : Int = 150;
 	
 	static public var GeneratorNoiseReach (default, null) : Float = 6;
 	
