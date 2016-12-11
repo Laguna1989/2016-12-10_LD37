@@ -12,7 +12,7 @@ class UpgradeMenu extends FlxTypedGroup<FlxSprite>
 {
 	public var IsOpen : Bool = false;
 
-	private var _sprBack : FlxSprite;
+	private var _sprBG : FlxSprite;
 	
 	private var _txtQuality : FlxText;
 	private var _sprQuality : FlxSprite;
@@ -30,10 +30,10 @@ class UpgradeMenu extends FlxTypedGroup<FlxSprite>
 		var padding  = 5;
 		var iconSize = 32;
 
-		_sprBack = new FlxSprite().makeGraphic(dialogWidth, dialogHeight, FlxColor.fromRGB(255, 255, 240, 220));
-		_sprBack.setPosition(posX, posY);
-		_sprBack.scrollFactor.set();
-		add(_sprBack);
+		_sprBG = new FlxSprite().makeGraphic(dialogWidth, dialogHeight, FlxColor.fromRGB(255, 255, 240, 220));
+		_sprBG.setPosition(posX, posY);
+		_sprBG.scrollFactor.set();
+		add(_sprBG);
 
 		_sprQuality = new FlxSprite().makeGraphic(iconSize, iconSize, FlxColor.BLUE);
 		_sprQuality.setPosition(posX + padding, posY + padding);
