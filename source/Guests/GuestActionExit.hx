@@ -21,7 +21,7 @@ class GuestActionExit extends GuestAction
 	
 	public override function DoFinish() : Void 
 	{
-		trace("Finish Exit Action");
+		//bbtrace("Finish Exit Action");
 		_guest.CanLeave = true;
 		var r : Room = _guest._state.getRoomByName(_guest._roomName);
 		if (r != null)
@@ -30,15 +30,15 @@ class GuestActionExit extends GuestAction
 		}
 		else
 		{
-			trace("cannot unlock room");
+			//trace("cannot unlock room");
 		}
 	}
 	
 	public override function Activate()
 	{
 		super.Activate();
-		trace("Activate Exit Action" );
-		waitingTime = 10;
+		//trace("Activate Exit Action" );
+		waitingTime = 2;
 	}
 	
 	
@@ -47,7 +47,11 @@ class GuestActionExit extends GuestAction
 		super.update(elapsed);
 		
 		_guest.velocity.x = - 20;
-		
+		var v : Float = 1 - (_age / waitingTime);
+		if (v > 1 ) v = 1;
+		if (v < 0) v = 0;
+		v = v * v;
+		_guest.alpha = v;
 	}
 	
 }

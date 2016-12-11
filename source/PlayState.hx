@@ -49,13 +49,17 @@ class PlayState extends FlxState
 	private var JobListTimer : Float = GP.JobListTimerMax;
 	private var WorkersSalaryTimer : Float = GP.WorkerSalaryTimerMax;
 	
+	private var _backgroundSpriteL : FlxSprite;
+	private var _backgroundSpriteM : FlxSprite;
+	private var _backgroundSpriteR : FlxSprite;
+	
 	override public function create():Void
 	{
 		super.create();
-		FlxG.camera.bgColor = FlxColor.fromRGB(191, 191, 250);
+		FlxG.camera.bgColor = FlxColor.fromRGB(255,255,255);
 		FlxG.camera.pixelPerfectRender = true;
 		//FlxG.camera.zoom = 1.5;
-		FlxG.camera.setScrollBounds(-500, 1500-FlxG.camera.width, -50000, 50000);
+		FlxG.camera.setScrollBounds(-500, 1500-FlxG.camera.width, -200, 50000);
 		_camTarget = new FlxSprite(GP.RoomSizeInPixel * 3, GP.GroundLevel - GP.RoomSizeInPixel);
 		FlxG.camera.follow(_camTarget);
 		FlxG.worldBounds.set( -5000, -5000, 50000, 500000);
@@ -96,8 +100,21 @@ class PlayState extends FlxState
 		JobList = new JobPool();
 	
 		buildingArea = new FlxSprite (_minTilePosX * GP.RoomSizeInPixel, GP.GroundLevel - _maxLevel * GP.RoomSizeInPixel);
-		buildingArea.makeGraphic((_maxTilePosX -_minTilePosX) * GP.RoomSizeInPixel, _maxLevel * GP.RoomSizeInPixel, FlxColor.LIME);
-		buildingArea.alpha = 0.2;
+		buildingArea.makeGraphic((_maxTilePosX -_minTilePosX) * GP.RoomSizeInPixel, _maxLevel * GP.RoomSizeInPixel, FlxColor.fromRGB(100, 100, 100) );
+		//buildingArea.alpha = 0.2;
+		
+		var bgypos:Float = GP.GroundLevel - 300;
+		_backgroundSpriteL = new FlxSprite(-400, bgypos);
+		_backgroundSpriteL.loadGraphic(AssetPaths.background__png, false, 400, 300);
+		_backgroundSpriteL.scrollFactor.set(0.125, 1);
+		
+		_backgroundSpriteM = new FlxSprite(0, bgypos);
+		_backgroundSpriteM.loadGraphic(AssetPaths.background__png, false, 400, 300);
+		_backgroundSpriteM.scrollFactor.set(0.125, 1);
+		
+		_backgroundSpriteR = new FlxSprite(400, bgypos);
+		_backgroundSpriteR.loadGraphic(AssetPaths.background__png, false, 400, 300);
+		_backgroundSpriteR.scrollFactor.set(0.125,1);
 	}
 
 	override public function update(elapsed:Float):Void
@@ -309,8 +326,8 @@ class PlayState extends FlxState
 			Mode = PlayerMode.Normal;
 			CheckPowerConnectivity();
 			buildingArea = new FlxSprite (_minTilePosX * GP.RoomSizeInPixel, GP.GroundLevel - _maxLevel * GP.RoomSizeInPixel);
-			buildingArea.makeGraphic((_maxTilePosX -_minTilePosX) * GP.RoomSizeInPixel, _maxLevel * GP.RoomSizeInPixel, FlxColor.LIME);
-			buildingArea.alpha = 0.2;
+			buildingArea.makeGraphic((_maxTilePosX -_minTilePosX) * GP.RoomSizeInPixel, _maxLevel * GP.RoomSizeInPixel, FlxColor.fromRGB(100, 100, 100) );
+			//buildingArea.alpha = 0.2;
 		}
 	}
 	
@@ -392,6 +409,9 @@ class PlayState extends FlxState
 	override public function draw() : Void 
 	{
 		super.draw();
+		_backgroundSpriteL.draw();
+		_backgroundSpriteM.draw();
+		_backgroundSpriteR.draw();
 		Ground.draw();
 		buildingArea.draw();
 		_roomList.draw();
@@ -426,19 +446,27 @@ class PlayState extends FlxState
 	
 	public function getFreeMatchingRoom ( g : Guest) : Room
 	{
+		var freeRooms : Array<Room> = new Array<Room>();
+		
+	
 		for (r in _roomList)
 		{
 			if (StringTools.startsWith(r.name, "room"))
 			{
 				if (r.isFree)
 				{
-					r.lock();
-					return r;
+					freeRooms.push(r);
 				}
 			}
 		}
+	
+		if (freeRooms.length == 0)
+			return null;
 		
-		return null;
+		var idx : Int = FlxG.random.int(0, freeRooms.length - 1);
+		var r = freeRooms[idx];
+		r.lock();
+		return r;
 	}
 	
 	public function ChangeMoney (amount : Int )
