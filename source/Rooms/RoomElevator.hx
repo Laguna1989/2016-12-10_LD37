@@ -12,7 +12,8 @@ class RoomElevator extends Room
 	{
 		super();
 		WidthInTiles = 1;
-		this.makeGraphic(WidthInTiles * GP.RoomSizeInPixel - 1, 1 * GP.RoomSizeInPixel -1, FlxColor.ORANGE);
+		//this.makeGraphic(WidthInTiles * GP.RoomSizeInPixel - 1, 1 * GP.RoomSizeInPixel -1, FlxColor.ORANGE);
+		this.loadGraphic(AssetPaths.room_elevator__png, false, 48, 48);
 		Cost = GP.MoneyElevatorBaseCost * NumberOfElevatorsBuilt;
 	}
 	

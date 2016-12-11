@@ -13,7 +13,8 @@ class RoomGenerator extends Room
 	{
 		super();
 		WidthInTiles = 1;
-		this.makeGraphic(WidthInTiles * GP.RoomSizeInPixel - 1, 1 * GP.RoomSizeInPixel -1, FlxColor.RED);
+		//this.makeGraphic(WidthInTiles * GP.RoomSizeInPixel - 1, 1 * GP.RoomSizeInPixel -1, FlxColor.RED);
+		this.loadGraphic(AssetPaths.room_generator__png, false, 48, 48);
 		Cost = GP.MoneyGeneratorCost;
 	}
 	

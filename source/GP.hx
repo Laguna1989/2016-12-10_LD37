@@ -9,7 +9,7 @@ class GP
 {
 
 	public static var RoomSizeInPixel   (default, null) : Int = 48;
-	static public var WorldSizeXInPixel (default, null) : Float = 1600;
+	static public var WorldSizeXInPixel (default, null) : Float = 1500;
 	static public var GuestSizeInPixel (default, null) : Int = 32;
 	static public var GroundLevel (default, null) : Float = 528;
 	
@@ -24,6 +24,8 @@ class GP
 	static public var MoneyElevatorBaseCost (default, null) : Int = 300;
 	static public var MoneyGeneratorCost (default, null) : Int = 800;
 	static public var MoneyHotelRoomCost (default, null) : Int = 1100;
+	
+	static public var GeneratorNoiseReach (default, null) : Float = 6;
 	
 	static public function CalcSatisfactionInRoom (g : Guest, r: Room) : Float
 	{

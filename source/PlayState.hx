@@ -36,20 +36,31 @@ class PlayState extends FlxState
 	private var _Money : Int = 5000;
 	private var _MoneyText : FlxText;
 	
-	private var _elevatorPosX : Int = 5;
+	private var _elevatorPosX : Int = 6;
 	private var BuildingCostText : FlxText;
+	
+	private var _camTarget : FlxSprite;
 	
 	override public function create():Void
 	{
 		super.create();
-		Ground = new FlxSprite(0, GP.GroundLevel);
+		FlxG.camera.pixelPerfectRender = true;
+		//FlxG.camera.zoom = 1.5;
+		FlxG.camera.setScrollBounds(-500, 1500-FlxG.camera.width, -50000, 50000);
+		_camTarget = new FlxSprite(GP.RoomSizeInPixel * 3, GP.GroundLevel - GP.RoomSizeInPixel);
+		FlxG.camera.follow(_camTarget);
+		FlxG.worldBounds.set( -5000, -5000, 50000, 500000);
+		Ground = new FlxSprite(-500, GP.GroundLevel);
 		Ground.makeGraphic(Std.int(GP.WorldSizeXInPixel), 600, FlxColor.BROWN);
 
 		_upgradeMenu = new UpgradeMenu();
 
-		_modeText = new FlxText(0, 585, 'Current mode: ' + Mode);
-		_versionText = new FlxText(600, 565, 200, "Built on: " + Version.getBuildDate() + "\n" + Version.getGitCommitMessage());
+		_modeText = new FlxText(0, FlxG.height-15, 'Current mode: ' + Mode);
+		_modeText.scrollFactor.set();
+
+		_versionText = new FlxText(FlxG.width-200, FlxG.height- 25, 200, "Built on: " + Version.getBuildDate() + "\n" + Version.getGitCommitMessage());
 		_versionText.alignment = FlxTextAlign.RIGHT;
+		_versionText.scrollFactor.set();
 		
 		_roomList = new FlxTypedGroup<Room>();
 		_guestList = new FlxTypedGroup<Guest>();
@@ -60,7 +71,7 @@ class PlayState extends FlxState
 		_roomList.add(reception);
 		
 		var elevator : RoomElevator = new RoomElevator();
-		elevator.setPosition(GP.RoomSizeInPixel * 5, GP.GroundLevel - GP.RoomSizeInPixel);
+		elevator.setPosition(GP.RoomSizeInPixel * _elevatorPosX, GP.GroundLevel - GP.RoomSizeInPixel);
 		elevator.BuildMe();
 		_roomList.add(elevator);
 		elevator  = new RoomElevator();
@@ -75,11 +86,12 @@ class PlayState extends FlxState
 		_GuestSpawnTimer = new FlxTimer();
 		_GuestSpawnTimer.start(FlxG.random.floatNormal(17, 3), function (t) { var g :Guest = new Guest(this); _guestList.add(g); }, 0);
 		
-		_MoneyText  = new FlxText(0, 50, 100, "", 20);
-		_MoneyText.screenCenter(FlxAxes.X);
-		_MoneyText.alignment = FlxTextAlign.CENTER;
+		_MoneyText  = new FlxText(10, 10, 100, "", 20);
+		//_MoneyText.screenCenter(FlxAxes.X);
+		//_MoneyText.alignment = FlxTextAlign.CENTER;
+		_MoneyText.scrollFactor.set();
 		
-		BuildingCostText = new FlxText(0, 0, 200, "", 14);
+		BuildingCostText = new FlxText(100, 100, 200, "", 14);
 		
 		
 	}
@@ -90,6 +102,11 @@ class PlayState extends FlxState
 		_roomList.update(elapsed);
 		_guestList.update(elapsed);
 		_MoneyText.text = Std.string(_Money);
+		
+	
+		
+		CameraMovement(elapsed);
+		
 		
 		if (Mode == PlayerMode.Normal)
 		{
@@ -332,12 +349,35 @@ class PlayState extends FlxState
 					
 					var xd : Int = Std.int(Math.abs(g.TilePosX - r2.TilePosX));
 					var dist : Float = Math.sqrt(xd * xd + ld * ld );
-					if (dist < 4)
+					if (dist < GP.GeneratorNoiseReach)
 					{
-						r2.Props.NoiseFactor = (4 - dist)/4;
+						r2.Props.NoiseFactor = (GP.GeneratorNoiseReach- dist)/GP.GeneratorNoiseReach;
 					}
 				}
 			}
 		}
+	}
+	
+	function CameraMovement(elapsed:Float):Void 
+	{
+		var CamMovementSpeed : Float = -100;
+		if (FlxG.keys.pressed.LEFT)
+		{
+			_camTarget.x += CamMovementSpeed * elapsed;
+		}
+		else if (FlxG.keys.pressed.RIGHT)
+		{
+			_camTarget.x -= CamMovementSpeed * elapsed;
+		}
+		if (FlxG.keys.pressed.UP)
+		{
+			_camTarget.y += CamMovementSpeed * elapsed;
+		}
+		else if (FlxG.keys.pressed.DOWN)
+		{
+			_camTarget.y -= CamMovementSpeed * elapsed;
+		}
+		
+		if (_camTarget.x < FlxG.worldBounds.x) _camTarget.x = FlxG.worldBounds.x;
 	}
 }

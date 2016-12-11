@@ -37,8 +37,8 @@ class Room extends FlxSprite
 		this.alpha = 0.5;
 		
 		_poweredSprite = new FlxSprite(0, 0);
-		_poweredSprite.makeGraphic(8, 8, FlxColor.YELLOW);
-		
+		_poweredSprite.makeGraphic(16, 16, FlxColor.YELLOW);
+		_poweredSprite.alpha = 0.5;
 	}
 	
 	public function BuildMe()

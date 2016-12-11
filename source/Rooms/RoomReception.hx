@@ -12,8 +12,9 @@ class RoomReception extends Room
 	public function new() 
 	{
 		super();
-		WidthInTiles = 2;
-		this.makeGraphic(WidthInTiles * GP.RoomSizeInPixel - 1, 1 * GP.RoomSizeInPixel -1, FlxColor.CYAN);
+		WidthInTiles = 3;
+		//this.makeGraphic(WidthInTiles * GP.RoomSizeInPixel - 1, 1 * GP.RoomSizeInPixel -1, FlxColor.CYAN);
+		this.loadGraphic(AssetPaths.room_reception__png, false, 144, 48);
 	}
 	
 	public override function update(elapsed : Float )
