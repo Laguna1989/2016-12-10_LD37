@@ -37,6 +37,7 @@ class PlayState extends FlxState
 	private var _MoneyText : FlxText;
 	
 	private var _elevatorPosX : Int = 5;
+	private var BuildingCostText : FlxText;
 	
 	override public function create():Void
 	{
@@ -74,9 +75,13 @@ class PlayState extends FlxState
 		_GuestSpawnTimer = new FlxTimer();
 		_GuestSpawnTimer.start(FlxG.random.floatNormal(17, 3), function (t) { var g :Guest = new Guest(this); _guestList.add(g); }, 0);
 		
-		_MoneyText  = new FlxText(0, 50, 100, "", 16);
+		_MoneyText  = new FlxText(0, 50, 100, "", 20);
 		_MoneyText.screenCenter(FlxAxes.X);
 		_MoneyText.alignment = FlxTextAlign.CENTER;
+		
+		BuildingCostText = new FlxText(0, 0, 200, "", 14);
+		
+		
 	}
 
 	override public function update(elapsed:Float):Void
@@ -111,29 +116,33 @@ class PlayState extends FlxState
 			}
 		}
 		
-		else if (Mode == PlayerMode.Build)
+		else if (Mode == PlayerMode.Build ||Mode == PlayerMode.BuildElevator)
 		{
+			BuildingCostText.text = Std.string(_room2Place.Cost);
+			BuildingCostText.setPosition(FlxG.mouse.x + GP.RoomSizeInPixel, FlxG.mouse.y);
+			
+			if (_Money < _room2Place.Cost)
+			{
+				BuildingCostText.color = FlxColor.RED;
+			}
+			else
+			{
+				BuildingCostText.color = FlxColor.WHITE;
+			}
+			
 			var rx : Int = Std.int(FlxG.mouse.x / GP.RoomSizeInPixel);
 			var ry : Int = Std.int(FlxG.mouse.y / GP.RoomSizeInPixel);
 			
-			
 			if (FlxG.mouse.justPressed)
 			{
-				BuildRoom();
-			}
-			_room2Place.setPosition(rx*GP.RoomSizeInPixel, ry*GP.RoomSizeInPixel);
-			if (FlxG.keys.pressed.ESCAPE)
-			{
-				Mode = PlayerMode.Normal;
-			}
-		}
-		else if (Mode == PlayerMode.BuildElevator)
-		{
-			var rx : Int = Std.int(FlxG.mouse.x / GP.RoomSizeInPixel);
-			var ry : Int = Std.int(FlxG.mouse.y / GP.RoomSizeInPixel);
-			if (FlxG.mouse.justPressed)
-			{
-				BuildElevator();
+				if (Mode == PlayerMode.Build)
+				{
+					BuildRoom();
+				}
+				else if (Mode == PlayerMode.BuildElevator)
+				{
+					BuildElevator();
+				}
 			}
 			_room2Place.setPosition(rx*GP.RoomSizeInPixel, ry*GP.RoomSizeInPixel);
 			if (FlxG.keys.pressed.ESCAPE)
@@ -251,6 +260,7 @@ class PlayState extends FlxState
 		if (Mode == PlayerMode.Build || Mode == PlayerMode.BuildElevator )
 		{
 			_room2Place.draw();
+			BuildingCostText.draw();
 		}
 		else if(Mode == PlayerMode.Upgrade)
 		{
