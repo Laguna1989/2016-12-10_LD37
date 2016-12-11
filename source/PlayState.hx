@@ -32,7 +32,7 @@ class PlayState extends FlxState
 	private var _upgradeMenu : UpgradeMenu;
 	private var _hud : HUD;
 
-	private var Mode :PlayerMode = PlayerMode.Normal;
+	public var Mode :PlayerMode = PlayerMode.Normal;
 	
 	private var _room2Place : Room;
 	
