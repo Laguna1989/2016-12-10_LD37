@@ -37,6 +37,7 @@ class PlayState extends FlxState
 	private var _room2Place : Room;
 	
 	private var _maxLevel : Int = 2;	// currently the level at which the highest room can be build (can be increased by the elevator)
+	private var _minLevel : Int = 0;
 	private var _minTilePosX : Int = 3;
 	private var _maxTilePosX : Int = 14;
 	
@@ -364,11 +365,12 @@ class PlayState extends FlxState
 		{
 			// Check if room can be built on this level
 			if (Std.int((GP.GroundLevel  - _room2Place.y) / GP.RoomSizeInPixel) > _maxLevel) return false;
+			if (Std.int((GP.GroundLevel  - _room2Place.y) / GP.RoomSizeInPixel) <= 0) return false;
 		}
 		else if (Mode == PlayerMode.BuildElevator)
 		{
-			trace(Std.int((GP.GroundLevel  - _room2Place.y) / GP.RoomSizeInPixel) + " " + (_maxLevel +1));
-			trace(Std.int((_room2Place.x) / GP.RoomSizeInPixel) + " " + _elevatorPosX);
+			//trace(Std.int((GP.GroundLevel  - _room2Place.y) / GP.RoomSizeInPixel) + " " + (_maxLevel +1));
+			//trace(Std.int((_room2Place.x) / GP.RoomSizeInPixel) + " " + _elevatorPosX);
 			if (Std.int((GP.GroundLevel  - _room2Place.y) / GP.RoomSizeInPixel) != _maxLevel +1) return false;
 			if (Std.int((_room2Place.x) / GP.RoomSizeInPixel) != _elevatorPosX) return false;
 		}

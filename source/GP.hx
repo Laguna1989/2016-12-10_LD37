@@ -29,7 +29,7 @@ class GP
 	
 	static public var MoneyHotelRoomCostS (default, null) : Int = 400;
 	static public var MoneyHotelRoomCostM (default, null) : Int = 1000;
-	static public var MoneyHotelRoomCostL (default, null) : Int = 2500;
+	static public var MoneyHotelRoomCostL (default, null) : Int = 2750;
 	
 	static public var MoneyServiceRoomCost (default, null) : Int = 150;
 	

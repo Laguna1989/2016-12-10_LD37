@@ -21,6 +21,9 @@ class UpgradeMenu extends FlxTypedGroup<FlxSprite>
 	private var _room : Room = null; 
 	private var _state : PlayState = null;
 	
+	private var _buttonCoolDown : Float = 0;
+	
+	
 	public function new(s : PlayState)
 	{
 		super();
@@ -64,18 +67,28 @@ class UpgradeMenu extends FlxTypedGroup<FlxSprite>
 
 	public function upgradeRoom()
 	{
-		trace("button clicked");
-		if (_room != null)
+		if (_buttonCoolDown <= 0)
 		{
-			if (_state.getMoney() >= (_room.Luxus +1) * GP.MoneyLuxusUpgrade)
+			_buttonCoolDown = 0.25;
+			//trace("button clicked");
+			if (_room != null)
 			{
-				if (_room.Luxus <= 1)
+				if (_state.getMoney() >= (_room.Luxus +1) * GP.MoneyLuxusUpgrade)
 				{
-					_room.Luxus += 1;
-					_state.ChangeMoney(-_room.Luxus * GP.MoneyLuxusUpgrade);
+					if (_room.Luxus <= 1)
+					{
+						_room.Luxus += 1;
+						_state.ChangeMoney(-_room.Luxus * GP.MoneyLuxusUpgrade);
+					}
 				}
 			}
 		}
+	}
+	
+	public override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+		_buttonCoolDown -= elapsed;
 	}
 	
 	public function open(r : Room) : Void
