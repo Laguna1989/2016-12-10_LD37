@@ -35,7 +35,7 @@ class MenuState extends FlxState
 		var backgroundSprite : FlxSprite = new FlxSprite();
 		backgroundSprite.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		add(backgroundSprite);
-		var title : FlxText = new FlxText(100, 45, 0, "One Room Apartments", 20);
+		var title : FlxText = new FlxText(100, 45, 0, "Hotel 'One Room'", 20);
 		title.screenCenter();
 		title.y = 45;
 		title.alignment = "CENTER";
