@@ -26,6 +26,16 @@ class GuestActionIdle extends GuestAction
 		_guest.alpha = 1.0;
 		var l1  : GuestActionLeave = new GuestActionLeave(_guest);
 		_guest.AddAction(l1);
+		
+		var r : Room = _guest._state.getRoomByName(_guest._roomName);
+		if (r != null)
+		{
+			// change guests happyness depending on room dirtiness	
+			_guest.SatisfactionFactor *= 0.5 * (1.0 - r.DirtLevel);
+		
+			// dirty room
+			r.DirtLevel += _guest._dirtlevel;
+		}
 	}
 	
 	public override function Activate()

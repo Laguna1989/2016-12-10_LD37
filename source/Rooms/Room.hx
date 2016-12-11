@@ -21,6 +21,9 @@ class Room extends FlxSprite
 	public var isFree : Bool = true;
 	public var Cost : Int;
 	
+	public var DirtLevel : Float = 0;	// this is a value between 0 and 1, 
+									// where 0 means totally clean and 1 means totally messed up
+	
 	public function new() 
 	{
 		super();
@@ -66,6 +69,9 @@ class Room extends FlxSprite
 	public override function update (elapsed : Float)
 	{
 		super.update(elapsed);
+		
+		// cap dirtlevel
+		if (DirtLevel >= 1) DirtLevel = 1;
 	}
 	
 	

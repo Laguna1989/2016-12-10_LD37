@@ -25,10 +25,13 @@ class GuestActionAssignRoom extends GuestAction
 			{
 				trace("no room found, searching continues");
 				_age = 0;
+				_guest.AccumulatedWaitingTime += waitingTime;
+				_guest.SatisfactionFactor *= 0.95;
 				return false;
 			}
 			else
 			{
+				_guest.AccumulatedWaitingTime += waitingTime;
 				targetRoomName = tr.name;
 				return true;
 			}
@@ -42,8 +45,12 @@ class GuestActionAssignRoom extends GuestAction
 		super.Activate();
 		trace("activate Assign Room Action");
 		var rec : RoomReception = cast _guest._state.getRoomByName("reception");
-		rec.GuestsWaiting += 1;
-		waitingTime = rec.getWaitingTime();
+		if (rec != null)
+		{
+			rec.GuestsWaiting += 1;
+			waitingTime = rec.getWaitingTime();
+			
+		}
 	}
 	
 	public override function DoFinish() : Void 

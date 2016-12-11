@@ -27,7 +27,7 @@ class GuestActionLeave extends GuestAction
 		
 		// TODO Pay Tip
 		
-		_guest._state.ChangeMoney(Std.int(GP.MoneyTipAmount * _guest._satisfactionFactor));
+		_guest._state.ChangeMoney(Std.int(GP.MoneyTipAmount * _guest.SatisfactionFactor));
 		
 		var rec : RoomReception = cast _guest._state.getRoomByName("reception");
 		rec.GuestsWaiting -= 1;

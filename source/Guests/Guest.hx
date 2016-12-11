@@ -22,10 +22,19 @@ class Guest extends FlxSprite
 	
 	public var _roomName : String = "";
 	
-	public var _satisfactionFactor : Float = 1.0;
+	public var SatisfactionFactor : Float = 1.0;
+	
 	public var movefactor : Float = 1.0;
+	
+	public var _dirtlevel : Float = 0.0;
+	
 	private var _infoBG : FlxSprite;
 	private var _infoText : FlxText;
+	
+	public var AccumulatedWaitingTime  : Float = 0;	// in seconds
+	public var AcceptedWaitingTime : Float = 15;
+	
+	private var _forceLeave : Bool = false;
 	
 	public function new(state:PlayState) 
 	{
@@ -46,12 +55,22 @@ class Guest extends FlxSprite
 		_infoText = new FlxText(0, 0, 100, "");
 		_infoBG = new FlxSprite(0, 0);
 		_infoBG.makeGraphic(100, 32, FlxColor.GRAY);
+		
 		movefactor = FlxG.random.floatNormal(1, 0.5);
+		movefactor = (movefactor < 0) ? 0.1 : movefactor;
+		
+		_dirtlevel = FlxG.random.floatNormal(0.5, 0.5);
+		_dirtlevel = (_dirtlevel < 0) ? 0.1:  _dirtlevel;
+		
+		AcceptedWaitingTime = FlxG.random.floatNormal(25, 3.5);
+		AcceptedWaitingTime = (AcceptedWaitingTime < 0)?  0.1 : AcceptedWaitingTime;
 	}
 	
 	public override function update(elapsed:Float) : Void 
 	{
 		super.update(elapsed);
+		if (SatisfactionFactor <= 0.1) SatisfactionFactor = 0.1;
+		
 		Level = Std.int((this.y-GP.GuestSizeInPixel) / GP.RoomSizeInPixel) ;
 		//trace(_actions.length);
 		if (_actions.length > 0)
@@ -62,9 +81,22 @@ class Guest extends FlxSprite
 				NextAction();
 			}
 		}
+		if (AccumulatedWaitingTime >= AcceptedWaitingTime)
+		{
+			if (!_forceLeave)
+			{
+				_forceLeave = true;
+				SatisfactionFactor = 0.01;
+				
+				var e1 : GuestActionExit = new GuestActionExit(this);
+				AddActionToBegin(e1);
+				e1.Activate();
+			}
+		}
 		_infoBG.setPosition(this.x + GP.GuestSizeInPixel, this.y - GP.GuestSizeInPixel);
 		_infoText.setPosition(this.x + GP.GuestSizeInPixel, this.y - GP.GuestSizeInPixel);
-		_infoText.text = "Level: " + Std.string(Level) + "\nActions[" + _actions.length + "] = " + ((_actions.length != 0)?  _actions[0].name : "--" );
+		_infoText.text = "L: " + Std.string(Level) + "\nAct[" + _actions.length + "] = " + ((_actions.length != 0)?  _actions[0].name : "--" );
+		_infoText.text += "\nWait: " + Std.int(AccumulatedWaitingTime) + " / " + Std.int(AcceptedWaitingTime);
 	}
 	
 	function NextAction():Void 

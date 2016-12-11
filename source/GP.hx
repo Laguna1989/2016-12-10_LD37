@@ -14,6 +14,7 @@ class GP
 	
 	static public var GuestMovementSpeed (default, null) : Float = 20;
 	static public var GuestElevatorTimePerLevel (default, null) : Float = 3;
+	static public var ReceptionWaitingTime (default, null) : Float  = 5;
 	
 	
 	static public var MoneyRoomCost (default, null) : Int = 300;
