@@ -148,7 +148,6 @@ class PlayState extends FlxState
 	
 		_GuestSpawnTimer += elapsed;
 		var max : Float = GP.GetSpawnTime(_guestList.length, GetHotelRoomNumber());
-		//trace(max);
 		if (_GuestSpawnTimer >= max)
 		{
 			spawnGuest();
@@ -368,8 +367,6 @@ class PlayState extends FlxState
 		}
 		else if (Mode == PlayerMode.BuildElevator)
 		{
-			//trace(Std.int((GP.GroundLevel  - _room2Place.y) / GP.RoomSizeInPixel) + " " + (_maxLevel +1));
-			//trace(Std.int((_room2Place.x) / GP.RoomSizeInPixel) + " " + _elevatorPosX);
 			if (Std.int((GP.GroundLevel  - _room2Place.y) / GP.RoomSizeInPixel) != _maxLevel +1) return false;
 			if (Std.int((_room2Place.x) / GP.RoomSizeInPixel) != _elevatorPosX) return false;
 		}
@@ -580,7 +577,6 @@ class PlayState extends FlxState
 		}
 		else if (FlxG.keys.pressed.DOWN||FlxG.keys.pressed.S)
 		{
-			trace(FlxG.worldBounds.bottom);
 			_camTarget.y -= CamMovementSpeed * elapsed;
 		}
 
