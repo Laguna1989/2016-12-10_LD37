@@ -40,7 +40,9 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		_sprBG.scrollFactor.set();
 		add(_sprBG);
 
-		_moneyText  = new FlxText(5, 5, 100, '', 15);
+		_moneyText  = new FlxText(5, 5, 100, '$', 15);
+		_moneyText.color = FlxColor.BLACK;
+		_moneyText.addFormat(new FlxTextFormat(FlxColor.GREEN), 0, 1);
 		_moneyText.scrollFactor.set();
 		add(_moneyText);
 
