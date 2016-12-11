@@ -6,6 +6,7 @@ import flixel.FlxState;
 import flixel.group.FlxGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import flixel.util.FlxTimer;
 
 using StringTools;
 
@@ -147,6 +148,12 @@ class PlayState extends FlxState
 		_guestList.update(elapsed);
 		_workerList.update(elapsed);
 		checkRoomsForCleaning();
+		
+		if (_Money <= -1000)
+		{
+			FlxG.camera.fade(FlxColor.BLACK, 0.9, false, function(){QuitGame();});	
+		}
+		
 	
 		_GuestSpawnTimer += elapsed;
 		var max : Float = GP.GetSpawnTime(_guestList.length, GetHotelRoomNumber());
@@ -384,7 +391,6 @@ class PlayState extends FlxState
 			}
 		}
 		
-		//TODO Check if there is enough money
 		if (_Money < _room2Place.Cost)
 		{
 			return false;
@@ -466,7 +472,7 @@ class PlayState extends FlxState
 			_upgradeMenu.draw();
 		}
 
-		_versionText.draw();
+		//_versionText.draw();
 		_hud.draw();
 	}
 	
@@ -585,6 +591,11 @@ class PlayState extends FlxState
 		if (_camTarget.x < FlxG.worldBounds.x) _camTarget.x = FlxG.worldBounds.x;
 		if (_camTarget.x > FlxG.worldBounds.right - FlxG.camera.width - 16) _camTarget.x = FlxG.worldBounds.right - FlxG.camera.width - 16; 
 		if (_camTarget.y > FlxG.worldBounds.bottom) _camTarget.y = FlxG.worldBounds.bottom;
+	}
+	
+	function QuitGame():Void 
+	{
+		FlxG.switchState(new MenuState());
 	}
 	
 	public function SpawnJanitor():Void 

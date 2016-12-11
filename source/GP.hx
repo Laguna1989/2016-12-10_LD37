@@ -7,9 +7,6 @@ using MathExtender;
  */
 class GP
 {
-
-	
-
 	public static var RoomSizeInPixel   (default, null) : Int = 48;
 	static public var WorldSizeXInPixel (default, null) : Float = 1500;
 	static public var GuestSizeInPixel (default, null) : Int = 32;
@@ -39,7 +36,7 @@ class GP
 	
 	
 	static public var JobListTimerMax (default, null) : Float = 2.5;
-	static public var WorkerSalaryTimerMax (default, null) : Float = 28;
+	static public var WorkerSalaryTimerMax (default, null) : Float = 20;
 	static public var WorkerBaseSalary (default, null) : Int = 95;
 	static public var JanitorMoveFactor (default, null) : Float = 1.75;
 	static public var WorkerCleaningTime (default, null) : Float = 7;
