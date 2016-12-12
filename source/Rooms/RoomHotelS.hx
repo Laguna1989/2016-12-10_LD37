@@ -18,9 +18,24 @@ class RoomHotelS extends Room
 		if (Luxus == 0) ls = "low";
 		else if (Luxus == 1) ls = "med";
 		else if (Luxus == 2) ls = "high";
-		_infoText.text += "luxus: " + ls + "\n";
+		_infoText.text += "luxury: " + ls + "\n";
 		_infoText.text += "dirt: " + Std.string(Std.int(DirtLevel*100)) + "\n";
 		_infoText.text += "noise: " + Std.string(Std.int(Props.NoiseFactor * 100)) + "\n";
+	}
+
+	public override function draw()
+	{
+		super.draw();
+		
+		_sprLuxury1.draw();
+		if(Luxus > 0)
+		{
+			_sprLuxury2.draw();
+			if(Luxus > 1)
+			{
+				_sprLuxury3.draw();
+			}
+		}
 	}
 	
 	public override function getXPos() 

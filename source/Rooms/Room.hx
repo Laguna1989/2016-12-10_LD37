@@ -28,9 +28,13 @@ class Room extends FlxSprite
 	private var _poweredSprite : FlxSprite;
 	
 	public var Luxus : Int = 0;
+	var _sprLuxury1: FlxSprite;
+	var _sprLuxury2: FlxSprite;
+	var _sprLuxury3: FlxSprite;
 	
-	public var DirtLevel : Float = 0;	// this is a value between 0 and 1, 
-									// where 0 means totally clean and 1 means totally messed up
+	public var DirtLevel : Float = 0;	// this is a value between 0 and 1,
+										// where 0 means totally clean and 1 means totally messed up
+	var _sprDirt: FlxSprite;
 
 
 	private var _infoBG : FlxSprite;
@@ -54,6 +58,10 @@ class Room extends FlxSprite
 		_infoBG = new FlxSprite(0, 0);
 		_infoBG.makeGraphic(144, 48, FlxColor.GRAY);
 		_infoBG.alpha = 0.5;
+
+		_sprLuxury1 = new FlxSprite().loadGraphic(AssetPaths.star_0__png);
+		_sprLuxury2 = new FlxSprite().loadGraphic(AssetPaths.star_0__png);
+		_sprLuxury3 = new FlxSprite().loadGraphic(AssetPaths.star_0__png);
 	}
 	
 	public function BuildMe()
@@ -72,9 +80,13 @@ class Room extends FlxSprite
 		if (TilePosX < 10) xstring += "0";
 		xstring += Std.string(TilePosX);
 		
-		name = "room_" + lstring + "_" + xstring;
+		name = 'room_${lstring}_${xstring}';
 		
 		_poweredSprite.setPosition(x, y);
+
+		_sprLuxury1.setPosition(x     , y);
+		_sprLuxury2.setPosition(x + 16, y);
+		_sprLuxury3.setPosition(x + 32, y);
 	}
 	
 	public function overlapsOtherRoom(o : Room) : Bool
@@ -110,6 +122,7 @@ class Room extends FlxSprite
 		{
 			_poweredSprite.draw();
 		}
+
 		DrawOverlay();
 	}
 	
