@@ -34,7 +34,7 @@ class Room extends FlxSprite
 	
 	public var DirtLevel : Float = 0;	// this is a value between 0 and 1,
 										// where 0 means totally clean and 1 means totally messed up
-	var _sprDirt: FlxSprite;
+	var _sprDirtOverlay: FlxSprite;
 
 
 	private var _infoBG : FlxSprite;
@@ -62,6 +62,8 @@ class Room extends FlxSprite
 		_sprLuxury1 = new FlxSprite().loadGraphic(AssetPaths.star_0__png);
 		_sprLuxury2 = new FlxSprite().loadGraphic(AssetPaths.star_0__png);
 		_sprLuxury3 = new FlxSprite().loadGraphic(AssetPaths.star_0__png);
+		
+		_sprDirtOverlay = new FlxSprite();
 	}
 	
 	public function BuildMe()
@@ -83,6 +85,8 @@ class Room extends FlxSprite
 		name = 'room_${lstring}_${xstring}';
 		
 		_poweredSprite.setPosition(x, y);
+
+		_sprDirtOverlay.setPosition(x, y);
 
 		_sprLuxury1.setPosition(x     , y);
 		_sprLuxury2.setPosition(x + 16, y);
@@ -113,6 +117,7 @@ class Room extends FlxSprite
 		_infoBG.setPosition(this.x , this.y );
 		_infoText.setPosition(this.x , this.y);
 		
+		_sprDirtOverlay.alpha = Math.pow(DirtLevel, 4);
 	}
 	
 	public override function draw()

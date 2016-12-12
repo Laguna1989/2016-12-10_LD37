@@ -8,6 +8,8 @@ class RoomHotelM extends Room
 		Cost = GP.MoneyHotelRoomCostM;
 		WidthInTiles = 3;
 		this.loadGraphic(AssetPaths.room_hotel_med__png, false, 144, 48);
+
+		_sprDirtOverlay.loadGraphic(AssetPaths.room_hotel_med_dirty__png, false, 144, 48);
     }
 	
 	public override function update(elapsed : Float )
@@ -27,6 +29,8 @@ class RoomHotelM extends Room
 	public override function draw()
 	{
 		super.draw();
+
+		_sprDirtOverlay.draw();
 		
 		_sprLuxury1.draw();
 		if(Luxus > 0)
