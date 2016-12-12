@@ -31,7 +31,6 @@ class MenuState extends FlxState
 	override public function create():Void
 	{
 		super.create();
-		//Palette.reset(197);
 		var backgroundSprite : FlxSprite = new FlxSprite();
 		backgroundSprite.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		add(backgroundSprite);
