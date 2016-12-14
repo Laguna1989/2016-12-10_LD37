@@ -12,17 +12,6 @@ import flixel.text.FlxText;
  */
 class MenuState extends FlxState
 {
-	public static var HighScore : Int = 0;
-	public static var LastScore : Int = 0;
-	
-	public static function setNewScore (s: Int)
-	{
-		LastScore = s;
-		if (s > HighScore)
-		{
-			HighScore = s;
-		}
-	}
 
 	
 	/**
@@ -32,6 +21,9 @@ class MenuState extends FlxState
 	{
 		super.create();
 		var backgroundSprite : FlxSprite = new FlxSprite();
+
+		FlxG.sound.playMusic(AssetPaths.hor_ost__ogg, 1, true);
+		
 		backgroundSprite.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		add(backgroundSprite);
 		var title : FlxText = new FlxText(100, 45, 0, "Hotel 'One Room'", 20);
@@ -39,7 +31,7 @@ class MenuState extends FlxState
 		title.y = 45;
 		title.alignment = "CENTER";
 		var t1 : FlxText = new FlxText (10, 100, FlxG.width - 20, "Manage your hotel from a one level building to the biggest skyscraper in town!\nRemember to put a service room on every floor.\n\nPlay with mouse\nScroll with [WASD]\nCancel with [ESC]\nPress [SPACE] to start" , 8);
-		var t2 : FlxText = new FlxText (10, 300, FlxG.width - 20, "created by @Thunraz, @xXBloodyOrangeXx and @Laguna_999 for #LDJam 37\n2016-12-11\nvisit us at https://runvs.io", 8);
+		var t2 : FlxText = new FlxText (10, 300, FlxG.width - 20, "created by @Thunraz, @xXBloodyOrangeXx and @Laguna_999 for #LDJam 37\n2016-12-11\nvisit us at https://runvs.io\n\nMusic by Blue Dot Sessions from the Album TinyTinyTrio. Remixed version. Original from:\nhttp://freemusicarchive.org/music/Blue_Dot_Sessions/TinyTiny_Trio/", 8);
 		t2.y = FlxG.height - t2.height - 20;
 		add(title);
 		add(t1);
