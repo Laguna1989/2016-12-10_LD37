@@ -1,4 +1,6 @@
 package;
+import flixel.FlxG;
+import flixel.system.FlxSound;
 
 /**
  * ...
@@ -11,10 +13,16 @@ class GuestActionClean extends GuestAction
 
 	private var gotStuff : Bool = false;
 	public var target : String = "";
+	
+	private var _cleanSound : FlxSound;
+	
 	public function new(g:Guest) 
 	{
 		super(g);
 		this.name = "clean";
+		
+		_cleanSound = new FlxSound();
+		_cleanSound = FlxG.sound.load(AssetPaths.hor_clean__ogg);
 	}
 	
 	
@@ -34,6 +42,7 @@ class GuestActionClean extends GuestAction
 			_guest._state.JobList.finishJob(r.name);
 		}
 		_guest.alpha = 1;
+		_cleanSound.play();
 	}
 	
 	public override function Activate()

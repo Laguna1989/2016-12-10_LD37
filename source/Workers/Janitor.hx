@@ -25,13 +25,14 @@ class Janitor extends Worker
 	public override function update(elapsed:Float) 
 	{
 		super.update(elapsed);
+		
 		if (waitingForJob)
 		{
 			_job = _state.JobList.getMostUrgentCleaningJob();
 			if (_job != null)
 			{	
 				_roomName = _job.roomName;
-				
+				trace("cleaning: Roomname " +_job.roomName);
 				var c1 : GuestActionClean = new GuestActionClean(this);
 				c1.target = _roomName;
 				AddAction(c1);
