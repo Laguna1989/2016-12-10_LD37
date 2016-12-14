@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
+import flixel.system.FlxSound;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
@@ -59,6 +60,10 @@ class PlayState extends FlxState
 	private var _backgroundSpriteM : FlxSprite;
 	private var _backgroundSpriteR : FlxSprite;
 	private var _bulldozer         : FlxSprite;
+	
+	private var _clickSound : FlxSound;
+	private var _click2Sound : FlxSound;
+	private var _moneySound : FlxSound;
 	
 	override public function create():Void
 	{
@@ -146,6 +151,13 @@ class PlayState extends FlxState
 		_clouds.add(_cloud3);
 		_clouds.add(_cloud4);
 		_clouds.scrollFactor.set(0.7, 0.95);
+		
+		_clickSound = new FlxSound();
+		_clickSound = FlxG.sound.load(AssetPaths.hor_click__ogg);
+		_click2Sound = new FlxSound();
+		_click2Sound = FlxG.sound.load(AssetPaths.hor_click2__ogg);
+		_moneySound = new FlxSound();
+		_moneySound = FlxG.sound.load(AssetPaths.hor_money__ogg, 0.5);
 	}
 
 	override public function update(elapsed:Float):Void
@@ -217,6 +229,7 @@ class PlayState extends FlxState
 					{
 						if (StringTools.startsWith(r.name, "room"))
 						{
+							_click2Sound.play();
 							Mode = PlayerMode.Upgrade;
 							_upgradeMenu.open(r);
 						}
@@ -399,6 +412,7 @@ class PlayState extends FlxState
 			_Money -= _room2Place.Cost;
 			Mode = PlayerMode.Normal;
 			CheckPowerConnectivity();
+			_clickSound.play();
 		}
 	}
 	function BuildElevator() 
@@ -616,6 +630,7 @@ class PlayState extends FlxState
 	public function ChangeMoney (amount : Int )
 	{
 		_Money += amount;
+		_moneySound.play();
 	}
 	
 	private function CheckPowerConnectivity() 
@@ -681,6 +696,7 @@ class PlayState extends FlxState
 	
 	public function SpawnJanitor():Void 
 	{
+		_click2Sound.play();
 		var j : Janitor = new Janitor(this);
 		j.setPosition(GP.RoomSizeInPixel * 3, GP.GroundLevel );
 		_workerList.add(j);

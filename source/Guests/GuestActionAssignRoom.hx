@@ -1,4 +1,6 @@
 package;
+import flixel.FlxG;
+import flixel.system.FlxSound;
 
 /**
  * ...
@@ -10,10 +12,14 @@ class GuestActionAssignRoom extends GuestAction
 	private var waitingTime : Float = 5;
 	private var targetRoomName : String = "";
 	
+	private var _talkSound : FlxSound;
+	
 	public function new(g:Guest) 
 	{
 		super(g);
 		name = "assign";
+		_talkSound = new FlxSound();
+		_talkSound = FlxG.sound.load(AssetPaths.hor_talk__ogg, 0.25);
 	}
 	
 	public override function IsFinished() : Bool
@@ -68,5 +74,8 @@ class GuestActionAssignRoom extends GuestAction
 		rec.WaitingDecrease();
 		
 		_guest._state.ChangeMoney(GP.MoneyGuestRecipeRoomCost);
+		_talkSound.pitch = FlxG.random.float(0.95, 1.05);
+		_talkSound.play();
+		
 	}
 }
