@@ -418,17 +418,18 @@ class PlayState extends FlxState
 		Mode = PlayerMode.Build;
 		_room2Place = new RoomHotelS();
 	}
+	
 	public function SwitchToBuildModeM() 
 	{
 		Mode = PlayerMode.Build;
 		_room2Place = new RoomHotelM();
 	}
+
 	public function SwitchToBuildModeL() 
 	{
 		Mode = PlayerMode.Build;
 		_room2Place = new RoomHotelL();
 	}
-	
 	
 	public function SwitchToElevatorMode() 
 	{
