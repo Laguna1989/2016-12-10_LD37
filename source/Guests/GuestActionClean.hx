@@ -46,15 +46,20 @@ class GuestActionClean extends GuestAction
 			gotStuff = true;
 			var serviceRoomName : String = "service_" + Std.string(_guest.Level);
 			var sr : Room = _guest._state.getRoomByName(serviceRoomName);
+			if (sr == null)
+			{
+				// backup plan: If there is no service room on the level of the janitor, get any cleaning room
+				sr = _guest._state.getAnyServiceRoom();
+			}
+			
 			if (sr != null)
 			{
-				
 				var w2 : GuestActionWalk = new GuestActionWalk(_guest);
 				w2.targetRoom = _guest._roomName;
 				_guest.AddActionToBegin(w2);
 				
 				var w1 : GuestActionWalk = new GuestActionWalk(_guest);
-				w1.targetRoom = "service_" + Std.string(_guest.Level);
+				w1.targetRoom = sr.name;
 				_guest.AddActionToBegin(w1);
 				w1.Activate();
 			}
