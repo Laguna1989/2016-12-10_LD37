@@ -8,6 +8,7 @@ import flixel.FlxSprite;
 import flixel.input.FlxPointer;
 import flixel.math.FlxVector;
 import flixel.system.FlxAssets.FlxGraphicAsset;
+import flixel.system.FlxSound;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 
@@ -42,6 +43,8 @@ class Guest extends FlxSprite
 	
 	public var minRoomSize : Int;
 	public var minLuxus : Int;
+	
+	private var _leavesound : FlxSound;
 	
 	public function new(state:PlayState) 
 	{
@@ -162,6 +165,9 @@ class Guest extends FlxSprite
 		
 		AcceptedWaitingTime = FlxG.random.floatNormal(25, 3.5);
 		AcceptedWaitingTime = (AcceptedWaitingTime < 0)?  0.1 : AcceptedWaitingTime;
+		
+		_leavesound = new FlxSound();
+		_leavesound = FlxG.sound.load(AssetPaths.hor_ohno__ogg, 0.5);
 	}
 	
 	public override function update(elapsed:Float) : Void 
@@ -185,6 +191,7 @@ class Guest extends FlxSprite
 		{
 			if (!_forceLeave)
 			{
+				_leavesound.play();
 				_forceLeave = true;
 				SatisfactionFactor = 0.01;
 				
