@@ -136,11 +136,13 @@ class Room extends FlxSprite
 	{
 		isFree = false;
 		color = FlxColor.GRAY;
+		_sprDirtOverlay.color = FlxColor.GRAY;
 	}
 	public function unlock()
 	{
 		isFree = true;
 		color = FlxColor.WHITE;
+		_sprDirtOverlay.color = FlxColor.WHITE;
 	}
 	
 	public function getXPos() 
