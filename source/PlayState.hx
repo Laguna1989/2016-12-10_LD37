@@ -488,6 +488,25 @@ class PlayState extends FlxState
 		return null;
 	}
 	
+	
+	public function getAnyServiceRoom() :Room
+	{
+		var freeRooms : Array<Room> = new Array<Room>();
+		
+		for (r in _roomList)
+		{
+			if (StringTools.startsWith(r.name, "service"))
+			{
+				freeRooms.push(r);
+			}
+		}
+		
+		if (freeRooms.length == 0) return null;
+		
+		var idx : Int = FlxG.random.int(0, freeRooms.length - 1);
+		return freeRooms[idx];
+	}
+	
 	public function getFreeMatchingRoom ( g : Guest) : Room
 	{
 		var freeRooms : Array<Room> = new Array<Room>();
@@ -605,4 +624,5 @@ class PlayState extends FlxState
 		j.setPosition(GP.RoomSizeInPixel * 3, GP.GroundLevel );
 		_workerList.add(j);
 	}
+	
 }
