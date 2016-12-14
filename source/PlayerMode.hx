@@ -9,5 +9,5 @@ enum PlayerMode
 	Build;
 	BuildElevator;
 	Upgrade;
-	
+	Demolish;
 }
