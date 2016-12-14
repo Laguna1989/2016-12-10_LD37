@@ -6,11 +6,14 @@ package;
  */
 class JobPool
 {
-
 	private var _jobsCleaning: Array<JobCleaning>;
 	private var _jobsInProgress : Array<String>;
-	public function new() 
+	private var _state : PlayState;
+
+	public function new(state : PlayState)
 	{
+		_state = state;
+
 		_jobsCleaning = new Array<JobCleaning>();
 		_jobsInProgress = new Array<String>();
 	}
@@ -52,7 +55,33 @@ class JobPool
 			}
 		}
 		trace("No Job found: " + n);
-		return;
+	}
+
+	public function removeJobsForRoom(r : Room)
+	{
+		// Remove upcoming jobs
+		for(j in _jobsCleaning)
+		{
+			if(j.roomName == r.name)
+			{
+				_jobsCleaning.remove(j);
+			}
+		}
+
+		// Remove current jobs
+		for(n in _jobsInProgress)
+		{
+			trace('Job in progress: $n');
+			if(n == r.name)
+			{
+				_jobsInProgress.remove(n);
+			}
+		}
+
+		for(w in _state.GetWorkers())
+		{
+			w.CancelRoomJobs(r);
+		}
 	}
 	
 	public function getMostUrgentCleaningJob () : JobCleaning

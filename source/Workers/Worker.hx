@@ -22,5 +22,10 @@ class Worker extends Guest
 		super.update(elapsed);
 		waitingForJob = (_actions.length == 0);
 	}
+
+	public function CancelRoomJobs(r : Room)
+	{
+		waitingForJob = true;
+	}
 	
 }

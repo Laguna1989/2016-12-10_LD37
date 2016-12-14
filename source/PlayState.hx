@@ -58,6 +58,7 @@ class PlayState extends FlxState
 	private var _backgroundSpriteL : FlxSprite;
 	private var _backgroundSpriteM : FlxSprite;
 	private var _backgroundSpriteR : FlxSprite;
+	private var _bulldozer         : FlxSprite;
 	
 	override public function create():Void
 	{
@@ -105,11 +106,17 @@ class PlayState extends FlxState
 		BuildingCostText = new FlxText(100, 100, 200, "", 14);
 		BuildingCostText.borderColor = FlxColor.BLACK;
 		BuildingCostText.borderStyle = FlxTextBorderStyle.SHADOW;
-		JobList = new JobPool();
+		JobList = new JobPool(this);
 	
 		buildingArea = new FlxSprite (_minTilePosX * GP.RoomSizeInPixel, GP.GroundLevel - _maxLevel * GP.RoomSizeInPixel);
 		buildingArea.makeGraphic((_maxTilePosX -_minTilePosX) * GP.RoomSizeInPixel, _maxLevel * GP.RoomSizeInPixel, FlxColor.fromRGB(100, 100, 100) );
 		//buildingArea.alpha = 0.2;
+
+		_bulldozer = new FlxSprite(0, 0);
+		_bulldozer.loadGraphic(AssetPaths.bulldozer__png, true, 16, 16);
+		_bulldozer.animation.add('default', [0, 1, 2, 3, 4, 5], 10, true);
+		_bulldozer.animation.play('default');
+		_bulldozer.scrollFactor.set();
 		
 		var bgypos:Float = GP.GroundLevel - 300;
 		_backgroundSpriteL = new FlxSprite(-400, bgypos);
@@ -218,7 +225,7 @@ class PlayState extends FlxState
 			}
 		}
 		
-		else if (Mode == PlayerMode.Build ||Mode == PlayerMode.BuildElevator)
+		else if (Mode == PlayerMode.Build || Mode == PlayerMode.BuildElevator)
 		{
 			BuildingCostText.text = Std.string(_room2Place.Cost);
 			BuildingCostText.setPosition(FlxG.mouse.x + GP.RoomSizeInPixel, FlxG.mouse.y);
@@ -252,6 +259,7 @@ class PlayState extends FlxState
 				Mode = PlayerMode.Normal;
 			}
 		}
+
 		else if (Mode == PlayerMode.Upgrade)
 		{
 			_upgradeMenu.update(elapsed);
@@ -260,6 +268,40 @@ class PlayState extends FlxState
 				_upgradeMenu.close();
 				Mode = PlayerMode.Normal;
 			}
+		}
+
+		else if(Mode == PlayerMode.Demolish)
+		{
+			if (FlxG.keys.pressed.ESCAPE)
+			{
+				Mode = PlayerMode.Normal;
+			}
+
+			if (FlxG.mouse.justPressed)
+			{
+				for (r in _roomList)
+				{
+					if (FlxG.mouse.overlaps(r, FlxG.camera))
+					{
+						if (StringTools.startsWith(r.name, "room"))
+						{
+							trace('Demolishing room ${r.name}');
+							
+							JobList.removeJobsForRoom(r);
+							_roomList.remove(r, true);
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		FlxG.mouse.visible = Mode != PlayerMode.Demolish;
+
+		if(Mode == PlayerMode.Demolish)
+		{
+			_bulldozer.update(elapsed);
+			_bulldozer.setPosition(FlxG.mouse.screenX - 8, FlxG.mouse.screenY - 8);
 		}
 
 		_cloud1.x += _cloud1Speed;
@@ -280,17 +322,22 @@ class PlayState extends FlxState
 		return Mode;
 	}
 
+	public function GetWorkers() : FlxTypedGroup<Worker>
+	{
+		return _workerList;
+	}
+
 	function GetHotelRoomNumber() : Int
 	{
 		var ret : Int = 0;
 		for (i in 0..._roomList.length)
 		{
-			if (_roomList.members[i].name.startsWith("room"))
+			if (_roomList.members[i] != null && _roomList.members[i].name.startsWith("room"))
 			{
 				ret += 1;
 			}
 		}
-		return ret;	
+		return ret;
 	}
 	
 	
@@ -299,7 +346,7 @@ class PlayState extends FlxState
 		var ret : Int = 0;
 		for (i in 0..._roomList.length)
 		{
-			if (_roomList.members[i].name.startsWith("generator"))
+			if (_roomList.members[i] != null && _roomList.members[i].name.startsWith("generator"))
 			{
 				ret += 1;
 			}
@@ -411,7 +458,11 @@ class PlayState extends FlxState
 			}
 		}
 	}
-	
+
+	public function SwitchToBulldozer()
+	{
+		Mode = PlayerMode.Demolish;
+	}
 	
 	public function SwitchToBuildModeS() 
 	{
@@ -475,6 +526,11 @@ class PlayState extends FlxState
 
 		//_versionText.draw();
 		_hud.draw();
+
+		if(Mode == PlayerMode.Demolish)
+		{
+			_bulldozer.draw();
+		}
 	}
 	
 	
