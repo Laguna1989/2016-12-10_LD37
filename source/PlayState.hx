@@ -470,10 +470,26 @@ class PlayState extends FlxState
 		for (i in 0..._roomList.length)
 		{
 			var r : Room = _roomList.members[i];
-			var h : RoomHotelM = Std.instance(r, RoomHotelM);
-			if (h != null)
 			{
-				JobList.addCleaningJob(h.name, h.DirtLevel);
+				var h : RoomHotelS = Std.instance(r, RoomHotelS);
+				if (h != null)
+				{
+					JobList.addCleaningJob(h.name, h.DirtLevel);
+				}
+			}
+			{
+				var h : RoomHotelM = Std.instance(r, RoomHotelM);
+				if (h != null)
+				{
+					JobList.addCleaningJob(h.name, h.DirtLevel);
+				}
+			}
+			{
+				var h : RoomHotelL = Std.instance(r, RoomHotelL);
+				if (h != null)
+				{
+					JobList.addCleaningJob(h.name, h.DirtLevel);
+				}
 			}
 		}
 	}

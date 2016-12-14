@@ -91,6 +91,7 @@ class JobPool
 	
 	public function getMostUrgentCleaningJob () : JobCleaning
 	{
+		//trace(_jobsCleaning.length);
 		var ret : JobCleaning = null;
 		var maxd : Float = -1;
 		for (j in _jobsCleaning)

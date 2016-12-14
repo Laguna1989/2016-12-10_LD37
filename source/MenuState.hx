@@ -2,6 +2,9 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxAxes;
 import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
 import flixel.FlxState;
@@ -22,20 +25,33 @@ class MenuState extends FlxState
 		super.create();
 		var backgroundSprite : FlxSprite = new FlxSprite();
 
-		FlxG.sound.playMusic(AssetPaths.hor_ost__ogg, 1, true);
+		//backgroundSprite.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		backgroundSprite.loadGraphic(AssetPaths.menu__png, false, 250, 156);
+		backgroundSprite.screenCenter(FlxAxes.X);
 		
-		backgroundSprite.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		add(backgroundSprite);
-		var title : FlxText = new FlxText(100, 45, 0, "Hotel 'One Room'", 20);
-		title.screenCenter();
-		title.y = 45;
-		title.alignment = "CENTER";
-		var t1 : FlxText = new FlxText (10, 100, FlxG.width - 20, "Manage your hotel from a one level building to the biggest skyscraper in town!\nRemember to put a service room on every floor.\n\nPlay with mouse\nScroll with [WASD]\nCancel with [ESC]\nPress [SPACE] to start" , 8);
-		var t2 : FlxText = new FlxText (10, 300, FlxG.width - 20, "created by @Thunraz, @xXBloodyOrangeXx and @Laguna_999 for #LDJam 37\n2016-12-11\nvisit us at https://runvs.io\n\nMusic by Blue Dot Sessions from the Album TinyTinyTrio. Remixed version. Original from:\nhttp://freemusicarchive.org/music/Blue_Dot_Sessions/TinyTiny_Trio/", 8);
-		t2.y = FlxG.height - t2.height - 20;
-		add(title);
+		
+		var t1 : FlxText = new FlxText (10, 156, (FlxG.width) - 20, 
+		"Manage your hotel to the biggest skyscraper in town!" , 8);
+		t1.alignment = FlxTextAlign.CENTER;
+		
+		var t2 : FlxText = new FlxText (10, 320, FlxG.width - 20, 
+		"created by @Thunraz, @xXBloodyOrangeXx and @Laguna_999 for #LDJam 37\nMusic by Blue Dot Sessions from the Album TinyTinyTrio. Remixed version. Original from: http://freemusicarchive.org/music/Blue_Dot_Sessions/TinyTiny_Trio/", 8);
+		t2.y = FlxG.height - t2.height - 10;
+		t2.color = FlxColor.GRAY;
+		
+		var t3 : FlxText = new FlxText(FlxG.width - 10, 190, (FlxG.width / 2) - 20, "Press [Space] zo start", 8);
+		t3.alignment = FlxTextAlign.CENTER;
+		t3.screenCenter(FlxAxes.X);
+		
+		FlxTween.tween(t3.scale, { x:1.4, y: 1.4 }, 1, { ease: FlxEase.bounceOut,type:FlxTween.PINGPONG } );
+		FlxTween.color(t3, 1, FlxColor.WHITE, FlxColor.fromRGB(85, 171, 171), { type : FlxTween.PINGPONG } );
 		add(t1);
 		add(t2);		
+		add(t3);
+		
+		FlxG.sound.playMusic(AssetPaths.hor_ost__ogg, 1, true);
+		
 	}
 	
 	

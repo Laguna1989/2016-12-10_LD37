@@ -105,7 +105,7 @@ class Guest extends FlxSprite
 		}
 		else if (i == 7)
 		{
-			minRoomSize = 1;
+			minRoomSize = 0;
 			minLuxus = 0;
 		} 
 		
@@ -160,7 +160,7 @@ class Guest extends FlxSprite
 		movefactor = FlxG.random.floatNormal(1, 0.5);
 		movefactor = (movefactor < 0.5) ? 0.5 : movefactor;
 		
-		_dirtlevel = FlxG.random.floatNormal(0.25, 0.25);
+		_dirtlevel = FlxG.random.floatNormal(0.25, 0.45);
 		_dirtlevel = (_dirtlevel < 0) ? 0.1:  _dirtlevel;
 		
 		AcceptedWaitingTime = FlxG.random.floatNormal(25, 3.5);

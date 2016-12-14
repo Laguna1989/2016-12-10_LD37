@@ -38,7 +38,7 @@ class GuestActionClean extends GuestAction
 		var r : Room = _guest._state.getRoomByName(_guest._roomName);
 		if (r != null)
 		{
-			r.DirtLevel = 0;
+			r.DirtLevel *= 0.35;
 			_guest._state.JobList.finishJob(r.name);
 		}
 		_guest.alpha = 1;

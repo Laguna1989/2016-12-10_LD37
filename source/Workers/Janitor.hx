@@ -21,7 +21,6 @@ class Janitor extends Worker
 		minRoomSize = -1;
 	}
 	
-	
 	public override function update(elapsed:Float) 
 	{
 		super.update(elapsed);
