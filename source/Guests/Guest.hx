@@ -262,6 +262,20 @@ class Guest extends FlxSprite
 	{
 		_actions.push(a);
 	}
+
+	public function CheckAndLeave(r : Room)
+	{
+		// If guest is doing something with the room
+		// while it gets deleted, leave.
+		if(r.name == _roomName)
+		{
+			_actions = _actions.filter(function(a : GuestAction) { return a.name == "elevator"; });
+			alpha = 1.0;
+			
+			SatisfactionFactor = 0.0;
+			_actions.push(new GuestActionLeave(this));
+		}
+	}
 	
 	public override function draw()
 	{

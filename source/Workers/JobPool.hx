@@ -82,6 +82,11 @@ class JobPool
 		{
 			w.CancelRoomJobs(r);
 		}
+
+		for(g in _state.GetGuests())
+		{
+			g.CheckAndLeave(r);
+		}
 	}
 	
 	public function getMostUrgentCleaningJob () : JobCleaning

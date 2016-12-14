@@ -327,6 +327,11 @@ class PlayState extends FlxState
 		return _workerList;
 	}
 
+	public function GetGuests() : FlxTypedGroup<Guest>
+	{
+		return _guestList;
+	}
+
 	function GetHotelRoomNumber() : Int
 	{
 		var ret : Int = 0;
