@@ -168,6 +168,11 @@ class PlayState extends FlxState
 		_workerList.update(elapsed);
 		checkRoomsForCleaning();
 		
+		if (FlxG.keys.justPressed.INSERT)
+		{
+			ChangeMoney(5000);
+		}
+		
 		if (_Money <= -1000)
 		{
 			FlxG.camera.fade(FlxColor.BLACK, 0.9, false, function(){QuitGame();});	
@@ -444,6 +449,7 @@ class PlayState extends FlxState
 		{
 			if (Std.int((GP.GroundLevel  - _room2Place.y) / GP.RoomSizeInPixel) != _maxLevel +1) return false;
 			if (Std.int((_room2Place.x) / GP.RoomSizeInPixel) != _elevatorPosX) return false;
+			if (_maxLevel == 10) return false;
 		}
 		if (Std.int(_room2Place.x / GP.RoomSizeInPixel) < _minTilePosX) return false;
 		if (Std.int(_room2Place.x / GP.RoomSizeInPixel  + _room2Place.WidthInTiles) > _maxTilePosX) return false;
