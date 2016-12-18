@@ -21,9 +21,9 @@ class GP
 	static public var MoneyTipAmount (default, null) : Int = 550;
 	static public var MoneyOverLuxusTip (default, null) : Float = 0.25;
 	
-	static public var MoneyElevatorBaseCost (default, null) : Int = 350;
+	static public var MoneyElevatorBaseCost (default, null) : Int = 450;
 	
-	static public var MoneyGeneratorRunningCost (default, null) : Int = 100;
+	static public var MoneyGeneratorRunningCost (default, null) : Int = 75;
 	static public var MoneyGeneratorCost (default, null) : Int = 500;
 	
 	static public var MoneyHotelRoomCostS (default, null) : Int = 400;
@@ -32,7 +32,7 @@ class GP
 	
 	static public var MoneyServiceRoomCost (default, null) : Int = 150;
 	
-	static public var GeneratorNoiseReach (default, null) : Float = 6;
+	static public var GeneratorNoiseReach (default, null) : Float = 4;
 	
 	
 	static public var JobListTimerMax (default, null) : Float = 2.5;
@@ -45,10 +45,10 @@ class GP
 	
 	static public function CalcSatisfactionInRoom (g : Guest, r: Room) : Float
 	{
-		var baseLevel : Float = 0.25;
+		var baseLevel : Float = 0.15;
 		var dirtLevel : Float = 0.35;
-		var noiseLevel : Float = 0.25;
-		var powerLevel : Float = 0.15;
+		var noiseLevel : Float = 0.15;
+		var powerLevel : Float = 0.35;
 		var noiseInRoom : Float = r.Props.NoiseFactor;
 		noiseInRoom.Clamp();
 		var ret : Float = baseLevel;
